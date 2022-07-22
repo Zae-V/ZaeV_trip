@@ -1,26 +1,26 @@
-package gachon.mp2020.bottomnavigation;
+package com.example.ZaeV_trip;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Schedule extends AppCompatActivity {
+public class Bookmark extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule);
+        setContentView(R.layout.activity_bookmark);
+
 
         //Initialize And Assign Variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         //Set Home Selected
-        bottomNavigationView.setSelectedItemId(R.id.schedule);
+        bottomNavigationView.setSelectedItemId(R.id.bookmark);
 
 
         //Perform ItemSelectedListener
@@ -31,12 +31,12 @@ public class Schedule extends AppCompatActivity {
                     overridePendingTransition(0, 0);
                     return true;
                 case R.id.bookmark:
-                    startActivity(new Intent(getApplicationContext(), Bookmark.class));
-                    overridePendingTransition(0, 0);
+
                     return true;
 
                 case R.id.schedule:
-
+                    startActivity(new Intent(getApplicationContext(), Schedule.class));
+                    overridePendingTransition(0, 0);
                     return true;
 
                 case R.id.home:

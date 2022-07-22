@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="gachon.mp2020.bottomnavigation">
+    package="ZaeV_trip">
 
     <application
         android:allowBackup="true"
@@ -14,16 +14,16 @@
         android:theme="@style/Theme.BottomNavigation"
         tools:targetApi="31">
         <activity
-            android:name=".Bookmark"
+            android:name="com.example.ZaeV_trip.Bookmark"
             android:exported="false" />
         <activity
-            android:name=".Schedule"
+            android:name="com.example.ZaeV_trip.Schedule"
             android:exported="false" />
         <activity
-            android:name=".Search"
+            android:name="com.example.ZaeV_trip.Search"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.ZaeV_trip.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

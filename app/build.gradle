@@ -6,7 +6,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "gachon.mp2020.bottomnavigation"
+        applicationId "com.example.ZaeV_trip"
         minSdk 30
         targetSdk 32
         versionCode 1

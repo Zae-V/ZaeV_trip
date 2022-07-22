@@ -1,4 +1,4 @@
-package gachon.mp2020.bottomnavigation;
+package com.example.ZaeV_trip;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("gachon.mp2020.bottomnavigation", appContext.getPackageName());
+        assertEquals("gachon.mp2020.ZaeV_trip", appContext.getPackageName());
     }
 }

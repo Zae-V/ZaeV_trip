@@ -1,12 +1,10 @@
-package gachon.mp2020.bottomnavigation;
+package com.example.ZaeV_trip;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 

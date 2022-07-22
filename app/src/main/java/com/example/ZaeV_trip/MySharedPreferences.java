@@ -1,4 +1,4 @@
-package gachon.mp2020.bottomnavigation;
+package com.example.ZaeV_trip;
 
 import android.content.Context;
 import android.content.SharedPreferences;
