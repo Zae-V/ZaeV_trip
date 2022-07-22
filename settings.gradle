@@ -14,5 +14,5 @@ dependencyResolutionManagement {
 
     }
 }
-rootProject.name = "BottomNavigation"
+rootProject.name = "ZaeV_trip"
 include ':app'
