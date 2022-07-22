@@ -1,4 +1,4 @@
-package com.example.ZaeV_trip;
+package com.example.ZaeV_trip.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.captaindroid.tvg.Tvg;
+import com.example.ZaeV_trip.util.MySharedPreferences;
+import com.example.ZaeV_trip.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -61,16 +63,16 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.search:
-                    startActivity(new Intent(getApplicationContext(), Search.class));
+                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
                 case R.id.bookmark:
-                    startActivity(new Intent(getApplicationContext(), Bookmark.class));
+                    startActivity(new Intent(getApplicationContext(), BookmarkActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
 
                 case R.id.schedule:
-                    startActivity(new Intent(getApplicationContext(), Schedule.class));
+                    startActivity(new Intent(getApplicationContext(), ScheduleActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
 

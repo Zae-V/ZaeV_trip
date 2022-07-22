@@ -1,4 +1,4 @@
-package com.example.ZaeV_trip;
+package com.example.ZaeV_trip.model;
 import java.util.ArrayList;
 
 public class Users {

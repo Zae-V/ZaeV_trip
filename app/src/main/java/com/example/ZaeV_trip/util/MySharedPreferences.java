@@ -1,9 +1,11 @@
-package com.example.ZaeV_trip;
+package com.example.ZaeV_trip.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.example.ZaeV_trip.model.Users;
 
 public class MySharedPreferences {
     static public SharedPreferences get_shared_preferences(Context ctx) {

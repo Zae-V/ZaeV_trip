@@ -1,40 +1,41 @@
-package com.example.ZaeV_trip;
+package com.example.ZaeV_trip.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.ZaeV_trip.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Search extends AppCompatActivity {
+public class ScheduleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_schedule);
 
         //Initialize And Assign Variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         //Set Home Selected
-        bottomNavigationView.setSelectedItemId(R.id.search);
+        bottomNavigationView.setSelectedItemId(R.id.schedule);
 
 
         //Perform ItemSelectedListener
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.search:
-
+                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                    overridePendingTransition(0, 0);
                     return true;
                 case R.id.bookmark:
-                    startActivity(new Intent(getApplicationContext(), Bookmark.class));
+                    startActivity(new Intent(getApplicationContext(), BookmarkActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
 
                 case R.id.schedule:
-                    startActivity(new Intent(getApplicationContext(), Schedule.class));
-                    overridePendingTransition(0, 0);
+
                     return true;
 
                 case R.id.home:
