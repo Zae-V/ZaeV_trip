@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.ZaeV_trip.Schedule.TravelActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BookmarkActivity extends AppCompatActivity {
@@ -34,8 +35,8 @@ public class BookmarkActivity extends AppCompatActivity {
 
                     return true;
 
-                case R.id.schedule:
-                    startActivity(new Intent(getApplicationContext(), ScheduleActivity.class));
+                case R.id.travel:
+                    startActivity(new Intent(getApplicationContext(), TravelActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
 

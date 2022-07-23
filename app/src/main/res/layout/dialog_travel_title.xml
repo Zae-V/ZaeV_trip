@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="여행 제목"
+        android:textSize="20dp"
+        android:gravity="bottom"
+        android:fontFamily="@font/notosans_bold"
+        android:textColor="#2e2e2e"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="여행 테마에 맞는 이름을 작성해주세요."
+        android:textSize="15dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp">
+
+    </TextView>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="여행 제목"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp">
+
+    </EditText>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="취소"
+            android:textColor="#2e2e2e"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/white">
+        </Button>
+
+        <Button
+            android:id="@+id/titleOKBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="확인"
+            android:textColor="#2e2e2e"
+            android:backgroundTint="@color/white">
+        </Button>
+
+    </LinearLayout>
+
+</LinearLayout>

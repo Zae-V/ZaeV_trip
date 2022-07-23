@@ -5,10 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.ZaeV_trip.MainActivity;
-import com.example.ZaeV_trip.R;
-import com.example.ZaeV_trip.BookmarkActivity;
-import com.example.ZaeV_trip.ScheduleActivity;
+
+import com.example.ZaeV_trip.Schedule.TravelActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SearchActivity extends AppCompatActivity {
@@ -36,8 +34,8 @@ public class SearchActivity extends AppCompatActivity {
                     overridePendingTransition(0, 0);
                     return true;
 
-                case R.id.schedule:
-                    startActivity(new Intent(getApplicationContext(), ScheduleActivity.class));
+                case R.id.travel:
+                    startActivity(new Intent(getApplicationContext(), TravelActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
 
