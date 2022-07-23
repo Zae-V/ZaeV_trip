@@ -1,11 +1,13 @@
 package com.example.ZaeV_trip.Intro;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.Sign.SignActivity;
 
 public class IntroActivity extends AppCompatActivity {
     private static final String TAG = "IntroActivity";
@@ -74,5 +77,25 @@ public class IntroActivity extends AppCompatActivity {
             }
         });
         introText.startAnimation(fadeIn);
+
+        kakaoJoinBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                if (UserApiClient.getInstance().isKakaoTalkLoginAvailable(IntroActivity.this)) {
+//                    UserApiClient.getInstance().loginWithKakaoTalk(IntroActivity.this, callback);
+//                } else {
+//                    UserApiClient.getInstance().loginWithKakaoAccount(IntroActivity.this, callback);
+//                }
+
+            }
+        });
+
+        joinBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(IntroActivity.this, SignActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

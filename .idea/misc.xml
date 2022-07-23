@@ -23,6 +23,8 @@
         <entry key="app/src/main/res/layout/activity_intro.xml" value="0.18614130434782608" />
         <entry key="app/src/main/res/layout/activity_sign.xml" value="0.184375" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.18614130434782608" />
+        <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.3466339111328125" />
+        <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.21557971014492755" />
         <entry key="app/src/main/res/layout/fragment_sing_in.xml" value="0.16510416666666666" />
       </map>
     </option>
