@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_gradient">
+
+    <TextView
+        android:id="@+id/introText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="20dp"
+        android:background="#00000000"
+        android:fontFamily="@font/notosans_bold"
+        android:text="제로웨이스트,\n비건을 위한\n맞춤 여행을\n떠나볼까요?"
+        android:textColor="#FFFFFF"
+        android:autoSizeTextType="uniform"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintDimensionRatio="1.5"
+        />
+
+    <ImageView
+        android:id="@+id/introImg"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginRight="50dp"
+        android:alpha="0.5"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/introText"
+        app:layout_constraintBottom_toTopOf="@+id/kakaoJoinBtn"/>
+
+    <android.widget.Button
+        android:id="@+id/kakaoJoinBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/round_button"
+        android:backgroundTint="#FEE500"
+        android:drawableStart="@drawable/kakao_loginbtn"
+        android:fontFamily="@font/notosans_bold"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="카카오로 시작하기"
+        android:textColor="#E6000000"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/introImg"
+        app:layout_constraintVertical_bias="0.6"/>
+
+    <android.widget.Button
+        android:id="@+id/joinBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/round_button"
+        android:backgroundTint="#FFFFFF"
+        android:drawableStart="@drawable/joinbtn"
+        android:fontFamily="@font/notosans_bold"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="이메일로 시작하기"
+        android:textColor="#E6000000"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/kakaoJoinBtn"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="7dp"
+        android:fontFamily="@font/nanumsquare"
+        android:gravity="center_horizontal|top"
+        android:lineSpacingExtra="4sp"
+        android:text="제비의 여행"
+        android:textColor="#FFFFFF"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:autoSizeTextType="uniform"
+        app:layout_constraintDimensionRatio="15" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="72dp"
+        android:fontFamily="@font/nanumsquare"
+        android:gravity="center_horizontal|top"
+        android:text="in Seoul"
+        android:textColor="#781F1F1F"
+        android:textSize="16dp"
+        android:translationY="-1.23sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_weight="1"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
