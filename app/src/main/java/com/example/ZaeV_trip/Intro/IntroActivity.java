@@ -1,4 +1,4 @@
-package com.example.ZaeV_trip.activity;
+package com.example.ZaeV_trip.Intro;
 
 import android.graphics.Color;
 import android.os.Bundle;

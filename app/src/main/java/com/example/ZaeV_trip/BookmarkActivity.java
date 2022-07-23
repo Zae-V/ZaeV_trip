@@ -1,11 +1,10 @@
-package com.example.ZaeV_trip.activity;
+package com.example.ZaeV_trip;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.ZaeV_trip.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BookmarkActivity extends AppCompatActivity {

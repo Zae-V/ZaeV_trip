@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ZaeV_trip"
         tools:targetApi="31">
-        <activity android:name=".activity.SplashActivity"
+        <activity android:name=".Intro.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,20 +25,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.ZaeV_trip.activity.BookmarkActivity"
+            android:name="com.example.ZaeV_trip.BookmarkActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.ZaeV_trip.activity.ScheduleActivity"
+            android:name="com.example.ZaeV_trip.ScheduleActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.ZaeV_trip.activity.SearchActivity"
+            android:name="com.example.ZaeV_trip.SearchActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.ZaeV_trip.activity.MainActivity"
+            android:name="com.example.ZaeV_trip.MainActivity"
             android:exported="true">
         </activity>
         <activity
-            android:name=".activity.IntroActivity"
+            android:name=".Intro.IntroActivity"
             android:exported="true">
         </activity>
     </application>

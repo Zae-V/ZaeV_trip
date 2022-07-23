@@ -1,4 +1,4 @@
-package com.example.ZaeV_trip.activity;
+package com.example.ZaeV_trip;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.captaindroid.tvg.Tvg;
 import com.example.ZaeV_trip.util.MySharedPreferences;
-import com.example.ZaeV_trip.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
