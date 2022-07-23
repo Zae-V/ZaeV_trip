@@ -1,6 +1,8 @@
 package com.example.ZaeV_trip.Schedule;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -49,7 +51,12 @@ public class TravelActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                // fab 버튼 누르면 이동
+                // fab 버튼 누르면 calendar fragment 이동
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                CalendarFragment calendarFragment = new CalendarFragment();
+                fragmentTransaction.add(R.id.container_travel, calendarFragment);
+                fragmentTransaction.commit();
             }
         });
 
@@ -69,7 +76,6 @@ public class TravelActivity extends AppCompatActivity {
         touchHelper.attachToRecyclerView(scheduleRecyclerView);
 
 
-
         //Adapter에 데이터 추가
         TravelItem item1 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행1");
         TravelItem item2 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행2");
@@ -80,7 +86,6 @@ public class TravelActivity extends AppCompatActivity {
         TravelItem item7 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행7");
         TravelItem item8 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행8");
         TravelItem item9 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행9");
-
 
 
         listAdapter.addItem(item1);
@@ -100,7 +105,7 @@ public class TravelActivity extends AppCompatActivity {
                 TravelItem item = listAdapter.getItem(position);
                 Toast.makeText(getApplicationContext(),"아이템 선택 " + item.getName(),
                         Toast.LENGTH_SHORT).show();
-                // 액티비티->프래그먼트 전환
+                // 액티비티-> schedule fragment 전환
             }
 
         });

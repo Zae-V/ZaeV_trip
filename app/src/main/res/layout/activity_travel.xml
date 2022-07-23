@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/container_bookmark"
-    tools:context="Schedule/TravelActivity"
+    android:id="@+id/container_travel"
     android:background="#FFFFFF">
 
     <TextView
