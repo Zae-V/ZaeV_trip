@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,6 +30,8 @@ public class TravelActivity extends AppCompatActivity {
     RecyclerView scheduleRecyclerView;
     TravelListAdapter listAdapter;
     ArrayList<TravelItem> items = new ArrayList<>();
+    BottomNavigationView bottomNavigationView;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class TravelActivity extends AppCompatActivity {
         setContentView(R.layout.activity_travel);
 
         //Initialize And Assign Variable
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         //Set Home Selected
         bottomNavigationView.setSelectedItemId(R.id.travel);
@@ -45,9 +48,8 @@ public class TravelActivity extends AppCompatActivity {
         TravelViewModel TravelViewModel =
                 new ViewModelProvider(this).get(TravelViewModel.class);
 
-
         // fab 버튼
-        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
+        fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -57,6 +59,8 @@ public class TravelActivity extends AppCompatActivity {
                 CalendarFragment calendarFragment = new CalendarFragment();
                 fragmentTransaction.add(R.id.container_travel, calendarFragment);
                 fragmentTransaction.commit();
+                bottomNavigationView.setVisibility(View.GONE);
+                fab.setVisibility(View.GONE);
             }
         });
 
@@ -75,7 +79,6 @@ public class TravelActivity extends AppCompatActivity {
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(scheduleRecyclerView);
 
-
         //Adapter에 데이터 추가
         TravelItem item1 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행1");
         TravelItem item2 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행2");
@@ -87,7 +90,6 @@ public class TravelActivity extends AppCompatActivity {
         TravelItem item8 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행8");
         TravelItem item9 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행9");
 
-
         listAdapter.addItem(item1);
         listAdapter.addItem(item2);
         listAdapter.addItem(item3);
@@ -97,7 +99,6 @@ public class TravelActivity extends AppCompatActivity {
         listAdapter.addItem(item7);
         listAdapter.addItem(item8);
         listAdapter.addItem(item9);
-
 
         listAdapter.setOnItemClickListener(new OnTravelItemClickListener() {
             @Override
@@ -134,4 +135,36 @@ public class TravelActivity extends AppCompatActivity {
             return false;
         });
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("TAG!", "onStop()");
+        // 작동안됨
+        bottomNavigationView.setVisibility(View.GONE);
+    }
+
+    // 연결된 fragment 끼리 전환
+    public void changeFragment(int index){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        switch (index) {
+            case 1:
+                SetScheduleFragment setScheduleFragment = new SetScheduleFragment();
+                transaction.add(R.id.container_travel, setScheduleFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+                bottomNavigationView.setVisibility(View.GONE);
+                fab.setVisibility(View.GONE);
+                break;
+            case 2:
+                AddScheduleFragment addScheduleFragment = new AddScheduleFragment();
+                transaction.add(R.id.container_travel, addScheduleFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+                bottomNavigationView.setVisibility(View.GONE);
+                fab.setVisibility(View.GONE);
+                break;
+        }
+    }
+
 }

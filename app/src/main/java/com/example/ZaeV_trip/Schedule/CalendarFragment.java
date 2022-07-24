@@ -74,7 +74,8 @@ public class CalendarFragment extends Fragment{
                         endDateTextView.setText(dateString1 + "\n" + dateString2);
 
                         // fragment -> setSchedule fragment 이동
-
+                        TravelActivity activity = (TravelActivity) getActivity();
+                        activity.changeFragment(1);
                     }
                 });
             }
