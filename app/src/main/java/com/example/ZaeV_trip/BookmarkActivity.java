@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.ZaeV_trip.Schedule.TravelActivity;
+import com.example.ZaeV_trip.Search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BookmarkActivity extends AppCompatActivity {
