@@ -15,8 +15,8 @@
         android:title="Bookmark"
         android:icon="@drawable/ic_bookmark"/>
     <item
-        android:id="@+id/schedule"
-        android:title="Schedule"
+        android:id="@+id/travel"
+        android:title="Travel"
         android:icon="@drawable/ic_date_range"/>
 
 </menu>

@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.captaindroid.tvg.Tvg;
+import com.example.ZaeV_trip.Schedule.TravelActivity;
+import com.example.ZaeV_trip.Search.SearchActivity;
 import com.example.ZaeV_trip.util.MySharedPreferences;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -70,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
                     overridePendingTransition(0, 0);
                     return true;
 
-                case R.id.schedule:
-                    startActivity(new Intent(getApplicationContext(), ScheduleActivity.class));
+                case R.id.travel:
+                    startActivity(new Intent(getApplicationContext(), TravelActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
 

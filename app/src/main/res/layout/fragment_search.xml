@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    >
+
+    <LinearLayout
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:gravity="center_horizontal|center_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        >
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search"
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@drawable/profile_rounded_shape"
+            android:elevation="3dp"
+            android:orientation="horizontal"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            app:queryHint="검색어를 입력하세요"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerBtn"
+            app:searchIcon="@drawable/ic_search" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/recentBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar"
+        android:paddingHorizontal="20dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="최근 검색지역"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <GridView
+            android:id="@+id/recentVisit"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:horizontalSpacing="7dp"
+            android:numColumns="4"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/currentPosition"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:text="현재 위치"
+            android:textStyle="bold"
+            android:elevation="4dp"
+            android:textColor="@color/black"
+            android:layout_gravity="right"
+            android:background="@drawable/rectangle_gray"
+            />
+
+    </LinearLayout>
+
+
+    <GridView
+        android:id="@+id/allList"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_marginTop="20dp"
+        android:horizontalSpacing="7dp"
+        android:verticalSpacing="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recentBar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:numColumns="4"/>
+
+    <ImageView
+        android:id="@+id/back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginBottom="50dp"
+        />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
