@@ -60,7 +60,8 @@ public class ProfileActivity extends AppCompatActivity {
         modifyProfileTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                activity.changeFragment(2);
+                Intent intent = new Intent(ProfileActivity.this, ModifyActivity.class);
+                startActivity(intent);
             }
         });
 
