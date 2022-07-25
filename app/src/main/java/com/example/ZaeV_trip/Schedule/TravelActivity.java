@@ -150,19 +150,15 @@ public class TravelActivity extends AppCompatActivity {
         switch (index) {
             case 1:
                 SetScheduleFragment setScheduleFragment = new SetScheduleFragment();
-                transaction.add(R.id.container_travel, setScheduleFragment);
+                transaction.replace(R.id.container_travel, setScheduleFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-                bottomNavigationView.setVisibility(View.GONE);
-                fab.setVisibility(View.GONE);
                 break;
             case 2:
                 AddScheduleFragment addScheduleFragment = new AddScheduleFragment();
-                transaction.add(R.id.container_travel, addScheduleFragment);
+                transaction.replace(R.id.container_travel, addScheduleFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-                bottomNavigationView.setVisibility(View.GONE);
-                fab.setVisibility(View.GONE);
                 break;
         }
     }
