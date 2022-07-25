@@ -11,15 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Search.Adapter.CityAdapter;
 import com.example.ZaeV_trip.Search.Adapter.VisitedAdapter;
+import com.example.ZaeV_trip.util.SharedViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

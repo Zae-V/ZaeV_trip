@@ -1,4 +1,4 @@
-package com.example.ZaeV_trip.Search;
+package com.example.ZaeV_trip.util;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -31,6 +31,11 @@ public final class SharedViewModel extends ViewModel {
         if(visitedCities.size() > 3){
             visitedCities.remove(3);
         }
-        visitedCities.add(0,city);
+        if(!visitedCities.contains(city)){
+            visitedCities.add(0,city);
+        }else{
+            visitedCities.remove(city);
+            visitedCities.add(0,city);
+        }
     }
 }
