@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.ZaeV_trip.BookmarkActivity"
+            android:name="com.example.ZaeV_trip.Bookmark.BookmarkActivity"
             android:exported="false" />
         <activity
             android:name="com.example.ZaeV_trip.Schedule.TravelActivity"

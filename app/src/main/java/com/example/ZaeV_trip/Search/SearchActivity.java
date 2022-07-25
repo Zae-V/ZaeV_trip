@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.Button;
 
 
-import com.example.ZaeV_trip.BookmarkActivity;
+import com.example.ZaeV_trip.Bookmark.BookmarkActivity;
 import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Schedule.TravelActivity;

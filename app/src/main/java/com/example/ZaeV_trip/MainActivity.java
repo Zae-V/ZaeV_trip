@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.captaindroid.tvg.Tvg;
+import com.example.ZaeV_trip.Bookmark.BookmarkActivity;
 import com.example.ZaeV_trip.Profile.ProfileActivity;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
 import com.example.ZaeV_trip.Search.SearchActivity;
