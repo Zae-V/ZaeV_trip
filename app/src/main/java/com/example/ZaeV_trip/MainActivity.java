@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.captaindroid.tvg.Tvg;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
+import com.example.ZaeV_trip.Search.SearchActivity;
 import com.example.ZaeV_trip.util.MySharedPreferences;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
