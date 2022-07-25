@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.captaindroid.tvg.Tvg;
+import com.example.ZaeV_trip.Profile.ProfileActivity;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
 import com.example.ZaeV_trip.Search.SearchActivity;
 import com.example.ZaeV_trip.util.MySharedPreferences;
@@ -30,11 +31,10 @@ public class MainActivity extends AppCompatActivity {
         userProfileImage = MySharedPreferences.getUserProfileImage(getApplicationContext());
 
         TextView titleTextView = findViewById(R.id.titleText);
-        Tvg.change(titleTextView, Color.parseColor("#6C92F4"),  Color.parseColor("#41E884"));
-
         titleText = userName + "님" + "\n여행을 떠나볼까요?";
         titleTextView.setText(titleText);
 
+        Tvg.change(titleTextView, Color.parseColor("#6C92F4"),  Color.parseColor("#41E884"));
 
         CircleImageView userProfileImageView = findViewById(R.id.profileImageView);
 
@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
         userProfileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                activity.changeFragment(1);
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                overridePendingTransition(0, 0);
             }
         });
 
