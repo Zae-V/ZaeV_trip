@@ -60,6 +60,10 @@
             android:name=".Sign.SignActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".Profile.ProfileActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>
