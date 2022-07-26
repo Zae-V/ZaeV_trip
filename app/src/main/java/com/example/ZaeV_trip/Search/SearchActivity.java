@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -22,13 +23,13 @@ import com.example.ZaeV_trip.util.SharedViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SearchActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
         Button spinnerBtn = findViewById(R.id.spinnerBtn);
+
 
         final Observer<String> selectObserver = new Observer<String>() {
             @Override
@@ -46,7 +47,9 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View v){
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.search_container,new SearchFragment()).commit();
+                fragmentTransaction.replace(R.id.search_container,new SearchFragment());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 
@@ -138,4 +141,5 @@ public class SearchActivity extends AppCompatActivity {
             return false;
         });
     }
+
 }
