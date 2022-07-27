@@ -10,12 +10,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 
 import com.example.ZaeV_trip.Bookmark.BookmarkActivity;
+import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
@@ -60,54 +60,17 @@ public class SearchActivity extends AppCompatActivity {
                 searchBar.setIconified(false);
             }
         });
-//
-//        Button spotBtn = findViewById(R.id.spotBtn);
-//        spotBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(this, PlaceActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        Button ploggingBtn = findViewById(R.id.ploggingBtn);
-//        ploggingBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(this, PloggingActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        Button restaurantBtn = findViewById(R.id.restaurantBtn);
-//        restaurantBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                Intent intent = new Intent(getActivity(), VeganActivity.class);
-////                startActivity(intent);
-//                activity.changeFragment(8);
-//                //Go to Category_Restaurant
-//
-//            }
-//        });
-//
-//        // 임시로 연결 설정, 후에 수정사항
-//        Button allBtn = findViewById(R.id.allBtn);
-//        allBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                activity.changeFragment(9);
-//            }
-//        });
-////
-//        // 임시로 연결 설정, 후에 수정사항
-//        Button shopBtn = findViewById(R.id.shopBtn);
-//        shopBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //activity.changeFragment();
-//            }
-//        });
+
+        Button cafeBtn = findViewById(R.id.cafeBtn);
+        cafeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SearchActivity.this, CafeActivity.class);
+                intent.putExtra("local",spinnerBtn.getText());
+                startActivity(intent);
+
+            }
+        });
 
 
         //Initialize And Assign Variable
