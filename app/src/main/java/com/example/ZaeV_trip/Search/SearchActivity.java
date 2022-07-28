@@ -18,6 +18,7 @@ import com.example.ZaeV_trip.Bookmark.BookmarkActivity;
 import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.Reusable.ReusableActivity;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
 import com.example.ZaeV_trip.util.SharedViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -66,6 +67,17 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SearchActivity.this, CafeActivity.class);
+                intent.putExtra("local",spinnerBtn.getText());
+                startActivity(intent);
+
+            }
+        });
+
+        Button reuseBtn = findViewById(R.id.reuseBtn);
+        reuseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SearchActivity.this, ReusableActivity.class);
                 intent.putExtra("local",spinnerBtn.getText());
                 startActivity(intent);
 
