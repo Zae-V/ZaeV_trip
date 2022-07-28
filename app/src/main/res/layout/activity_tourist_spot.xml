@@ -61,7 +61,7 @@
     </LinearLayout>
 
     <GridView
-        android:id="@+id/cafeList"
+        android:id="@+id/touristSpotList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"

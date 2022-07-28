@@ -19,7 +19,7 @@ import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
-import com.example.ZaeV_trip.TouristAttraction.TouristAttractionActivity;
+import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
 import com.example.ZaeV_trip.util.SharedViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -77,7 +77,8 @@ public class SearchActivity extends AppCompatActivity {
         spotBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SearchActivity.this, TouristAttractionActivity.class);
+                Intent intent = new Intent(SearchActivity.this, TouristSpotActivity.class);
+                intent.putExtra("local",spinnerBtn.getText());
                 startActivity(intent);
 
             }

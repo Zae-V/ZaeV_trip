@@ -73,7 +73,7 @@
             android:name=".Cafe.CafeActivity"
             android:exported="true" />
         <activity
-            android:name=".TouristAttraction.TouristAttractionActivity"
+            android:name=".TouristSpot.TouristSpotActivity"
             android:exported="true" />
     </application>
 
