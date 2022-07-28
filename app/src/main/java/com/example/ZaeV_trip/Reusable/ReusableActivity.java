@@ -3,6 +3,8 @@ package com.example.ZaeV_trip.Reusable;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,8 +25,8 @@ public class ReusableActivity extends AppCompatActivity {
 
     ArrayList<String> names = new ArrayList<String>();
     ArrayList<String> locations = new ArrayList<String>();
-    ArrayList<String> x = new ArrayList<String>();
-    ArrayList<String> y = new ArrayList<String >();
+    ArrayList<String> x = new ArrayList<String>(); //경도
+    ArrayList<String> y = new ArrayList<String >(); //위도
     ArrayList<String> reasons = new ArrayList<String>();
 
     String local;
@@ -60,6 +62,10 @@ public class ReusableActivity extends AppCompatActivity {
         ReusableAdapter adapter = new ReusableAdapter(ReusableActivity.this ,filteredName, filteredLocation, filteredReasons);
         gridView.setAdapter(adapter);
 
+        TextView textView = findViewById(R.id.cafeText);
+        textView.setText("다회용기");
+        ImageView imageView = findViewById(R.id.cafeImageView);
+        imageView.setImageResource(R.drawable.reuse_img);
     }
 
     public void readExcel() {

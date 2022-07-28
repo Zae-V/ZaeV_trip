@@ -44,11 +44,13 @@
             android:gravity="center_vertical"
             >
             <ImageView
+                android:id="@+id/cafeImageView"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:src="@drawable/cafe_img"
                 />
             <TextView
+                android:id="@+id/cafeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="카페"
