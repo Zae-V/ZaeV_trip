@@ -24,6 +24,10 @@ public class TouristSpotAdapter extends BaseAdapter {
 
     }
 
+    public TouristSpotAdapter(TouristSpotActivity touristSpotActivity) {
+        this.context = touristSpotActivity;
+    }
+
     public TouristSpotAdapter(TouristSpotActivity touristSpotActivity, TouristSpot touristSpots) {
         this.context = touristSpotActivity;
         this.touristSpots.add(touristSpots);
@@ -69,8 +73,8 @@ public class TouristSpotAdapter extends BaseAdapter {
                 .into(imageView);
 
         nameview.setText(touristSpots.get(i).title);
-        locview.setText(touristSpots.get(i).add1);
-        catview.setText(touristSpots.get(i).add2);
+        locview.setText(touristSpots.get(i).addr1);
+        catview.setText(touristSpots.get(i).addr2);
 
         return view;
     }
