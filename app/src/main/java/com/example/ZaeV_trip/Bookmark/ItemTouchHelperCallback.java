@@ -8,8 +8,8 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private OnBookmarkItemClickListener listener;
 
-    public ItemTouchHelperCallback(OnBookmarkItemClickListener listener) {
-        this.listener = listener;
+    public ItemTouchHelperCallback(BookmarkListAdapter listener) {
+        this.listener = (OnBookmarkItemClickListener) listener;
     }
 
 

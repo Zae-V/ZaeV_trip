@@ -48,6 +48,8 @@ public class TravelActivity extends AppCompatActivity {
         TravelViewModel TravelViewModel =
                 new ViewModelProvider(this).get(TravelViewModel.class);
 
+
+
         // fab 버튼
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener(){
@@ -58,11 +60,14 @@ public class TravelActivity extends AppCompatActivity {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 CalendarFragment calendarFragment = new CalendarFragment();
                 fragmentTransaction.add(R.id.container_travel, calendarFragment);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-                bottomNavigationView.setVisibility(View.GONE);
-                fab.setVisibility(View.GONE);
+
             }
         });
+
+        bottomNavigationView.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.VISIBLE);
 
         //recyclerview
         scheduleRecyclerView = (RecyclerView) findViewById(R.id.travelRecycler);
@@ -107,6 +112,13 @@ public class TravelActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"아이템 선택 " + item.getName(),
                         Toast.LENGTH_SHORT).show();
                 // 액티비티-> schedule fragment 전환
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                ScheduleFragment scheduleFragment = new ScheduleFragment();
+                fragmentTransaction.replace(R.id.container_travel, scheduleFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                bottomNavigationView.setVisibility(View.GONE);
             }
 
         });
@@ -142,6 +154,14 @@ public class TravelActivity extends AppCompatActivity {
         Log.d("TAG!", "onStop()");
         // 작동안됨
         bottomNavigationView.setVisibility(View.GONE);
+        fab.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNavigationView.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.VISIBLE);
     }
 
     // 연결된 fragment 끼리 전환
@@ -160,6 +180,11 @@ public class TravelActivity extends AppCompatActivity {
                 transaction.addToBackStack(null);
                 transaction.commit();
                 break;
+            case 3:
+                ScheduleFragment scheduleFragment = new ScheduleFragment();
+                transaction.replace(R.id.container_travel, scheduleFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
         }
     }
 

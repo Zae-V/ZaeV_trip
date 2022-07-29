@@ -57,8 +57,8 @@ public class AddScheduleFragment extends Fragment {
         selectFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TravelActivity activity = new TravelActivity();
-                activity.changeFragment(2);
+                TravelActivity activity = (TravelActivity) getActivity();
+                activity.changeFragment(3);
             }
         });
         // spinner

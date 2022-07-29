@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class BookmarkActivity extends AppCompatActivity {
 
     RecyclerView bookmarkRecyclerView;
-    BookmarkListAdapter bookmarkListAdapter;
+    BookmarkListAdapter listAdapter;
     //ItemTouchHelperCallback helper;
     ArrayList<BookmarkItem> items = new ArrayList<>();
 
@@ -32,15 +32,15 @@ public class BookmarkActivity extends AppCompatActivity {
 
         bookmarkRecyclerView = (RecyclerView) findViewById(R.id.bookmarkRecycler);
         bookmarkRecyclerView.setHasFixedSize(true);
-        bookmarkListAdapter = new BookmarkListAdapter(items);
+        listAdapter = new BookmarkListAdapter(items);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         bookmarkRecyclerView.setLayoutManager(mLayoutManager);
         bookmarkRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        bookmarkRecyclerView.setAdapter(bookmarkListAdapter);
+        bookmarkRecyclerView.setAdapter(listAdapter);
 
         //ItemTouchHelper 생성
-        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback((OnBookmarkItemClickListener) bookmarkListAdapter);
+        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(listAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(bookmarkRecyclerView);
 
@@ -58,16 +58,16 @@ public class BookmarkActivity extends AppCompatActivity {
         BookmarkItem bookmarkItem9 = new BookmarkItem(R.drawable.vegan_burger,"초록숲상점","서울시 강서구 개화동", "AM 9:00 ~ PM 10:00");
         BookmarkItem bookmarkItem10 = new BookmarkItem(R.drawable.vegan_burger,"제로웨이스트샵","서울시 강서구 개화동", "AM 9:00 ~ PM 10:00");
 
-        bookmarkListAdapter.addItem(bookmarkItem1);
-        bookmarkListAdapter.addItem(bookmarkItem2);
-        bookmarkListAdapter.addItem(bookmarkItem3);
-        bookmarkListAdapter.addItem(bookmarkItem4);
-        bookmarkListAdapter.addItem(bookmarkItem5);
-        bookmarkListAdapter.addItem(bookmarkItem6);
-        bookmarkListAdapter.addItem(bookmarkItem7);
-        bookmarkListAdapter.addItem(bookmarkItem8);
-        bookmarkListAdapter.addItem(bookmarkItem9);
-        bookmarkListAdapter.addItem(bookmarkItem10);
+        listAdapter.addItem(bookmarkItem1);
+        listAdapter.addItem(bookmarkItem2);
+        listAdapter.addItem(bookmarkItem3);
+        listAdapter.addItem(bookmarkItem4);
+        listAdapter.addItem(bookmarkItem5);
+        listAdapter.addItem(bookmarkItem6);
+        listAdapter.addItem(bookmarkItem7);
+        listAdapter.addItem(bookmarkItem8);
+        listAdapter.addItem(bookmarkItem9);
+        listAdapter.addItem(bookmarkItem10);
 
         //내비게이션 바 코드
         //Initialize And Assign Variable

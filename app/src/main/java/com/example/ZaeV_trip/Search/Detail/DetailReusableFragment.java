@@ -4,11 +4,19 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ZaeV_trip.R;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,6 +59,7 @@ public class DetailReusableFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("test", "프래그먼트  생성");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -63,4 +72,6 @@ public class DetailReusableFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_detail_reusable, container, false);
     }
+
+
 }

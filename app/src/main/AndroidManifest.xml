@@ -5,6 +5,8 @@
     <!-- 인터넷 사용 권한 설정 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:name=".util.GlobalApplication"
@@ -17,10 +19,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ZaeV_trip"
         android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="31" >
-        <activity
-            android:name=".CafeActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".Cafe.CafeActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".Intro.SplashActivity"
             android:exported="true" >
@@ -57,6 +60,9 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="384534ab54f6c87dab118c43e14471d6" />
         <activity
             android:name=".Intro.IntroActivity"
             android:exported="true" />
@@ -74,6 +80,10 @@
             android:exported="true" />
         <activity
             android:name=".TouristSpot.TouristSpotActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".Reusable.ReusableActivity"
             android:exported="true" />
     </application>
 

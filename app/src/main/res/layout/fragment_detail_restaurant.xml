@@ -135,15 +135,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <View
+<!--            <View-->
+<!--                android:id="@+id/mapView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="150dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:background="@color/text_gradient_end"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/summary_content_txt"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"/>-->
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mapView"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/text_gradient_end"
                 app:layout_constraintTop_toBottomOf="@id/summary_content_txt"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
             <TextView
                 android:id="@+id/menu_txt"
