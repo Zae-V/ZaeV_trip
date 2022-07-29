@@ -10,9 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
-import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
 import com.example.ZaeV_trip.model.Plogging;
-import com.example.ZaeV_trip.model.TouristSpot;
 
 import java.util.ArrayList;
 

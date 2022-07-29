@@ -1,18 +1,13 @@
 package com.example.ZaeV_trip.Plogging;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.GridView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ZaeV_trip.R;
-import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
-import com.example.ZaeV_trip.TouristSpot.TouristSpotAdapter;
 import com.example.ZaeV_trip.model.Plogging;
-import com.example.ZaeV_trip.model.TouristSpot;
-
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -77,7 +72,7 @@ public class PloggingActivity extends AppCompatActivity {
             URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
             InputStream is= url.openStream(); //url위치로 입력스트림 연결
 
-            XmlPullParserFactory factory= XmlPullParserFactory.newInstance();//xml파싱을 위한
+            XmlPullParserFactory factory= XmlPullParserFactory.newInstance(); //xml파싱을 위한
             XmlPullParser xpp= factory.newPullParser();
             xpp.setInput( new InputStreamReader(is, "UTF-8") ); //inputstream 으로부터 xml 입력받기
 
