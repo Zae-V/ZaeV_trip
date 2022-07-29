@@ -81,9 +81,11 @@
         <activity
             android:name=".TouristSpot.TouristSpotActivity"
             android:exported="true" />
-
         <activity
             android:name=".Reusable.ReusableActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Plogging.PloggingActivity"
             android:exported="true" />
     </application>
 
