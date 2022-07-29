@@ -79,6 +79,10 @@
             android:name=".Cafe.CafeActivity"
             android:exported="true" />
         <activity
+            android:name=".TouristSpot.TouristSpotActivity"
+            android:exported="true" />
+
+        <activity
             android:name=".Reusable.ReusableActivity"
             android:exported="true" />
     </application>
