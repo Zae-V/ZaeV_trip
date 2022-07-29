@@ -1,13 +1,13 @@
 package com.example.ZaeV_trip.model;
 
 public class TouristSpot {
-    public String addr1;
-    public String addr2;
-    public String firstImage;
-    public String firstImage2;
-    public Double mapX;
-    public Double mapY;
-    public String title;
+    private String addr1;
+    private String addr2;
+    private String firstImage;
+    private String firstImage2;
+    private Double mapX;
+    private Double mapY;
+    private String title;
 
     public TouristSpot(String addr1, String addr2, String firstImage, String firstImage2, Double mapX, Double mapY, String title) {
         this.addr1 = addr1;

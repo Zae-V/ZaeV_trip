@@ -66,15 +66,15 @@ public class TouristSpotAdapter extends BaseAdapter {
         TextView catview = view.findViewById(R.id.list_category);
 
         Glide.with(view)
-                .load(touristSpots.get(i).firstImage)
+                .load(touristSpots.get(i).getFirstImage())
                 .placeholder(R.drawable.default_profile_image)
                 .error(R.drawable.default_profile_image)
                 .fallback(R.drawable.default_profile_image)
                 .into(imageView);
 
-        nameview.setText(touristSpots.get(i).title);
-        locview.setText(touristSpots.get(i).addr1);
-        catview.setText(touristSpots.get(i).addr2);
+        nameview.setText(touristSpots.get(i).getTitle());
+        locview.setText(touristSpots.get(i).getAddr1());
+        catview.setText(touristSpots.get(i).getAddr2());
 
         return view;
     }
