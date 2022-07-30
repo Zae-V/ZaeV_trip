@@ -1,4 +1,4 @@
-package com.example.ZaeV_trip.TouristSpot;
+package com.example.ZaeV_trip.Plogging;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,41 +10,41 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
-import com.example.ZaeV_trip.model.TouristSpot;
+import com.example.ZaeV_trip.model.Plogging;
 
 import java.util.ArrayList;
 
-public class TouristSpotAdapter extends BaseAdapter {
+public class PloggingAdapter extends BaseAdapter {
     Context context;
     LayoutInflater inflater;
 
-    ArrayList<TouristSpot> touristSpots = new ArrayList<>();
+    ArrayList<Plogging> ploggings = new ArrayList<>();
 
-    public TouristSpotAdapter() {
+    public PloggingAdapter() {
 
     }
 
-    public TouristSpotAdapter(TouristSpotActivity touristSpotActivity) {
-        this.context = touristSpotActivity;
+    public PloggingAdapter(PloggingActivity ploggingActivity) {
+        this.context = ploggingActivity;
     }
 
-    public TouristSpotAdapter(TouristSpotActivity touristSpotActivity, TouristSpot touristSpots) {
-        this.context = touristSpotActivity;
-        this.touristSpots.add(touristSpots);
+    public PloggingAdapter(PloggingActivity ploggingActivity, Plogging plogging) {
+        this.context = ploggingActivity;
+        this.ploggings.add(plogging);
     }
 
-    public void addItem(TouristSpot item){
-        touristSpots.add(item);
+    public void addItem(Plogging item) {
+        ploggings.add(item);
     }
 
     @Override
     public int getCount() {
-        return touristSpots.size();
+        return ploggings.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return touristSpots.get(i);
+        return ploggings.get(i);
     }
 
     @Override
@@ -54,10 +54,10 @@ public class TouristSpotAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        if(inflater == null)
+        if (inflater == null)
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if(view == null){
-            view = inflater.inflate(R.layout.item_tourist_spot,null);
+        if (view == null) {
+            view = inflater.inflate(R.layout.item_plogging, null);
         }
 
         ImageView imageView = view.findViewById(R.id.list_image);
@@ -66,15 +66,15 @@ public class TouristSpotAdapter extends BaseAdapter {
         TextView catview = view.findViewById(R.id.list_category);
 
         Glide.with(view)
-                .load(touristSpots.get(i).getFirstImage())
+                .load(R.drawable.default_profile_image)
                 .placeholder(R.drawable.default_profile_image)
                 .error(R.drawable.default_profile_image)
                 .fallback(R.drawable.default_profile_image)
                 .into(imageView);
 
-        nameview.setText(touristSpots.get(i).getTitle());
-        locview.setText(touristSpots.get(i).getAddr1());
-        catview.setText(touristSpots.get(i).getAddr2());
+        nameview.setText(ploggings.get(i).getCrsKorNm());
+        locview.setText(ploggings.get(i).getSigun());
+        catview.setText("난이도: " + Integer.toString(ploggings.get(i).getCrsLevel()));
 
         return view;
     }

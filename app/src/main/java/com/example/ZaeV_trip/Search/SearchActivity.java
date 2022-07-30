@@ -17,6 +17,7 @@ import android.widget.Button;
 import com.example.ZaeV_trip.Bookmark.BookmarkActivity;
 import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.MainActivity;
+import com.example.ZaeV_trip.Plogging.PloggingActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Reusable.ReusableActivity;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
@@ -90,6 +91,18 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SearchActivity.this, ReusableActivity.class);
+
+                intent.putExtra("local",spinnerBtn.getText());
+                startActivity(intent);
+
+            }
+        });
+
+        Button ploggingBtn = findViewById(R.id.ploggingBtn);
+        ploggingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SearchActivity.this, PloggingActivity.class);
 
                 intent.putExtra("local",spinnerBtn.getText());
                 startActivity(intent);
