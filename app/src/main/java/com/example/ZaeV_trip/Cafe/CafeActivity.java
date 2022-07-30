@@ -1,6 +1,8 @@
 package com.example.ZaeV_trip.Cafe;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.Search.SearchFragment;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -93,7 +96,23 @@ public class CafeActivity extends AppCompatActivity {
                         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Log.e("name", filteredName.get(i));
+                                Bundle bundle = new Bundle();
+                                bundle.putString("name", filteredName.get(i));
+                                bundle.putString("location",filteredLocation.get(i));
+                                bundle.putString("category", filteredCategory.get(i));
+                                bundle.putString("x", filteredX.get(i));
+                                bundle.putString("y",filteredY.get(i));
+                                bundle.putString("number",filteredNumber.get(i));
+                                bundle.putString("menu",filteredMenu.get(i));
+
+                                CafeFragment cafeFragment = new CafeFragment();
+                                cafeFragment.setArguments(bundle);
+
+                                FragmentManager fragmentManager = getSupportFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.container_cafe, cafeFragment);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
 
                             }
                         });
