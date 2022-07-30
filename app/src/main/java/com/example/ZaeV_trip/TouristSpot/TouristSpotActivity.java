@@ -29,6 +29,12 @@ public class TouristSpotActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourist_spot);
 
+        Bundle extras = getIntent().getExtras();
+
+        if(extras!=null){
+            local = extras.getString("local");
+        }
+
         gridView = findViewById(R.id.touristSpotList);
 
         new Thread(new Runnable() {
@@ -41,7 +47,14 @@ public class TouristSpotActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         for(int i = 0; i< touristSpots.size(); i++) {
-                            adapter.addItem(touristSpots.get(i));
+                            if (local.equals("전체 지역") || local.equals("전체")) {
+                                adapter.addItem(touristSpots.get(i));
+                            }
+                            else {
+                                if (touristSpots.get(i).getAddr1().contains(local)) {
+                                    adapter.addItem(touristSpots.get(i));
+                                }
+                            }
                             gridView.setAdapter(adapter);
                         }
                     }
@@ -50,6 +63,7 @@ public class TouristSpotActivity extends AppCompatActivity {
         }).start();
 
     }
+
     public ArrayList<TouristSpot> getXmlData(){
         ArrayList<TouristSpot> touristSpots = new ArrayList<TouristSpot>();
 //        String str= edit.getText().toString();//EditText에 작성된 Text얻어오기
