@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.ZaeV_trip.R;
@@ -22,6 +24,10 @@ public class CafeActivity extends AppCompatActivity {
     ArrayList<String> names = new ArrayList<String>();
     ArrayList<String> locations = new ArrayList<String>();
     ArrayList<String> categories = new ArrayList<String>();
+    ArrayList<String> x = new ArrayList<String>();
+    ArrayList<String> y = new ArrayList<String>();
+    ArrayList<String> numbers = new ArrayList<String>();
+    ArrayList<String> menus = new ArrayList<String>();
 
     String local;
 
@@ -47,6 +53,11 @@ public class CafeActivity extends AppCompatActivity {
                         ArrayList<String> filteredName = new ArrayList<String>();
                         ArrayList<String> filteredLocation = new ArrayList<String>();
                         ArrayList<String> filteredCategory = new ArrayList<String>();
+                        ArrayList<String> filteredX = new ArrayList<String>();
+                        ArrayList<String> filteredY = new ArrayList<String>();
+                        ArrayList<String> filteredNumber = new ArrayList<String>();
+                        ArrayList<String> filteredMenu = new ArrayList<String>();
+
 
                         for(int i = 0; i< names.size();i++){
 
@@ -55,12 +66,20 @@ public class CafeActivity extends AppCompatActivity {
                                     filteredName.add(names.get(i));
                                     filteredLocation.add(locations.get(i));
                                     filteredCategory.add(categories.get(i));
+                                    filteredX.add(x.get(i));
+                                    filteredY.add(y.get(i));
+                                    filteredNumber.add(numbers.get(i));
+                                    filteredMenu.add(menus.get(i));
                                 }
                                 else{
                                     if(locations.get(i).split(" ")[1].equals(local)){
                                         filteredName.add(names.get(i));
                                         filteredLocation.add(locations.get(i));
                                         filteredCategory.add(categories.get(i));
+                                        filteredX.add(x.get(i));
+                                        filteredY.add(y.get(i));
+                                        filteredNumber.add(numbers.get(i));
+                                        filteredMenu.add(menus.get(i));
                                     }
                                 }
                             }
@@ -69,8 +88,17 @@ public class CafeActivity extends AppCompatActivity {
                         CafeAdapter cafeAdapter = new CafeAdapter(CafeActivity.this ,filteredName, filteredLocation, filteredCategory);
 
 
-                        Log.e("view", String.valueOf(gridView));
                         gridView.setAdapter(cafeAdapter);
+
+                        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Log.e("name", filteredName.get(i));
+
+                            }
+                        });
+
+
 
                     }
                 });
@@ -119,6 +147,7 @@ public class CafeActivity extends AppCompatActivity {
                         else if(tag.equals("UPSO_NM")){
                             xpp.next();
                             String name = xpp.getText();
+
                             names.add(name);
                         }
                         else if(tag.equals("RDN_CODE_NM")){
@@ -130,6 +159,26 @@ public class CafeActivity extends AppCompatActivity {
                             xpp.next();
                             String category = xpp.getText();
                             categories.add(category);
+                        }
+                        else if(tag.equals("Y_DNTS")){
+                            xpp.next();
+                            String y_dnts = xpp.getText();
+                            y.add(y_dnts);
+                        }
+                        else if(tag.equals("X_CNTS")){
+                            xpp.next();
+                            String x_cnts = xpp.getText();
+                            x.add(x_cnts);
+                        }
+                        else if(tag.equals("FOOD_MENU")){
+                            xpp.next();
+                            String menu = xpp.getText();
+                            menus.add(menu);
+                        }
+                        else if(tag.equals("TEL_NO")){
+                            xpp.next();
+                            String number = xpp.getText();
+                            numbers.add(number);
                         }
 
                         break;
