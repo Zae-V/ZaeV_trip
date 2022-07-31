@@ -1,13 +1,13 @@
 package com.example.ZaeV_trip.model;
 
-public class TouristSpot {
+public class Festival {
     private String addr1;
-    private String addr2;
     private String firstImage;
-    private String firstImage2;
     private Double mapX;
     private Double mapY;
     private String title;
+    private String startDate;
+    private String endDate;
 
     public String getAddr1() {
         return addr1;
@@ -17,28 +17,12 @@ public class TouristSpot {
         this.addr1 = addr1;
     }
 
-    public String getAddr2() {
-        return addr2;
-    }
-
-    public void setAddr2(String addr2) {
-        this.addr2 = addr2;
-    }
-
     public String getFirstImage() {
         return firstImage;
     }
 
     public void setFirstImage(String firstImage) {
         this.firstImage = firstImage;
-    }
-
-    public String getFirstImage2() {
-        return firstImage2;
-    }
-
-    public void setFirstImage2(String firstImage2) {
-        this.firstImage2 = firstImage2;
     }
 
     public Double getMapX() {
@@ -65,13 +49,29 @@ public class TouristSpot {
         this.title = title;
     }
 
-    public TouristSpot(String addr1, String addr2, String firstImage, String firstImage2, Double mapX, Double mapY, String title) {
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public Festival(String addr1, String addr2, String firstImage, String firstImage2, Double mapX, Double mapY, String title, String startDate, String endDate) {
         this.addr1 = addr1;
-        this.addr2 = addr2;
         this.firstImage = firstImage;
-        this.firstImage2 = firstImage2;
         this.mapX = mapX;
         this.mapY = mapY;
         this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 }

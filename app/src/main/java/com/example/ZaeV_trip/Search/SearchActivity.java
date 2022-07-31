@@ -16,6 +16,7 @@ import android.widget.Button;
 
 import com.example.ZaeV_trip.Bookmark.BookmarkActivity;
 import com.example.ZaeV_trip.Cafe.CafeActivity;
+import com.example.ZaeV_trip.Festival.FestivalActivity;
 import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.Plogging.PloggingActivity;
 import com.example.ZaeV_trip.R;
@@ -107,6 +108,16 @@ public class SearchActivity extends AppCompatActivity {
                 intent.putExtra("local",spinnerBtn.getText());
                 startActivity(intent);
 
+            }
+        });
+
+        Button festivalBtn = findViewById(R.id.allBtn);
+        festivalBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SearchActivity.this, FestivalActivity.class);
+                intent.putExtra("local", spinnerBtn.getText());
+                startActivity(intent);
             }
         });
 
