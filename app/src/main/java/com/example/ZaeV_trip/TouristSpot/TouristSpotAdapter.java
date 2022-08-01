@@ -28,9 +28,9 @@ public class TouristSpotAdapter extends BaseAdapter {
         this.context = touristSpotActivity;
     }
 
-    public TouristSpotAdapter(TouristSpotActivity touristSpotActivity, TouristSpot touristSpots) {
+    public TouristSpotAdapter(TouristSpotActivity touristSpotActivity, ArrayList<TouristSpot> touristSpots) {
         this.context = touristSpotActivity;
-        this.touristSpots.add(touristSpots);
+        this.touristSpots = touristSpots;
     }
 
     public void addItem(TouristSpot item){

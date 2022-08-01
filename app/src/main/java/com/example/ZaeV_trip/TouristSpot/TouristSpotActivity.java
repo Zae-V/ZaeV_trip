@@ -48,26 +48,28 @@ public class TouristSpotActivity extends AppCompatActivity {
                 touristSpots = getXmlData();
 
                 runOnUiThread(new Runnable() {
-                    TouristSpotAdapter adapter = new TouristSpotAdapter(TouristSpotActivity.this);
                     @Override
                     public void run() {
+                        ArrayList<TouristSpot> filteredTouristSpot = new ArrayList<TouristSpot>();
+
                         for(int i = 0; i< touristSpots.size(); i++) {
                             if (local.equals("전체 지역") || local.equals("전체")) {
-                                adapter.addItem(touristSpots.get(i));
+                                filteredTouristSpot.add(touristSpots.get(i));
                             }
                             else {
                                 if (touristSpots.get(i).getAddr1().contains(local)) {
-                                    adapter.addItem(touristSpots.get(i));
+                                    filteredTouristSpot.add(touristSpots.get(i));
                                 }
                             }
+                            TouristSpotAdapter adapter = new TouristSpotAdapter(TouristSpotActivity.this, filteredTouristSpot);
                             gridView.setAdapter(adapter);
                             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("name", touristSpots.get(i).getTitle());
-                                    bundle.putString("contentID", touristSpots.get(i).getContentID());
-                                    bundle.putString("location", touristSpots.get(i).getAddr1());
+                                    bundle.putString("name", filteredTouristSpot.get(i).getTitle());
+                                    bundle.putString("contentID", filteredTouristSpot.get(i).getContentID());
+                                    bundle.putString("location", filteredTouristSpot.get(i).getAddr1());
 
                                     TouristSpotFragment touristSpotFragment = new TouristSpotFragment();
                                     touristSpotFragment.setArguments(bundle);
