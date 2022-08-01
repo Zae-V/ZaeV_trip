@@ -47,6 +47,7 @@ public class FestivalFragment extends Fragment {
         TextView list_category = v.findViewById(R.id.list_date);
 
         ImageView image = v.findViewById(R.id.list_image);
+        ImageView poster = v.findViewById(R.id.content_img);
 
 
         list_name.setText(name);
@@ -60,6 +61,13 @@ public class FestivalFragment extends Fragment {
                 .error(R.drawable.default_profile_image)
                 .fallback(R.drawable.default_profile_image)
                 .into(image);
+
+        Glide.with(v)
+                .load(img)
+                .placeholder(R.drawable.default_profile_image)
+                .error(R.drawable.default_profile_image)
+                .fallback(R.drawable.default_profile_image)
+                .into(poster);
 
 
         //Map View

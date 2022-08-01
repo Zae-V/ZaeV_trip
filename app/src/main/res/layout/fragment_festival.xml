@@ -125,26 +125,29 @@
             <ImageView
                 android:id="@+id/content_img"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/summary_title_txt"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+
+                />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mapView"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
+                android:layout_marginTop="25dp"
                 app:layout_constraintTop_toBottomOf="@id/content_img"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
+
             <View
                 android:id="@+id/blankView"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
