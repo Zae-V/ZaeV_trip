@@ -2,9 +2,13 @@ package com.example.ZaeV_trip.Festival;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Festival.FestivalAdapter;
@@ -28,6 +32,11 @@ public class FestivalActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            local = extras.getString("local");
+        }
         setContentView(R.layout.activity_festival);
 
         gridView = findViewById(R.id.FestivalList);
@@ -37,15 +46,46 @@ public class FestivalActivity extends AppCompatActivity {
             public void run() {
                 festivals = getXmlData();
 
+
                 runOnUiThread(new Runnable() {
-                    FestivalAdapter adapter = new FestivalAdapter(FestivalActivity.this);
                     @Override
                     public void run() {
+                        FestivalAdapter adapter = new FestivalAdapter(FestivalActivity.this);
                         for(int i = 0; i< festivals.size(); i++) {
-                            adapter.addItem(festivals.get(i));
-                            gridView.setAdapter(adapter);
+                            if(local.equals("전체 지역") || local.equals("전체")){
+                                adapter.addItem(festivals.get(i));
+                            }else{
+                                if(festivals.get(i).getAddr1().split(" ").length > 1 && festivals.get(i).getAddr1().split(" ")[1].equals(local)){
+                                    adapter.addItem(festivals.get(i));
+                                }
+                            }
                         }
+                        gridView.setAdapter(adapter);
+                        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("name", festivals.get(i).getTitle());
+                                bundle.putString("location", festivals.get(i).getAddr1());
+                                bundle.putString("startDate", festivals.get(i).getStartDate());
+                                bundle.putString("endDate",festivals.get(i).getEndDate());
+                                bundle.putString("img",festivals.get(i).getFirstImage());
+                                bundle.putString("x", festivals.get(i).getMapX());
+                                bundle.putString("y",festivals.get(i).getMapY());
+
+                                FestivalFragment festivalFragment = new FestivalFragment();
+                                festivalFragment.setArguments(bundle);
+
+                                FragmentManager fragmentManager = getSupportFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.container_festival, festivalFragment);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
+
+                            }
+                        });
                     }
+
                 });
             }
         }).start();
@@ -110,8 +150,6 @@ public class FestivalActivity extends AppCompatActivity {
                                     "",
                                     "",
                                     "",
-                                    0.0,
-                                    0.0,
                                     "",
                                     "",
                                     ""
@@ -124,10 +162,10 @@ public class FestivalActivity extends AppCompatActivity {
                             festival.setAddr1(xpp.nextText());
                         }
                         else if(tag.equals("mapx")){
-                            festival.setMapX(Double.parseDouble(xpp.nextText()));
+                            festival.setMapX(xpp.nextText());
                         }
                         else if(tag.equals("mapy")){
-                            festival.setMapY(Double.parseDouble(xpp.nextText()));
+                            festival.setMapY(xpp.nextText());
                         }
                         else if(tag.equals("firstimage")){
                             festival.setFirstImage(xpp.nextText());

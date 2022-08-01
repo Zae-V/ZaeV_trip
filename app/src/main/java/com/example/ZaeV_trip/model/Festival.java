@@ -3,8 +3,8 @@ package com.example.ZaeV_trip.model;
 public class Festival {
     private String addr1;
     private String firstImage;
-    private Double mapX;
-    private Double mapY;
+    private String mapX;
+    private String mapY;
     private String title;
     private String startDate;
     private String endDate;
@@ -25,19 +25,19 @@ public class Festival {
         this.firstImage = firstImage;
     }
 
-    public Double getMapX() {
+    public String getMapX() {
         return mapX;
     }
 
-    public void setMapX(Double mapX) {
+    public void setMapX(String mapX) {
         this.mapX = mapX;
     }
 
-    public Double getMapY() {
+    public String getMapY() {
         return mapY;
     }
 
-    public void setMapY(Double mapY) {
+    public void setMapY(String mapY) {
         this.mapY = mapY;
     }
 
@@ -65,7 +65,7 @@ public class Festival {
         this.endDate = endDate;
     }
 
-    public Festival(String addr1, String addr2, String firstImage, String firstImage2, Double mapX, Double mapY, String title, String startDate, String endDate) {
+    public Festival(String addr1, String firstImage, String mapX, String mapY, String title, String startDate, String endDate) {
         this.addr1 = addr1;
         this.firstImage = firstImage;
         this.mapX = mapX;
