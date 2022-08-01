@@ -1,6 +1,7 @@
 package com.example.ZaeV_trip.model;
 
 public class TouristSpot {
+    private String contentID;
     private String addr1;
     private String addr2;
     private String firstImage;
@@ -65,7 +66,16 @@ public class TouristSpot {
         this.title = title;
     }
 
-    public TouristSpot(String addr1, String addr2, String firstImage, String firstImage2, String mapX, String mapY, String title) {
+    public String getContentID() {
+        return contentID;
+    }
+
+    public void setContentID(String contentID) {
+        this.contentID = contentID;
+    }
+
+    public TouristSpot(String contentID, String addr1, String addr2, String firstImage, String firstImage2, String mapX, String mapY, String title) {
+        this.contentID = contentID;
         this.addr1 = addr1;
         this.addr2 = addr2;
         this.firstImage = firstImage;

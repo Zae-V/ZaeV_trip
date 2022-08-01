@@ -66,10 +66,8 @@ public class TouristSpotActivity extends AppCompatActivity {
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     Bundle bundle = new Bundle();
                                     bundle.putString("name", touristSpots.get(i).getTitle());
+                                    bundle.putString("contentID", touristSpots.get(i).getContentID());
                                     bundle.putString("location", touristSpots.get(i).getAddr1());
-                                    bundle.putString("img",touristSpots.get(i).getFirstImage());
-                                    bundle.putString("x", touristSpots.get(i).getMapX());
-                                    bundle.putString("y",touristSpots.get(i).getMapY());
 
                                     TouristSpotFragment touristSpotFragment = new TouristSpotFragment();
                                     touristSpotFragment.setArguments(bundle);
@@ -161,6 +159,7 @@ public class TouristSpotActivity extends AppCompatActivity {
                                     "",
                                     "",
                                     "",
+                                    "",
                                     ""
                             );
                         }
@@ -184,6 +183,9 @@ public class TouristSpotActivity extends AppCompatActivity {
                         }
                         else if(tag.equals("firstimage2")){
                             touristSpot.setFirstImage2(xpp.nextText());
+                        }
+                        else if(tag.equals("contentid")){
+                            touristSpot.setContentID(xpp.nextText());
                         }
                         break;
 
