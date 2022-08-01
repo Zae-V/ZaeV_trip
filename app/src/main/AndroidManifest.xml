@@ -21,12 +21,8 @@
         android:theme="@style/Theme.ZaeV_trip"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".LodgingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".FestivalActivity"
-            android:exported="false" /> <!-- <activity -->
+
+        <!-- <activity -->
         <!-- android:name=".Cafe.CafeActivity" -->
         <!-- android:exported="false" /> -->
         <activity
@@ -97,6 +93,9 @@
         <activity
             android:name=".Festival.FestivalActivity"
             android:exported="true" />
+        <activity
+            android:name=".Lodging.LodgingActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
