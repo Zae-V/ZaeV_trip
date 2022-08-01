@@ -1,12 +1,13 @@
 package com.example.ZaeV_trip.model;
 
 public class TouristSpot {
+    private String contentID;
     private String addr1;
     private String addr2;
     private String firstImage;
     private String firstImage2;
-    private Double mapX;
-    private Double mapY;
+    private String mapX;
+    private String mapY;
     private String title;
 
     public String getAddr1() {
@@ -41,19 +42,19 @@ public class TouristSpot {
         this.firstImage2 = firstImage2;
     }
 
-    public Double getMapX() {
+    public String getMapX() {
         return mapX;
     }
 
-    public void setMapX(Double mapX) {
+    public void setMapX(String mapX) {
         this.mapX = mapX;
     }
 
-    public Double getMapY() {
+    public String getMapY() {
         return mapY;
     }
 
-    public void setMapY(Double mapY) {
+    public void setMapY(String mapY) {
         this.mapY = mapY;
     }
 
@@ -65,7 +66,16 @@ public class TouristSpot {
         this.title = title;
     }
 
-    public TouristSpot(String addr1, String addr2, String firstImage, String firstImage2, Double mapX, Double mapY, String title) {
+    public String getContentID() {
+        return contentID;
+    }
+
+    public void setContentID(String contentID) {
+        this.contentID = contentID;
+    }
+
+    public TouristSpot(String contentID, String addr1, String addr2, String firstImage, String firstImage2, String mapX, String mapY, String title) {
+        this.contentID = contentID;
         this.addr1 = addr1;
         this.addr2 = addr2;
         this.firstImage = firstImage;

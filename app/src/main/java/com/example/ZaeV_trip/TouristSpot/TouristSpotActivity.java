@@ -2,10 +2,15 @@ package com.example.ZaeV_trip.TouristSpot;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.ZaeV_trip.Festival.FestivalFragment;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.TouristSpot;
 
@@ -56,6 +61,25 @@ public class TouristSpotActivity extends AppCompatActivity {
                                 }
                             }
                             gridView.setAdapter(adapter);
+                            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("name", touristSpots.get(i).getTitle());
+                                    bundle.putString("contentID", touristSpots.get(i).getContentID());
+                                    bundle.putString("location", touristSpots.get(i).getAddr1());
+
+                                    TouristSpotFragment touristSpotFragment = new TouristSpotFragment();
+                                    touristSpotFragment.setArguments(bundle);
+
+                                    FragmentManager fragmentManager = getSupportFragmentManager();
+                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                    fragmentTransaction.replace(R.id.container_tourist_spot, touristSpotFragment);
+                                    fragmentTransaction.addToBackStack(null);
+                                    fragmentTransaction.commit();
+
+                                }
+                            });
                         }
                     }
                 });
@@ -133,8 +157,9 @@ public class TouristSpotActivity extends AppCompatActivity {
                                     "",
                                     "",
                                     "",
-                                    0.0,
-                                    0.0,
+                                    "",
+                                    "",
+                                    "",
                                     ""
                             );
                         }
@@ -148,16 +173,19 @@ public class TouristSpotActivity extends AppCompatActivity {
                             touristSpot.setAddr2(xpp.nextText());
                         }
                         else if(tag.equals("mapx")){
-                            touristSpot.setMapX(Double.parseDouble(xpp.nextText()));
+                            touristSpot.setMapX(xpp.nextText());
                         }
                         else if(tag.equals("mapy")){
-                            touristSpot.setMapY(Double.parseDouble(xpp.nextText()));
+                            touristSpot.setMapY(xpp.nextText());
                         }
                         else if(tag.equals("firstimage")){
                             touristSpot.setFirstImage(xpp.nextText());
                         }
                         else if(tag.equals("firstimage2")){
                             touristSpot.setFirstImage2(xpp.nextText());
+                        }
+                        else if(tag.equals("contentid")){
+                            touristSpot.setContentID(xpp.nextText());
                         }
                         break;
 
