@@ -2,10 +2,15 @@ package com.example.ZaeV_trip.TouristSpot;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.ZaeV_trip.Festival.FestivalFragment;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.TouristSpot;
 
@@ -56,6 +61,27 @@ public class TouristSpotActivity extends AppCompatActivity {
                                 }
                             }
                             gridView.setAdapter(adapter);
+                            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("name", touristSpots.get(i).getTitle());
+                                    bundle.putString("location", touristSpots.get(i).getAddr1());
+                                    bundle.putString("img",touristSpots.get(i).getFirstImage());
+                                    bundle.putString("x", touristSpots.get(i).getMapX());
+                                    bundle.putString("y",touristSpots.get(i).getMapY());
+
+                                    TouristSpotFragment touristSpotFragment = new TouristSpotFragment();
+                                    touristSpotFragment.setArguments(bundle);
+
+                                    FragmentManager fragmentManager = getSupportFragmentManager();
+                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                    fragmentTransaction.replace(R.id.container_tourist_spot, touristSpotFragment);
+                                    fragmentTransaction.addToBackStack(null);
+                                    fragmentTransaction.commit();
+
+                                }
+                            });
                         }
                     }
                 });
