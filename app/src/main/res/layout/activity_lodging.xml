@@ -58,7 +58,7 @@
             android:id="@+id/cafeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="축제"
+            android:text="숙소"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="25dp"
             android:textSize="20sp"
