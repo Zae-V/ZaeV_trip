@@ -133,8 +133,8 @@ public class TouristSpotActivity extends AppCompatActivity {
                                     "",
                                     "",
                                     "",
-                                    0.0,
-                                    0.0,
+                                    "",
+                                    "",
                                     ""
                             );
                         }
@@ -148,10 +148,10 @@ public class TouristSpotActivity extends AppCompatActivity {
                             touristSpot.setAddr2(xpp.nextText());
                         }
                         else if(tag.equals("mapx")){
-                            touristSpot.setMapX(Double.parseDouble(xpp.nextText()));
+                            touristSpot.setMapX(xpp.nextText());
                         }
                         else if(tag.equals("mapy")){
-                            touristSpot.setMapY(Double.parseDouble(xpp.nextText()));
+                            touristSpot.setMapY(xpp.nextText());
                         }
                         else if(tag.equals("firstimage")){
                             touristSpot.setFirstImage(xpp.nextText());
