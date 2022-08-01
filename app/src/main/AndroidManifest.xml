@@ -22,9 +22,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".FestivalActivity"
+            android:name=".LodgingActivity"
             android:exported="false" />
-        <!-- <activity -->
+        <activity
+            android:name=".FestivalActivity"
+            android:exported="false" /> <!-- <activity -->
         <!-- android:name=".Cafe.CafeActivity" -->
         <!-- android:exported="false" /> -->
         <activity
@@ -94,7 +96,7 @@
             android:exported="true" />
         <activity
             android:name=".Festival.FestivalActivity"
-            android:exported="true"/>
+            android:exported="true" />
     </application>
 
 </manifest>
