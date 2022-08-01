@@ -59,6 +59,8 @@ public class LodgingActivity extends AppCompatActivity {
                             }
                         }
                         gridView.setAdapter(adapter);
+
+                        //항목 클릭했을 때 상세화면 띄우기
                         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -96,7 +98,7 @@ public class LodgingActivity extends AppCompatActivity {
         String query="%EC%A0%84%EB%A0%A5%EB%A1%9C";
         String key = getString(R.string.portal_key);
         String address = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/";
-        String listType = "searchLodging";
+        String listType = "searchStay";
         String pageNo = "1";
         String numOfRows = "1000";
         String mobileApp = "ZaeVTour";
