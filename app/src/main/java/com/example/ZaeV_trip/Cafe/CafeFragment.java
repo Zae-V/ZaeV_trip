@@ -72,8 +72,6 @@ public class CafeFragment extends Fragment {
         ViewGroup mapViewContainer = (ViewGroup) v.findViewById(R.id.mapView);
         mapViewContainer.addView(mapView);
 
-        //menu adapter
-
 
         return v;
     }
