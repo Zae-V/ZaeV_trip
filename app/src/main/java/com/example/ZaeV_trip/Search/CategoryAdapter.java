@@ -1,4 +1,4 @@
-package com.example.ZaeV_trip.Search.Category;
+package com.example.ZaeV_trip.Search;
 
 import android.view.LayoutInflater;
 import android.view.View;

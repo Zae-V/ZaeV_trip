@@ -1,4 +1,4 @@
-package com.example.ZaeV_trip.Search.Category;
+package com.example.ZaeV_trip.Search;
 
 public class RestaurantCategoryItem {
     int image;

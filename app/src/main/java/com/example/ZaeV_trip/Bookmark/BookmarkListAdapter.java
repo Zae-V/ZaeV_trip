@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ZaeV_trip.R;
-import com.example.ZaeV_trip.Search.Category.CategoryAdapter;
-import com.example.ZaeV_trip.Search.Category.RestaurantCategoryItem;
+import com.example.ZaeV_trip.Search.CategoryAdapter;
+import com.example.ZaeV_trip.Search.RestaurantCategoryItem;
 import com.example.ZaeV_trip.util.ItemTouchHelperListener;
 
 import java.util.ArrayList;
