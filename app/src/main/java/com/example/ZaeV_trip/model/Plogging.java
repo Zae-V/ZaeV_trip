@@ -1,10 +1,12 @@
 package com.example.ZaeV_trip.model;
 
-public class Plogging {
+import java.io.Serializable;
+
+public class Plogging implements Serializable {
     private String crsKorNm; // 코스명
-    private Double crsDstnc; // 코스 길이 (단위:km)
-    private Integer crsTotlRqrmHour; // 총 소요시간 (단위:분)
-    private Integer crsLevel; // 난이도 (1:하/2:중/3:상)
+    private String crsDstnc; // 코스 길이 (단위:km)
+    private String crsTotlRqrmHour; // 총 소요시간 (단위:분)
+    private String crsLevel; // 난이도 (1:하/2:중/3:상)
     private String crsContents; // 코스 설명
     private String crsSummary; // 코스 개요
     private String crsTourInfo; // 관광 포인트
@@ -14,7 +16,7 @@ public class Plogging {
 
     public Plogging() {};
 
-    public Plogging(String crsKorNm, Double crsDstnc, Integer crsTotlRqrmHour, Integer crsLevel, String crsContents, String crsSummary, String crsTourInfo, String travelerinfo, String sigun, String brdDiv) {
+    public Plogging(String crsKorNm, String crsDstnc, String crsTotlRqrmHour, String crsLevel, String crsContents, String crsSummary, String crsTourInfo, String travelerinfo, String sigun, String brdDiv) {
         this.crsKorNm = crsKorNm;
         this.crsDstnc = crsDstnc;
         this.crsTotlRqrmHour = crsTotlRqrmHour;
@@ -35,27 +37,27 @@ public class Plogging {
         this.crsKorNm = crsKorNm;
     }
 
-    public Double getCrsDstnc() {
+    public String getCrsDstnc() {
         return crsDstnc;
     }
 
-    public void setCrsDstnc(Double crsDstnc) {
+    public void setCrsDstnc(String crsDstnc) {
         this.crsDstnc = crsDstnc;
     }
 
-    public Integer getCrsTotlRqrmHour() {
+    public String getCrsTotlRqrmHour() {
         return crsTotlRqrmHour;
     }
 
-    public void setCrsTotlRqrmHour(Integer crsTotlRqrmHour) {
+    public void setCrsTotlRqrmHour(String crsTotlRqrmHour) {
         this.crsTotlRqrmHour = crsTotlRqrmHour;
     }
 
-    public Integer getCrsLevel() {
+    public String getCrsLevel() {
         return crsLevel;
     }
 
-    public void setCrsLevel(Integer crsLevel) {
+    public void setCrsLevel(String crsLevel) {
         this.crsLevel = crsLevel;
     }
 

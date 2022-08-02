@@ -1,19 +1,28 @@
 package com.example.ZaeV_trip.Plogging;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
+import com.example.ZaeV_trip.TouristSpot.TouristSpotAdapter;
+import com.example.ZaeV_trip.TouristSpot.TouristSpotFragment;
 import com.example.ZaeV_trip.model.Plogging;
+import com.example.ZaeV_trip.model.TouristSpot;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -28,6 +37,12 @@ public class PloggingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plogging);
 
+        Bundle extras = getIntent().getExtras();
+
+        if(extras!=null){
+            local = extras.getString("local");
+        }
+
         gridView = findViewById(R.id.ploggingList);
 
         new Thread(new Runnable() {
@@ -36,12 +51,38 @@ public class PloggingActivity extends AppCompatActivity {
                 ploggings = getXmlData();
 
                 runOnUiThread(new Runnable() {
-                    PloggingAdapter adapter = new PloggingAdapter(PloggingActivity.this);
+                    ArrayList<Plogging> filteredPlogging = new ArrayList<Plogging>();
+
                     @Override
                     public void run() {
                         for(int i = 0; i< ploggings.size(); i++) {
-                            adapter.addItem(ploggings.get(i));
+                            if (local.equals("전체 지역") || local.equals("전체")) {
+                                filteredPlogging.add(ploggings.get(i));
+                            }
+                            else {
+                                if (ploggings.get(i).getSigun().contains(local)) {
+                                    filteredPlogging.add(ploggings.get(i));
+                                }
+                            }
+                            PloggingAdapter adapter = new PloggingAdapter(PloggingActivity.this, filteredPlogging);
                             gridView.setAdapter(adapter);
+                            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("plogging", (Serializable) filteredPlogging.get(i));
+
+                                    PloggingFragment ploggingFragment = new PloggingFragment();
+                                    ploggingFragment.setArguments(bundle);
+
+                                    FragmentManager fragmentManager = getSupportFragmentManager();
+                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                    fragmentTransaction.replace(R.id.container_plogging, ploggingFragment);
+                                    fragmentTransaction.addToBackStack(null);
+                                    fragmentTransaction.commit();
+
+                                }
+                            });
                         }
                     }
                 });
@@ -93,9 +134,9 @@ public class PloggingActivity extends AppCompatActivity {
                         if(tag.equals("item")) {
                             plogging = new Plogging(
                                     "",
-                                    0.0,
-                                    0,
-                                    0,
+                                    "",
+                                    "",
+                                    "",
                                     "",
                                     "",
                                     "",
@@ -108,19 +149,19 @@ public class PloggingActivity extends AppCompatActivity {
                             plogging.setCrsContents(xpp.nextText());
                         }
                         else if(tag.equals("crsDstnc")){
-                            plogging.setCrsDstnc(Double.parseDouble(xpp.nextText()));
+                            plogging.setCrsDstnc(xpp.nextText());
                         }
                         else if(tag.equals("crsKorNm")){
                             plogging.setCrsKorNm(xpp.nextText());
                         }
                         else if(tag.equals("crsLevel")){
-                            plogging.setCrsLevel(Integer.parseInt(xpp.nextText()));
+                            plogging.setCrsLevel(xpp.nextText());
                         }
                         else if(tag.equals("crsSummary")){
                             plogging.setCrsSummary(xpp.nextText());
                         }
                         else if(tag.equals("crsTotlRqrmHour")){
-                            plogging.setCrsTotlRqrmHour(Integer.parseInt(xpp.nextText()));
+                            plogging.setCrsTotlRqrmHour(xpp.nextText());
                         }
                         else if(tag.equals("crsTourInfo")){
                             plogging.setCrsTourInfo(xpp.nextText());
