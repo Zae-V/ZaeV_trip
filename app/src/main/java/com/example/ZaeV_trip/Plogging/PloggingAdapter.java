@@ -28,9 +28,9 @@ public class PloggingAdapter extends BaseAdapter {
         this.context = ploggingActivity;
     }
 
-    public PloggingAdapter(PloggingActivity ploggingActivity, Plogging plogging) {
+    public PloggingAdapter(PloggingActivity ploggingActivity, ArrayList<Plogging> ploggings) {
         this.context = ploggingActivity;
-        this.ploggings.add(plogging);
+        this.ploggings = ploggings;
     }
 
     public void addItem(Plogging item) {
@@ -74,7 +74,7 @@ public class PloggingAdapter extends BaseAdapter {
 
         nameview.setText(ploggings.get(i).getCrsKorNm());
         locview.setText(ploggings.get(i).getSigun());
-        catview.setText("난이도: " + Integer.toString(ploggings.get(i).getCrsLevel()));
+        catview.setText("난이도: " + ploggings.get(i).getCrsLevel());
 
         return view;
     }
