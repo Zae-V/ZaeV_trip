@@ -1,17 +1,17 @@
 package com.example.ZaeV_trip.Cafe;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.Filter;
 
 import com.example.ZaeV_trip.R;
-import com.example.ZaeV_trip.Search.SearchFragment;
 import com.example.ZaeV_trip.model.Cafe;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -23,14 +23,21 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class CafeActivity extends AppCompatActivity {
-    GridView gridView;
+    RecyclerView cafeList;
     ArrayList<Cafe> cafes = new ArrayList<>();
+    SearchView searchView;
 
     String local;
+    String keyword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_cafe);
+        cafeList = (RecyclerView) findViewById(R.id.cafeList);
+        searchView = findViewById(R.id.searchBar);
+
 
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
@@ -57,17 +64,35 @@ public class CafeActivity extends AppCompatActivity {
                                 else{
                                     if(cafes.get(i).getLocation().split(" ")[1].equals(local)){
                                         filterdList.add(cafes.get(i));
-//                                        cafeAdapter.addItem(cafes.get(i));
                                     }
                                 }
                             }
                         }
 
                         CafeAdapter cafeAdapter = new CafeAdapter(CafeActivity.this ,filterdList);
-                        gridView.setAdapter(cafeAdapter);
-                        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        cafeList.setLayoutManager(new LinearLayoutManager(CafeActivity.this, RecyclerView.VERTICAL,false));
+                        cafeList.setAdapter(cafeAdapter);
+
+                        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                             @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            public boolean onQueryTextSubmit(String query) {
+                                cafeAdapter.getFilter().filter(query);
+
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onQueryTextChange(String newText) {
+
+                                return false;
+                            }
+                        });
+
+
+
+                        cafeAdapter.setOnItemClickListener(new CafeAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View v, int i) {
                                 Bundle bundle = new Bundle();
                                 bundle.putString("id",filterdList.get(i).getId());
                                 bundle.putString("name", filterdList.get(i).getName());
@@ -86,11 +111,8 @@ public class CafeActivity extends AppCompatActivity {
                                 fragmentTransaction.replace(R.id.container_cafe, cafeFragment);
                                 fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commit();
-
                             }
                         });
-
-
 
                     }
                 });
@@ -99,8 +121,7 @@ public class CafeActivity extends AppCompatActivity {
         }).start();
 
 
-        setContentView(R.layout.activity_cafe);
-        gridView = (GridView) findViewById(R.id.cafeList);
+
 
     }
 
