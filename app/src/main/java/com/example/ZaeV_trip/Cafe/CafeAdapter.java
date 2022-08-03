@@ -1,10 +1,12 @@
 package com.example.ZaeV_trip.Cafe;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -57,9 +59,18 @@ public class CafeAdapter extends BaseAdapter{
         TextView locview = view.findViewById(R.id.list_location);
         TextView catview = view.findViewById(R.id.list_category);
 
+        ImageView bookmarkbtn = view.findViewById(R.id.bookmarkBtn);
+
         nameview.setText(name.get(i));
         locview.setText(location.get(i));
         catview.setText(category.get(i));
+
+        bookmarkbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bookmarkbtn.setActivated(!bookmarkbtn.isActivated());
+            }
+        });
 
         return view;
     }
