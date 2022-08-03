@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.model.Cafe;
 
 
 public class CafeAdapter extends BaseAdapter{
@@ -18,24 +19,29 @@ public class CafeAdapter extends BaseAdapter{
     Context context;
     LayoutInflater inflater;
 
-    ArrayList<String> name;
-    ArrayList<String> location;
-    ArrayList<String> category;
+    ArrayList<Cafe> cafes = new ArrayList<>();
+
 
     public CafeAdapter() {
 
     }
 
-    public CafeAdapter(CafeActivity cafeActivity, ArrayList<String> names, ArrayList<String> locations, ArrayList<String> categories) {
+    public CafeAdapter(CafeActivity cafeActivity){
         this.context = cafeActivity;
-        this.name = names;
-        this.location = locations;
-        this.category = categories;
+    }
+
+    public CafeAdapter(CafeActivity cafeActivity, ArrayList cafes) {
+        this.context = cafeActivity;
+        this.cafes = cafes;
+    }
+
+    public void addItem(Cafe item){
+        cafes.add(item);
     }
 
     @Override
     public int getCount() {
-        return name.size();
+        return cafes.size();
     }
 
     @Override
@@ -61,9 +67,9 @@ public class CafeAdapter extends BaseAdapter{
 
         ImageView bookmarkbtn = view.findViewById(R.id.bookmarkBtn);
 
-        nameview.setText(name.get(i));
-        locview.setText(location.get(i));
-        catview.setText(category.get(i));
+        nameview.setText(cafes.get(i).getName());
+        locview.setText(cafes.get(i).getLocation());
+        catview.setText(cafes.get(i).getCategory());
 
         bookmarkbtn.setOnClickListener(new View.OnClickListener() {
             @Override
