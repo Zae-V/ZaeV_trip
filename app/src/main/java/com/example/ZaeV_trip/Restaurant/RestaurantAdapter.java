@@ -156,8 +156,15 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                 public void onClick(View view) {
                     bookmarkbtn.setActivated(!bookmarkbtn.isActivated());
                     int pos = getAdapterPosition();
-                    writeBookmark(pos);
-                    Log.d("테스트",filtered.get(pos).getTitle());
+                    if (!bookmarkbtn.isActivated()){
+                        // 취소 동작
+                        deleteBookmark(pos);
+                    }
+                    else if(bookmarkbtn.isActivated()){
+                        // 선택 동작
+                        writeBookmark(pos);
+                    }
+
                 }
             });
 
@@ -172,11 +179,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                     }
                 }
             });
-
-
         }
-
-
     }
 
     private void writeBookmark(int position){
@@ -192,18 +195,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         info.put("image", filtered.get(position).getFirstImage());
         info.put("tel", filtered.get(position).getNumber());
 
-        String type = "식당";
-
-        String position_x = filtered.get(position).getMapX();
-        String position_y = filtered.get(position).getMapY();
-        String serialNumber = filtered.get(position).getContentID();
-        String image = filtered.get(position).getFirstImage();
-        String tel = filtered.get(position).getNumber();
-//        Restaurant br_info = new Restaurant(serialNumber, address, address, image, image, position_x, position_y, name, tel);
         String userId = user.getUid();
-        mDatabase.collection("BookmarkItem").document(userId).collection(filtered.get(position).getContentID()).add(info);
-
-
-
+        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getContentID()).set(info);
+    }
+    private void deleteBookmark(int position){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseFirestore.getInstance();
+        Map<String, Object> info = new HashMap<>();
+        String userId = user.getUid();
+        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getContentID()).delete();
     }
 }
