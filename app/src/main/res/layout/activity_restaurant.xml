@@ -19,7 +19,7 @@
         android:paddingTop="15dp">
 
         <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchBar"
+            android:id="@+id/restaurantSearchBar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="20dp"
@@ -32,20 +32,20 @@
             android:imeOptions="actionSearch"
             android:inputType="text"
             app:queryHint="검색어를 입력하세요"
-            app:layout_constraintBottom_toTopOf="@+id/touristSpotImageView"
+            app:layout_constraintBottom_toTopOf="@+id/restaurantImageView"
             app:searchIcon="@drawable/ic_search" />
 
         <ImageView
-            android:id="@+id/touristSpotImageView"
+            android:id="@+id/restaurantImageView"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="25dp"
             android:src="@drawable/restaurant_img"
-            app:layout_constraintTop_toBottomOf="@+id/searchBar"
-            app:layout_constraintStart_toStartOf="@+id/searchBar"
+            app:layout_constraintTop_toBottomOf="@+id/restaurantSearchBar"
+            app:layout_constraintStart_toStartOf="@+id/restaurantSearchBar"
             />
         <TextView
-            android:id="@+id/touristSpotText"
+            android:id="@+id/restaurantText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="식당"
@@ -53,14 +53,14 @@
             android:layout_marginLeft="25dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/searchBar"
-            app:layout_constraintStart_toStartOf="@id/touristSpotImageView"
+            app:layout_constraintTop_toBottomOf="@+id/restaurantSearchBar"
+            app:layout_constraintStart_toStartOf="@id/restaurantImageView"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <GridView
-        android:id="@+id/touristSpotList"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/restaurantList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
