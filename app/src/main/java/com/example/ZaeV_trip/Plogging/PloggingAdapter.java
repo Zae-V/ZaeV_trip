@@ -60,21 +60,13 @@ public class PloggingAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.item_plogging, null);
         }
 
-        ImageView imageView = view.findViewById(R.id.list_image);
-        TextView nameview = view.findViewById(R.id.list_name);
-        TextView locview = view.findViewById(R.id.list_location);
-        TextView catview = view.findViewById(R.id.list_category);
+        TextView plogging_name = view.findViewById(R.id.plogging_name);
+        TextView plogging_address = view.findViewById(R.id.plogging_address);
+        TextView plogging_level = view.findViewById(R.id.plogging_level);
 
-        Glide.with(view)
-                .load(R.drawable.default_profile_image)
-                .placeholder(R.drawable.default_profile_image)
-                .error(R.drawable.default_profile_image)
-                .fallback(R.drawable.default_profile_image)
-                .into(imageView);
-
-        nameview.setText(ploggings.get(i).getCrsKorNm());
-        locview.setText(ploggings.get(i).getSigun());
-        catview.setText("난이도: " + ploggings.get(i).getCrsLevel());
+        plogging_name.setText(ploggings.get(i).getCrsKorNm());
+        plogging_address.setText(ploggings.get(i).getSigun());
+        plogging_level.setText("난이도: " + ploggings.get(i).getCrsLevel());
 
         return view;
     }
