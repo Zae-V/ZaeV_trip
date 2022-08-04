@@ -21,6 +21,7 @@ import com.example.ZaeV_trip.Lodging.LodgingActivity;
 import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.Plogging.PloggingActivity;
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.Restaurant.RestaurantActivity;
 import com.example.ZaeV_trip.Reusable.ReusableActivity;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
 import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
@@ -127,6 +128,16 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SearchActivity.this, LodgingActivity.class);
+                intent.putExtra("local", spinnerBtn.getText());
+                startActivity(intent);
+            }
+        });
+
+        Button restaurantBtn = findViewById(R.id.restaurantBtn);
+        restaurantBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SearchActivity.this, RestaurantActivity.class);
                 intent.putExtra("local", spinnerBtn.getText());
                 startActivity(intent);
             }

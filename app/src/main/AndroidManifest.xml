@@ -96,6 +96,9 @@
         <activity
             android:name=".Lodging.LodgingActivity"
             android:exported="false" />
+        <activity
+            android:name=".Restaurant.RestaurantActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

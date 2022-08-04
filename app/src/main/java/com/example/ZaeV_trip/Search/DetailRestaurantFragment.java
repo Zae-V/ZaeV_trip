@@ -31,7 +31,7 @@ public class DetailRestaurantFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View v =  inflater.inflate(R.layout.fragment_detail_restaurant, container, false);
+        View v =  inflater.inflate(R.layout.fragment_restaurant, container, false);
 
         //recyclerview
         recyclerView = (RecyclerView) v.findViewById(R.id.detailRecyclerView_restaurant);
