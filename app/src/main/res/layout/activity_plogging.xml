@@ -19,7 +19,7 @@
         android:paddingTop="15dp">
 
         <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchBar"
+            android:id="@+id/ploggingSearchBar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="20dp"
@@ -40,9 +40,9 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="25dp"
-            android:src="@drawable/plogging_img"
-            app:layout_constraintTop_toBottomOf="@+id/searchBar"
-            app:layout_constraintStart_toStartOf="@+id/searchBar"
+            android:src="@drawable/spot_img"
+            app:layout_constraintTop_toBottomOf="@+id/ploggingSearchBar"
+            app:layout_constraintStart_toStartOf="@+id/ploggingSearchBar"
             />
         <TextView
             android:id="@+id/ploggingText"
@@ -53,13 +53,13 @@
             android:layout_marginLeft="25dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/searchBar"
+            app:layout_constraintTop_toBottomOf="@+id/ploggingSearchBar"
             app:layout_constraintStart_toStartOf="@id/ploggingImageView"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <GridView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ploggingList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
