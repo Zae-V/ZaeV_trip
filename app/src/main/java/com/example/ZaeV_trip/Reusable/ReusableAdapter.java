@@ -4,111 +4,192 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
-import com.example.ZaeV_trip.Schedule.TravelListAdapter;
+import com.example.ZaeV_trip.model.Restaurant;
+import com.example.ZaeV_trip.model.Reusable;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ReusableAdapter extends ArrayAdapter<ReusableItem> {
-    private static final int LAYOUT_RESOURCE_ID = R.layout.item_cafe;
-
+public class ReusableAdapter extends RecyclerView.Adapter<ReusableAdapter.ViewHolder> implements Filterable {
+    ReusableFilter filter = new ReusableFilter();
+    Context context;
     LayoutInflater inflater;
+    ArrayList<Reusable> reusables;
+    ArrayList<Reusable> filtered;
+    FirebaseFirestore mDatabase;
 
-    ArrayList<String> name;
-    ArrayList<String> location;
-    ArrayList<String> reason;
+    public ReusableAdapter() {
 
-    private Context mContext;
-    private List<ReusableItem> mItemList;
-    private ReusableActivity.ReusableItemClickListener reusableItemClickListener;
-
-    public ReusableAdapter(Context a_context, List<ReusableItem> a_itemList) {
-        super(a_context, LAYOUT_RESOURCE_ID, a_itemList);
-
-        mContext = a_context;
-        mItemList = a_itemList;
     }
 
-//    public ReusableAdapter(ReusableActivity reusableActivity, ArrayList<String> names, ArrayList<String> locations, ArrayList<String> reasons) {
-//        this.context = reusableActivity;
-//        this.name = names;
-//        this.location = locations;
-//        this.reason = reasons;
-//    }
-//
-//    @Override
-//    public int getCount() {
-//        return name.size();
-//    }
-//
-//    @Override
-//    public Object getItem(int i) {
-//        return null;
-//    }
-//
-//    @Override
-//    public long getItemId(int i) {
-//        return 0;
-//    }
+
+    public ReusableAdapter(Context context, ArrayList<Reusable> reusables) {
+        this.context = context;
+        this.reusables = new ArrayList<>(reusables);
+        this.filtered = reusables;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View view = inflater.inflate(R.layout.item_cafe, parent, false);
+        ViewHolder viewHolder = new ViewHolder(context, view);
+
+        return viewHolder;
+    }
 
     @Override
-    public View getView(int a_position, View view, ViewGroup viewGroup) {
-        ReusableViewHolder viewHolder;
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        if(view == null) {
-            view = LayoutInflater.from(mContext).inflate(LAYOUT_RESOURCE_ID, viewGroup, false);
+//        Glide.with(holder.itemView.getContext())
+//                .load(reusables.get(position).getFirstImage())
+//                .placeholder(R.drawable.default_profile_image)
+//                .error(R.drawable.default_profile_image)
+//                .fallback(R.drawable.default_profile_image)
+//                .into(holder.imgView);
+        holder.nameview.setText(filtered.get(position).getName());
+        holder.locview.setText(filtered.get(position).getLocation());
+        holder.catview.setText(filtered.get(position).getReason());
+    }
 
-            viewHolder = new ReusableViewHolder(view);
-            view.setTag(viewHolder);
-        }
-        else{
-            viewHolder = (ReusableViewHolder) view.getTag();
-        }
+    @Override
+    public int getItemCount() {
+        return filtered.size();
+    }
 
-        final ReusableItem reusableItem = mItemList.get(a_position);
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
 
-        viewHolder.listName.setText(reusableItem.getName());
-        viewHolder.listLocation.setText(reusableItem.getLocation());
-        viewHolder.listReason.setText(reusableItem.getReason());
+    private class ReusableFilter extends Filter {
 
-        viewHolder.listName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View a_view) {
-                if(reusableItemClickListener != null){
-                    reusableItemClickListener.onReusableItemClick(reusableItem.getName());
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            FilterResults results = new FilterResults();
+            ArrayList<Reusable> filteredList = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0) {
+                filteredList.addAll(reusables);
+            } else {
+                String filterString = charSequence.toString().toLowerCase();
+                String filterableString;
+                for (int i = 0; i < reusables.size(); i++) {
+                    filterableString = reusables.get(i).getName();
+                    if (filterableString.contains(filterString)) {
+                        filteredList.add(reusables.get(i));
+                    }
                 }
+
             }
-        });
+            results.values = filteredList;
 
-     /*   view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(this, )
-            }
-        });*/
+            return results;
+        }
 
-//        if(view == null){
-//            view = inflater.inflate(R.layout.item_cafe,null);
-//        }
-//        TextView nameview = view.findViewById(R.id.list_name);
-//        TextView locview = view.findViewById(R.id.list_location);
-//        TextView catview = view.findViewById(R.id.list_category);
-//
-//        nameview.setText(name.get(i));
-//        locview.setText(location.get(i));
-//        catview.setText(reason.get(i));
-
-        return view;
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            filtered.clear();
+            filtered.addAll((ArrayList<Reusable>) filterResults.values);
+            notifyDataSetChanged();
+        }
     }
 
-    public void setReusableItemClickListener(ReusableActivity.ReusableItemClickListener a_listener){
-        reusableItemClickListener = a_listener;
+    public interface OnItemClickListener {
+        void onItemClick(View v, int pos);
     }
 
+    private OnItemClickListener mListener = null;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mListener = listener;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView nameview;
+        public TextView locview;
+        public TextView catview;
+        public ImageView imgView;
+
+        public ViewHolder(Context context, @NonNull View itemView) {
+            super(itemView);
+
+            nameview = itemView.findViewById(R.id.list_name);
+            locview = itemView.findViewById(R.id.list_location);
+            catview = itemView.findViewById(R.id.list_category);
+
+            ImageView bookmarkbtn = itemView.findViewById(R.id.bookmarkBtn);
+            imgView = itemView.findViewById(R.id.list_image);
+
+
+            bookmarkbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bookmarkbtn.setActivated(!bookmarkbtn.isActivated());
+                    int pos = getAdapterPosition();
+                    if (!bookmarkbtn.isActivated()){
+                        // 취소 동작
+                        deleteBookmark(pos);
+                    }
+                    else if(bookmarkbtn.isActivated()){
+                        // 선택 동작
+                        writeBookmark(pos);
+                    }
+
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        if (mListener != null) {
+                            mListener.onItemClick(view, pos);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    private void writeBookmark(int position){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseFirestore.getInstance();
+        Map<String, Object> info = new HashMap<>();
+        info.put("name", filtered.get(position).getName());
+        info.put("type", "다회용기");
+        info.put("address", filtered.get(position).getLocation());
+        info.put("position_x", filtered.get(position).getMapX());
+        info.put("position_y", filtered.get(position).getMapY());
+        info.put("reason", filtered.get(position).getReason());
+
+        String userId = user.getUid();
+        mDatabase.collection("BookmarkItem").document(userId).collection("reusable").document(filtered.get(position).getName()).set(info);
+    }
+    private void deleteBookmark(int position){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseFirestore.getInstance();
+        Map<String, Object> info = new HashMap<>();
+        String userId = user.getUid();
+        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getName()).delete();
+    }
 }

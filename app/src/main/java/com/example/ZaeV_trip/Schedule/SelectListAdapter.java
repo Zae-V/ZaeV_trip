@@ -125,7 +125,7 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
             list_name.setText(bookmarkItem.getName());
             list_location.setText(String.valueOf(bookmarkItem.getLocation()));
             list_hours.setText(String.valueOf(bookmarkItem.getHours()));
-            list_image.setImageResource(bookmarkItem.getImage());
+//            list_image.setImageResource(bookmarkItem.getImage());
         }
 
     }
