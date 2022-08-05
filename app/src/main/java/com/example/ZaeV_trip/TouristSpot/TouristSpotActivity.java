@@ -7,11 +7,17 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ZaeV_trip.Festival.FestivalFragment;
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.Restaurant.RestaurantActivity;
+import com.example.ZaeV_trip.Restaurant.RestaurantAdapter;
+import com.example.ZaeV_trip.Restaurant.RestaurantFragment;
 import com.example.ZaeV_trip.model.TouristSpot;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -26,21 +32,21 @@ public class TouristSpotActivity extends AppCompatActivity {
 
     ArrayList<TouristSpot> touristSpots = new ArrayList<>();
     String local;
-
-    GridView gridView;
+    SearchView searchView;
+    RecyclerView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourist_spot);
 
+        list = (RecyclerView) findViewById(R.id.touristSpotList);
+        searchView = findViewById(R.id.touristSpotSearchBar);
         Bundle extras = getIntent().getExtras();
 
         if(extras!=null){
             local = extras.getString("local");
         }
-
-        gridView = findViewById(R.id.touristSpotList);
 
         new Thread(new Runnable() {
             @Override
@@ -62,14 +68,32 @@ public class TouristSpotActivity extends AppCompatActivity {
                                 }
                             }
                             TouristSpotAdapter adapter = new TouristSpotAdapter(TouristSpotActivity.this, filteredTouristSpot);
-                            gridView.setAdapter(adapter);
-                            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            list.setLayoutManager(new LinearLayoutManager(TouristSpotActivity.this, RecyclerView.VERTICAL, false));
+                            list.setAdapter(adapter);
+
+                            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                 @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                public boolean onQueryTextSubmit(String s) {
+                                    adapter.getFilter().filter(s);
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onQueryTextChange(String s) {
+                                    return false;
+                                }
+                            });
+
+                            adapter.setOnItemClickListener(new TouristSpotAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View v, int i) {
                                     Bundle bundle = new Bundle();
                                     bundle.putString("name", filteredTouristSpot.get(i).getTitle());
-                                    bundle.putString("contentID", filteredTouristSpot.get(i).getContentID());
+                                    bundle.putString("id", filteredTouristSpot.get(i).getContentID());
                                     bundle.putString("location", filteredTouristSpot.get(i).getAddr1());
+                                    bundle.putString("x", filteredTouristSpot.get(i).getMapX());
+                                    bundle.putString("y", filteredTouristSpot.get(i).getMapY());
+                                    bundle.putString("firstImg", filteredTouristSpot.get(i).getFirstImage());
 
                                     TouristSpotFragment touristSpotFragment = new TouristSpotFragment();
                                     touristSpotFragment.setArguments(bundle);
@@ -82,6 +106,7 @@ public class TouristSpotActivity extends AppCompatActivity {
 
                                 }
                             });
+
                         }
                     }
                 });
@@ -139,7 +164,6 @@ public class TouristSpotActivity extends AppCompatActivity {
             xpp.setInput( new InputStreamReader(is, "UTF-8") ); //inputstream 으로부터 xml 입력받기
 
             String tag;
-            Integer count = 0;
 
             xpp.next();
             TouristSpot touristSpot = null;

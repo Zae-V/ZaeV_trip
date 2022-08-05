@@ -9,6 +9,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
@@ -29,21 +33,21 @@ import java.util.ArrayList;
 public class PloggingActivity extends AppCompatActivity {
     ArrayList<Plogging> ploggings = new ArrayList<>();
     String local;
-
-    GridView gridView;
+    SearchView searchView;
+    RecyclerView list;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plogging);
 
+        list = (RecyclerView) findViewById(R.id.ploggingList);
+        searchView = findViewById(R.id.ploggingSearchBar);
         Bundle extras = getIntent().getExtras();
 
         if(extras!=null){
             local = extras.getString("local");
         }
-
-        gridView = findViewById(R.id.ploggingList);
 
         new Thread(new Runnable() {
             @Override
@@ -65,10 +69,25 @@ public class PloggingActivity extends AppCompatActivity {
                                 }
                             }
                             PloggingAdapter adapter = new PloggingAdapter(PloggingActivity.this, filteredPlogging);
-                            gridView.setAdapter(adapter);
-                            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            list.setLayoutManager(new LinearLayoutManager(PloggingActivity.this, RecyclerView.VERTICAL, false));
+                            list.setAdapter(adapter);
+
+                            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                 @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                public boolean onQueryTextSubmit(String s) {
+                                    adapter.getFilter().filter(s);
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onQueryTextChange(String s) {
+                                    return false;
+                                }
+                            });
+
+                            adapter.setOnItemClickListener(new PloggingAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View v, int i) {
                                     Bundle bundle = new Bundle();
                                     bundle.putSerializable("plogging", (Serializable) filteredPlogging.get(i));
 
@@ -83,6 +102,7 @@ public class PloggingActivity extends AppCompatActivity {
 
                                 }
                             });
+
                         }
                     }
                 });
