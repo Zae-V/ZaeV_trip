@@ -28,7 +28,6 @@ public class CafeActivity extends AppCompatActivity {
     SearchView searchView;
 
     String local;
-    String keyword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -61,7 +61,7 @@ public class TouristSpotAdapter extends RecyclerView.Adapter<TouristSpotAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         Glide.with(holder.itemView.getContext())
-                .load(touristSpots.get(position).getFirstImage())
+                .load(filtered.get(position).getFirstImage())
                 .placeholder(R.drawable.default_profile_image)
                 .error(R.drawable.default_profile_image)
                 .fallback(R.drawable.default_profile_image)
