@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.example.ZaeV_trip.Intro.IntroActivity;
 import com.example.ZaeV_trip.MainActivity;
+import com.example.ZaeV_trip.Profile.ProfileActivity;
 import com.example.ZaeV_trip.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -157,6 +158,16 @@ public class SignUtil {
                 }
             }
         });
+    }
+
+    public static void signOut(Context ctx) {
+        FirebaseAuth.getInstance().signOut();
+        MySharedPreferences.clearUser(ctx.getApplicationContext());
+
+        Toast.makeText(ctx.getApplicationContext(),"로그아웃 되었습니다!",Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(ctx, IntroActivity.class);
+        ctx.startActivity(intent);
     }
 
     public static void checkedEmailDuplicate(Context ctx, Integer type, Boolean emailDuplicated,Users user, String password) {

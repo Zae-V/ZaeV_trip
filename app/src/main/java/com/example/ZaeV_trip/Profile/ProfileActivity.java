@@ -91,10 +91,7 @@ public class ProfileActivity extends AppCompatActivity {
         dialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(),"로그아웃 되었습니다!",Toast.LENGTH_SHORT).show();
-                MySharedPreferences.clearUser(getApplicationContext());
-                Intent intent = new Intent(ProfileActivity.this, IntroActivity.class);
-                startActivity(intent);
+                SignUtil.signOut(ProfileActivity.this);
             }
         });
         dialog.setNegativeButton("아니오",null);
