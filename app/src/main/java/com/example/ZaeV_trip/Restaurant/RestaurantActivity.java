@@ -17,14 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ZaeV_trip.R;
-import com.example.ZaeV_trip.Reusable.DetailReusableFragment;
-import com.example.ZaeV_trip.Reusable.ReusableAdapter;
-import com.example.ZaeV_trip.Reusable.ReusableItem;
-import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
-import com.example.ZaeV_trip.TouristSpot.TouristSpotAdapter;
-import com.example.ZaeV_trip.TouristSpot.TouristSpotFragment;
 import com.example.ZaeV_trip.model.Restaurant;
-import com.example.ZaeV_trip.model.TouristSpot;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
