@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.kakao.sdk.auth.model.OAuthToken;
@@ -108,8 +109,21 @@ public class SignUtil {
                         Intent intent = new Intent(ctx, MainActivity.class);
                         ctx.startActivity(intent);
                     } else {
-                        MySharedPreferences.clearUser(ctx.getApplicationContext());
-                        mFirestore.collection("User").document(user.userEmail).delete();
+
+                        MySharedPreferences.clearUser(ctx.getApplicationContext()); // SharedPreferences 정보 삭제
+                        mFirestore.collection("User").document(user.userEmail).delete(); // Firestore 정보 삭제
+
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser(); // Authentication 정보 삭제
+                        user.delete()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d(TAG, "User account deleted.");
+                                        }
+                                    }
+                                });
+
                         Intent intent = new Intent(ctx, IntroActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         ctx.startActivity(intent);

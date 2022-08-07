@@ -17,6 +17,7 @@ import com.example.ZaeV_trip.Intro.IntroActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Sign.SignActivity;
 import com.example.ZaeV_trip.util.MySharedPreferences;
+import com.example.ZaeV_trip.util.SignUtil;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -69,12 +70,20 @@ public class ProfileActivity extends AppCompatActivity {
         logoutTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog();
+                showLogoutDialog();
+            }
+        });
+
+        View withdrawalTextView = findViewById(R.id.withdrawalTextView);
+        withdrawalTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showWithdrawalDialog();
             }
         });
     }
 
-    public void showDialog(){
+    public void showLogoutDialog(){
         AlertDialog.Builder dialog=new AlertDialog.Builder(this);
         dialog.setIcon(R.mipmap.ic_launcher);//알림창 아이콘 설정
         dialog.setMessage("로그아웃 하시겠습니까?"); //알림창 메세지 설정
@@ -86,6 +95,21 @@ public class ProfileActivity extends AppCompatActivity {
                 MySharedPreferences.clearUser(getApplicationContext());
                 Intent intent = new Intent(ProfileActivity.this, IntroActivity.class);
                 startActivity(intent);
+            }
+        });
+        dialog.setNegativeButton("아니오",null);
+        dialog.show();
+    }
+
+    public void showWithdrawalDialog() {
+        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+        dialog.setIcon(R.mipmap.ic_launcher);//알림창 아이콘 설정
+        dialog.setMessage("탈퇴 하시겠습니까?"); //알림창 메세지 설정
+
+        dialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SignUtil.kakaoSign(ProfileActivity.this, 2);
             }
         });
         dialog.setNegativeButton("아니오",null);
