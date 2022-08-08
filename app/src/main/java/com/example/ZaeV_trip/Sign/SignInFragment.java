@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.captaindroid.tvg.Tvg;
 import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.util.SignUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -26,6 +27,7 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -43,7 +45,7 @@ public class SignInFragment extends Fragment {
     EditText editPW;
 
     Button signInBtn;
-    TextView msg;
+    public static TextView msg;
 
     FirebaseFirestore mFirestore;
     FirebaseAuth mAuth;
@@ -80,7 +82,9 @@ public class SignInFragment extends Fragment {
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signIn();
+                String email = editID.getText().toString().trim();
+                String pwd = editPW.getText().toString().trim();
+                SignUtil.emailSignIn(getActivity(), email, pwd);
             }
         });
 
@@ -94,61 +98,5 @@ public class SignInFragment extends Fragment {
         // 텍스트 글자색 그라데이션 적용
         Tvg.change(userGreetingText, Color.parseColor("#6C92F4"), Color.parseColor("#41E884"));
         return v;
-    }
-
-    public void signIn() {
-        String email = editID.getText().toString().trim();
-        String pwd = editPW.getText().toString().trim();
-
-        if (!email.equals("") && !pwd.equals("")) {
-            mAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        if (!Objects.requireNonNull(mAuth.getCurrentUser()).isEmailVerified()) {
-                            msg.setText("이메일 인증을 완료해주십시오.");
-                        } else {
-                            ArrayList bookmarkList = new ArrayList();
-                            ArrayList currentPosition = new ArrayList();
-                            String profileImage = new String();
-
-                            mFirestore.collection("User").document(email)
-                                    .get().
-                                    addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                DocumentSnapshot document = task.getResult();
-                                                HashMap userInfo = (HashMap) document.getData();
-                                                String userName = (String) userInfo.get("userName");
-
-                                                Users user = new Users(userName, email, bookmarkList, currentPosition, profileImage, false);
-                                                MySharedPreferences.saveUserInfo(getActivity().getApplicationContext(), user);
-
-                                                Intent intent = new Intent(getActivity(), MainActivity.class);
-                                                startActivity(intent);
-
-                                            } else {
-                                                Log.d("ERROR", "get failed with ", task.getException());
-                                            }
-                                        }
-                                    });
-                        }
-                    } else {
-                        mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                                if (!task.isSuccessful()) {
-                                    msg.setText("가입되지 않은 이메일입니다.");
-                                } else {
-                                    msg.setText("비밀번호를 확인해주십시오.");
-
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-        }
     }
 }

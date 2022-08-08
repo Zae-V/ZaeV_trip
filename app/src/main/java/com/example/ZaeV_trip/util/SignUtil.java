@@ -11,12 +11,14 @@ import androidx.annotation.NonNull;
 import com.example.ZaeV_trip.Intro.IntroActivity;
 import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.Profile.ProfileActivity;
+import com.example.ZaeV_trip.Sign.SignInFragment;
 import com.example.ZaeV_trip.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.kakao.sdk.auth.model.OAuthToken;
@@ -24,6 +26,8 @@ import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
@@ -177,6 +181,62 @@ public class SignUtil {
         } else {
             Log.d(TAG, "중복된 이메일이 없습니다.");
             signUp(ctx, type, user, password);
+        }
+    }
+
+    public static void emailSignIn(Context ctx, String email, String pwd) {
+//        String email = editID.getText().toString().trim();
+//        String pwd = editPW.getText().toString().trim();
+
+        if (!email.equals("") && !pwd.equals("")) {
+            mAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener((Activity) ctx, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        if (!Objects.requireNonNull(mAuth.getCurrentUser()).isEmailVerified()) {
+                            SignInFragment.msg.setText("이메일 인증을 완료해주십시오.");
+                        } else {
+                            ArrayList bookmarkList = new ArrayList();
+                            ArrayList currentPosition = new ArrayList();
+                            String profileImage = new String();
+
+                            mFirestore.collection("User").document(email)
+                                    .get().
+                                    addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                DocumentSnapshot document = task.getResult();
+                                                HashMap userInfo = (HashMap) document.getData();
+                                                String userName = (String) userInfo.get("userName");
+
+                                                Users user = new Users(userName, email, bookmarkList, currentPosition, profileImage, false);
+                                                MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), user);
+
+                                                Intent intent = new Intent(ctx, MainActivity.class);
+                                                ctx.startActivity(intent);
+
+                                            } else {
+                                                Log.d("ERROR", "get failed with ", task.getException());
+                                            }
+                                        }
+                                    });
+                        }
+                    } else {
+                        mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                                if (!task.isSuccessful()) {
+                                    SignInFragment.msg.setText("가입되지 않은 이메일입니다.");
+                                } else {
+                                    SignInFragment.msg.setText("비밀번호를 확인해주십시오.");
+
+                                }
+                            }
+                        });
+                    }
+                }
+            });
         }
     }
 }
