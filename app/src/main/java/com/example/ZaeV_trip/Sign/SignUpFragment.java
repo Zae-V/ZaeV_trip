@@ -19,6 +19,7 @@ import com.captaindroid.tvg.Tvg;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Users;
 import com.example.ZaeV_trip.util.MySharedPreferences;
+import com.example.ZaeV_trip.util.SignUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -36,7 +37,7 @@ public class SignUpFragment extends Fragment {
     EditText editEmailEnter;
     EditText editPWEnter;
     EditText editPWCheck;
-    TextView msg;
+    public static TextView msg;
 
     android.widget.Button signUpBtn;
 
@@ -71,73 +72,14 @@ public class SignUpFragment extends Fragment {
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signUp();
+                String password = editPWEnter.getText().toString().trim();
+                String pwCheck = editPWCheck.getText().toString().trim();
+                String username = editUsernameEnter.getText().toString().trim();
+                String email = editEmailEnter.getText().toString().trim();
+
+                SignUtil.emailSignUp(getActivity(), password, pwCheck, username, email);
             }
         });
         return v;
-    }
-
-    public void signUp() {
-        String password = editPWEnter.getText().toString().trim();
-        String pwCheck = editPWCheck.getText().toString().trim();
-        String username = editUsernameEnter.getText().toString().trim();
-        String email = editEmailEnter.getText().toString().trim();
-
-        ArrayList bookmarkList = new ArrayList();
-        ArrayList currentPosition = new ArrayList();
-        String profileImage = new String();
-
-        if(username.length() == 0 || email.length() == 0 || pwCheck.length() == 0 || password.length() == 0){
-            msg.setText("항목을 모두 입력해주세요.");
-        }
-        else if(password.equals(pwCheck)) {
-            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        user.sendEmailVerification().addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    Toast.makeText(getActivity(),"인증 이메일이 전송되었습니다.",Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-
-                        Users userInfo = new Users(username, email, bookmarkList, currentPosition, profileImage,false);
-
-                        mFirestore.collection("User").document(userInfo.userEmail).set(userInfo);
-                        MySharedPreferences.saveUserInfo(getActivity().getApplicationContext(), userInfo);
-
-                        Intent intent = new Intent(getActivity(), SignActivity.class);
-                        startActivity(intent);
-                    } else {
-                        if(password.length()<6){
-                            msg.setText("비밀번호는 6자리 이상으로 설정하십시오.");
-                        }
-                        else if( task.getException() instanceof FirebaseAuthUserCollisionException){
-                            msg.setText("이미 가입되어있는 이메일입니다.");
-                        }else if(!emailFormatCheck(email)){
-                            msg.setText("이메일을 이메일 형식으로 입력하십시오.");
-                        }else{
-                            msg.setText("서버와의 연결이 불안정합니다. 나중에 다시 시도해주세요.");
-                        }
-                    }
-                }
-            });
-        }else{
-            msg.setText("비밀번호를 잘못 입력하셨습니다.");
-        }
-    }
-
-    public Boolean emailFormatCheck(String inputEmail){
-        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-
-        if(inputEmail.matches(emailPattern)){
-            return true;
-        }else{
-            return false;
-        }
     }
 }
