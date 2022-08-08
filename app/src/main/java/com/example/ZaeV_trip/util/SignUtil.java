@@ -11,12 +11,17 @@ import androidx.annotation.NonNull;
 import com.example.ZaeV_trip.Intro.IntroActivity;
 import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.Profile.ProfileActivity;
+import com.example.ZaeV_trip.Sign.SignActivity;
+import com.example.ZaeV_trip.Sign.SignInFragment;
+import com.example.ZaeV_trip.Sign.SignUpFragment;
 import com.example.ZaeV_trip.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.kakao.sdk.auth.model.OAuthToken;
@@ -24,6 +29,8 @@ import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
@@ -98,7 +105,7 @@ public class SignUtil {
         }
     }
 
-    public static void signIn(Context ctx, Integer type, Users user, String password) {
+    public static void kakaoSignIn(Context ctx, Integer type, Users user, String password) {
         mAuth.signInWithEmailAndPassword(user.userEmail, password).addOnCompleteListener((Activity) ctx, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -141,7 +148,7 @@ public class SignUtil {
         });
     }
 
-    public static void signUp(Context ctx, Integer type, Users user, String password) {
+    public static void kakaoSignUp(Context ctx, Integer type, Users user, String password) {
         mAuth.createUserWithEmailAndPassword(user.userEmail, password).addOnCompleteListener((Activity) ctx, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -173,10 +180,122 @@ public class SignUtil {
     public static void checkedEmailDuplicate(Context ctx, Integer type, Boolean emailDuplicated,Users user, String password) {
         if (emailDuplicated) {
             Log.d(TAG, "중복된 이메일이 있습니다");
-            signIn(ctx, type, user, password);
+            kakaoSignIn(ctx, type, user, password);
         } else {
             Log.d(TAG, "중복된 이메일이 없습니다.");
-            signUp(ctx, type, user, password);
+            kakaoSignUp(ctx, type, user, password);
+        }
+    }
+
+    public static void emailSignIn(Context ctx, String email, String pwd) {
+        if (!email.equals("") && !pwd.equals("")) {
+            mAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener((Activity) ctx, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        if (!Objects.requireNonNull(mAuth.getCurrentUser()).isEmailVerified()) {
+                            SignInFragment.msg.setText("이메일 인증을 완료해주십시오.");
+                        } else {
+                            ArrayList bookmarkList = new ArrayList();
+                            ArrayList currentPosition = new ArrayList();
+                            String profileImage = new String();
+
+                            mFirestore.collection("User").document(email)
+                                    .get().
+                                    addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                DocumentSnapshot document = task.getResult();
+                                                HashMap userInfo = (HashMap) document.getData();
+                                                String userName = (String) userInfo.get("userName");
+
+                                                Users user = new Users(userName, email, bookmarkList, currentPosition, profileImage, false);
+                                                MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), user);
+
+                                                Intent intent = new Intent(ctx, MainActivity.class);
+                                                ctx.startActivity(intent);
+
+                                            } else {
+                                                Log.d("ERROR", "get failed with ", task.getException());
+                                            }
+                                        }
+                                    });
+                        }
+                    } else {
+                        mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                                if (!task.isSuccessful()) {
+                                    SignInFragment.msg.setText("가입되지 않은 이메일입니다.");
+                                } else {
+                                    SignInFragment.msg.setText("비밀번호를 확인해주십시오.");
+
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    public static void emailSignUp(Context ctx, String password, String pwCheck, String username, String email) {
+        ArrayList bookmarkList = new ArrayList();
+        ArrayList currentPosition = new ArrayList();
+        String profileImage = new String();
+
+        if(username.length() == 0 || email.length() == 0 || pwCheck.length() == 0 || password.length() == 0){
+            SignUpFragment.msg.setText("항목을 모두 입력해주세요.");
+        }
+        else if(password.equals(pwCheck)) {
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((Activity) ctx, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        user.sendEmailVerification().addOnCompleteListener((Activity) ctx, new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(ctx,"인증 이메일이 전송되었습니다.",Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+
+                        Users userInfo = new Users(username, email, bookmarkList, currentPosition, profileImage,false);
+
+                        mFirestore.collection("User").document(userInfo.userEmail).set(userInfo);
+                        MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), userInfo);
+
+                        Intent intent = new Intent(ctx, SignActivity.class);
+                        ctx.startActivity(intent);
+                    } else {
+                        if(password.length()<6){
+                            SignUpFragment.msg.setText("비밀번호는 6자리 이상으로 설정하십시오.");
+                        }
+                        else if( task.getException() instanceof FirebaseAuthUserCollisionException){
+                            SignUpFragment.msg.setText("이미 가입되어있는 이메일입니다.");
+                        }else if(!emailFormatCheck(email)){
+                            SignUpFragment.msg.setText("이메일을 이메일 형식으로 입력하십시오.");
+                        }else{
+                            SignUpFragment.msg.setText("서버와의 연결이 불안정합니다. 나중에 다시 시도해주세요.");
+                        }
+                    }
+                }
+            });
+        }else{
+            SignUpFragment.msg.setText("비밀번호를 잘못 입력하셨습니다.");
+        }
+    }
+
+    public static Boolean emailFormatCheck(String inputEmail){
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+        if(inputEmail.matches(emailPattern)){
+            return true;
+        }else{
+            return false;
         }
     }
 }
