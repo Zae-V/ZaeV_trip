@@ -8,14 +8,16 @@ public class Users {
     public ArrayList currentPosition;
     public String profileImage;
     public Boolean notification;
+    public String signType;
 
-    public Users(String userName, String userEmail, ArrayList bookmarkList, ArrayList currentPosition, String profileImage, Boolean notification) {
+    public Users(String userName, String userEmail, ArrayList bookmarkList, ArrayList currentPosition, String profileImage, Boolean notification, String signType) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.bookmarkList = bookmarkList;
         this.currentPosition = currentPosition;
         this.profileImage = profileImage;
         this.notification = notification;
+        this.signType = signType;
     }
 
 }

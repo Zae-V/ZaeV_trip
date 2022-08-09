@@ -61,8 +61,9 @@ public class SignUtil {
                                 ArrayList currentPosition = new ArrayList();
                                 String profileImage = user.getKakaoAccount().getProfile().getProfileImageUrl();
                                 Boolean notification = false;
+                                String signType = "kakao";
 
-                                Users newUser = new Users(userName, userEmail, bookmarkList, currentPosition, profileImage, notification);
+                                Users newUser = new Users(userName, userEmail, bookmarkList, currentPosition, profileImage, notification, signType);
 
                                 // 이메일 중복 체크
                                 mFirestore.collection("User").document(userEmail)
@@ -209,8 +210,9 @@ public class SignUtil {
                                                 DocumentSnapshot document = task.getResult();
                                                 HashMap userInfo = (HashMap) document.getData();
                                                 String userName = (String) userInfo.get("userName");
+                                                String signType = "email";
 
-                                                Users user = new Users(userName, email, bookmarkList, currentPosition, profileImage, false);
+                                                Users user = new Users(userName, email, bookmarkList, currentPosition, profileImage, false, signType);
                                                 MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), user);
 
                                                 Intent intent = new Intent(ctx, MainActivity.class);
@@ -263,7 +265,8 @@ public class SignUtil {
                             }
                         });
 
-                        Users userInfo = new Users(username, email, bookmarkList, currentPosition, profileImage,false);
+                        String signType = "email";
+                        Users userInfo = new Users(username, email, bookmarkList, currentPosition, profileImage,false, signType);
 
                         mFirestore.collection("User").document(userInfo.userEmail).set(userInfo);
                         MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), userInfo);
