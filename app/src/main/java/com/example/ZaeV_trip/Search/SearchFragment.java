@@ -1,5 +1,6 @@
 package com.example.ZaeV_trip.Search;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Search.Adapter.CityAdapter;
 import com.example.ZaeV_trip.Search.Adapter.VisitedAdapter;
@@ -23,12 +25,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SearchFragment extends Fragment {
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        BottomNavigationView navView = getActivity().findViewById(R.id.bottom_navigation);
-        navView.setVisibility(View.VISIBLE);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,11 +49,14 @@ public class SearchFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 searchViewModel.sendMessage(CityName.get(i));
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().remove(SearchFragment.this).commit();
-                fragmentManager.popBackStack();
+//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                fragmentManager.beginTransaction().remove(SearchFragment.this).commit();
+//                fragmentManager.popBackStack();
                 searchViewModel.setVisitedCities(CityName.get(i));
-                navView.setVisibility(View.VISIBLE);
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("current", CityName.get(i));
+                startActivity(intent);
+//                navView.setVisibility(View.VISIBLE);
 
             }
         });
@@ -71,11 +70,14 @@ public class SearchFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 searchViewModel.sendMessage(Visited.get(i));
                 searchViewModel.setVisitedCities(Visited.get(i));
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().remove(SearchFragment.this).commit();
-                fragmentManager.popBackStack();
-                navView.setVisibility(View.VISIBLE);
+//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                fragmentManager.beginTransaction().remove(SearchFragment.this).commit();
+//                fragmentManager.popBackStack();
+//                navView.setVisibility(View.VISIBLE);
 
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("current", Visited.get(i));
+                startActivity(intent);
             }
         });
 

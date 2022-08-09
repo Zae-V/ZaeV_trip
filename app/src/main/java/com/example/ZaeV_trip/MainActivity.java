@@ -1,56 +1,143 @@
 package com.example.ZaeV_trip;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.captaindroid.tvg.Tvg;
 import com.example.ZaeV_trip.Bookmark.BookmarkActivity;
+import com.example.ZaeV_trip.Cafe.CafeActivity;
+import com.example.ZaeV_trip.Festival.FestivalActivity;
+import com.example.ZaeV_trip.Lodging.LodgingActivity;
+import com.example.ZaeV_trip.Plogging.PloggingActivity;
 import com.example.ZaeV_trip.Profile.ProfileActivity;
+import com.example.ZaeV_trip.Restaurant.RestaurantActivity;
+import com.example.ZaeV_trip.Reusable.ReusableActivity;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
 import com.example.ZaeV_trip.Search.SearchActivity;
+import com.example.ZaeV_trip.Search.SearchFragment;
+import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
 import com.example.ZaeV_trip.util.MySharedPreferences;
+import com.example.ZaeV_trip.util.SharedViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
-    String userName;
-    String titleText;
-    String userProfileImage;
+
+    TextView current;
+    String local;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userName = MySharedPreferences.getUserName(getApplicationContext());
-        userProfileImage = MySharedPreferences.getUserProfileImage(getApplicationContext());
+        current = findViewById(R.id.currentPosition);
 
-        TextView titleTextView = findViewById(R.id.titleText);
-        titleText = userName + "님" + "\n여행을 떠나볼까요?";
-        titleTextView.setText(titleText);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            local = extras.getString("current");
+            current.setText(local);
+        }
 
-        Tvg.change(titleTextView, Color.parseColor("#6C92F4"),  Color.parseColor("#41E884"));
-
-        CircleImageView userProfileImageView = findViewById(R.id.profileImageView);
-
-        Glide.with(this)
-                .load(userProfileImage)
-                .placeholder(R.drawable.default_profile_image)
-                .error(R.drawable.default_profile_image)
-                .fallback(R.drawable.default_profile_image)
-                .into(userProfileImageView);
-
-        userProfileImageView.setOnClickListener(new View.OnClickListener() {
+        current.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                overridePendingTransition(0, 0);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                SearchFragment searchFragment = new SearchFragment();
+                fragmentTransaction.replace(R.id.main_container, searchFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+
+        Button cafeBtn = findViewById(R.id.cafeBtn);
+        cafeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, CafeActivity.class);
+                intent.putExtra("local", current.getText());
+                startActivity(intent);
+
+            }
+        });
+
+        Button spotBtn = findViewById(R.id.spotBtn);
+        spotBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, TouristSpotActivity.class);
+                intent.putExtra("local", current.getText());
+                startActivity(intent);
+            }
+        });
+
+        Button reuseBtn = findViewById(R.id.reuseBtn);
+        reuseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ReusableActivity.class);
+
+                intent.putExtra("local", current.getText());
+                startActivity(intent);
+
+            }
+        });
+
+        Button ploggingBtn = findViewById(R.id.ploggingBtn);
+        ploggingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, PloggingActivity.class);
+
+                intent.putExtra("local", current.getText());
+                startActivity(intent);
+
+            }
+        });
+
+        Button festivalBtn = findViewById(R.id.allBtn);
+        festivalBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, FestivalActivity.class);
+                intent.putExtra("local", current.getText());
+                startActivity(intent);
+            }
+        });
+
+        Button lodgingBtn = findViewById(R.id.hotelBtn);
+        lodgingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, LodgingActivity.class);
+                intent.putExtra("local", current.getText());
+                startActivity(intent);
+            }
+        });
+
+        Button restaurantBtn = findViewById(R.id.restaurantBtn);
+        restaurantBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
+                intent.putExtra("local", current.getText());
+                startActivity(intent);
             }
         });
 
@@ -86,4 +173,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 }

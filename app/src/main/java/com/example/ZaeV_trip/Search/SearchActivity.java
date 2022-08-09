@@ -43,9 +43,9 @@ public class SearchActivity extends AppCompatActivity {
                 spinnerBtn.setText(s);
             }
         };
-
-        SharedViewModel searchViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
-        searchViewModel.getMessage().observe(this, selectObserver);
+//
+//        SharedViewModel searchViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+//        searchViewModel.getMessage().observe(this, selectObserver);
 
 
         spinnerBtn.setOnClickListener(new View.OnClickListener(){

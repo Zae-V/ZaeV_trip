@@ -5,65 +5,251 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/main_container"
+    >
 
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="-16dp">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <View
+            android:id="@+id/main_header"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/main_header_selector"
+            app:cardCornerRadius="4dp" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:fontFamily="@font/inooariduri"
+            android:text="제비의 여행"
+            android:textAlignment="center"
+            android:textColor="#8F000000"
+            android:textSize="25dp"
+            android:layout_marginTop="28dp"/>
 
-            <LinearLayout
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/inooariduri"
+            android:text="제비의 여행"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="25dp" />
+
+
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="90dp"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/Position"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
                 android:orientation="horizontal"
-                android:weightSum="10">
+                app:layout_constraintBottom_toTopOf="@+id/categoryLayout1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-                <TextView
-                    android:id="@+id/titleText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/notosans_bold"
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="30dp"
-                    android:textSize="25dp"
-                    android:layout_weight="9"/>
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profileImageView"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="20dp"
-                    tools:ignore="MissingClass" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="vertical">
+                    android:src="@drawable/ic_position" />
 
                 <TextView
+                    android:id="@+id/currentPosition"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="55dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="30dp"
+                    android:fontFamily="@font/notosans_bold"
+                    android:text="전체 지역"
+                    android:textColor="#E6000000"
+                    android:textSize="17dp" />
+
+
+            </RelativeLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/categoryLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintTop_toTopOf="@+id/Position">
+
+                <android.widget.Button
+                    android:id="@+id/spotBtn"
+                    android:layout_width="75dp"
+                    android:layout_height="80dp"
+                    android:background="#00ff0000"
+                    android:drawableTop="@drawable/spot_btn"
+                    android:fontFamily="@font/notosans_regular"
+                    android:text="관광명소"
+                    android:textColor="#E6000000"
+                    android:textSize="11dp"
+                    app:layout_constraintEnd_toStartOf="@+id/hotelBtn"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <android.widget.Button
+                    android:id="@+id/hotelBtn"
+                    android:layout_width="75dp"
+                    android:layout_height="80dp"
+                    android:background="#00ff0000"
+                    android:drawableTop="@drawable/hotel_btn"
+                    android:fontFamily="@font/notosans_regular"
+                    android:text="숙소"
+                    android:textColor="#E6000000"
+                    android:textSize="11dp"
+                    app:layout_constraintEnd_toStartOf="@+id/restaurantBtn"
+                    app:layout_constraintStart_toEndOf="@+id/spotBtn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.widget.Button
+                    android:id="@+id/restaurantBtn"
+                    android:layout_width="75dp"
+                    android:layout_height="80dp"
+                    android:background="#00ff0000"
+                    android:drawableTop="@drawable/restaurant_btn"
+                    android:fontFamily="@font/notosans_regular"
+                    android:text="식당"
+                    android:textColor="#E6000000"
+                    android:textSize="11dp"
+                    app:layout_constraintEnd_toStartOf="@+id/cafeBtn"
+                    app:layout_constraintStart_toEndOf="@+id/hotelBtn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.widget.Button
+                    android:id="@+id/cafeBtn"
+                    android:layout_width="75dp"
+                    android:layout_height="80dp"
+                    android:background="#00ff0000"
+                    android:drawableTop="@drawable/cafe_btn"
+                    android:fontFamily="@font/notosans_regular"
+                    android:text="카페"
+                    android:textColor="#E6000000"
+                    android:textSize="11dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/restaurantBtn"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/categoryLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintTop_toBottomOf="@+id/categoryLayout1">
+
+                <android.widget.Button
+                    android:id="@+id/reuseBtn"
+                    android:layout_width="75dp"
+                    android:layout_height="80dp"
+                    android:background="#00ff0000"
+                    android:drawableTop="@drawable/reuse_btn"
+                    android:fontFamily="@font/notosans_regular"
+                    android:text="다회용기"
+                    android:textColor="#E6000000"
+                    android:textSize="11dp"
+                    app:layout_constraintEnd_toStartOf="@+id/ploggingBtn"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <android.widget.Button
+                    android:id="@+id/ploggingBtn"
+                    android:layout_width="75dp"
+                    android:layout_height="80dp"
+                    android:background="#00ff0000"
+                    android:drawableTop="@drawable/plogging_btn"
+                    android:fontFamily="@font/notosans_regular"
+                    android:text="플로깅"
+                    android:textColor="#E6000000"
+                    android:textSize="11dp"
+                    app:layout_constraintEnd_toStartOf="@+id/shopBtn"
+                    app:layout_constraintStart_toEndOf="@+id/reuseBtn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.widget.Button
+                    android:id="@+id/shopBtn"
+                    android:layout_width="75dp"
+                    android:layout_height="80dp"
+                    android:background="#00ff0000"
+                    android:drawableTop="@drawable/shop_btn"
+                    android:fontFamily="@font/notosans_regular"
+                    android:text="제로웨이스트 샵"
+                    android:textColor="#E6000000"
+                    android:textSize="11dp"
+                    app:layout_constraintEnd_toStartOf="@+id/allBtn"
+                    app:layout_constraintStart_toEndOf="@+id/ploggingBtn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.widget.Button
+                    android:id="@+id/allBtn"
+                    android:layout_width="75dp"
+                    android:layout_height="80dp"
+                    android:background="#00ff0000"
+                    android:drawableTop="@drawable/ic_festival"
+                    android:fontFamily="@font/notosans_regular"
+                    android:text="축제·행사"
+                    android:textColor="#E6000000"
+                    android:textSize="11dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/shopBtn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/RecommendLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintTop_toBottomOf="@+id/categoryLayout2">
+
+                <TextView
+                    android:id="@+id/title1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:fontFamily="@font/notosans_bold"
                     android:text="지금 뜨고있는 이벤트 🎊"
                     android:textColor="@color/black"
-                    android:textSize="17dp"></TextView>
+                    android:textSize="17dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <HorizontalScrollView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:scrollbars="none">
+                    android:layout_marginTop="5dp"
+                    android:scrollbars="none"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title1">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -72,7 +258,6 @@
                         <View
                             android:layout_width="150dp"
                             android:layout_height="150dp"
-                            android:layout_marginLeft="30dp"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="5dp"
                             android:background="@drawable/profile_rounded_shape"
@@ -115,28 +300,37 @@
                             android:elevation="3dp" />
                     </LinearLayout>
                 </HorizontalScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/RecommendLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:orientation="vertical">
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintTop_toBottomOf="@+id/RecommendLayout1">
 
                 <TextView
+                    android:id="@+id/title2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
                     android:fontFamily="@font/notosans_bold"
                     android:text="근처에 있는 비건 식당 🥗 "
                     android:textColor="@color/black"
-                    android:textSize="17dp"></TextView>
+                    android:textSize="17dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <HorizontalScrollView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:scrollbars="none">
+                    android:layout_marginTop="5dp"
+                    android:scrollbars="none"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title2"
+
+                    >
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -145,7 +339,6 @@
                         <View
                             android:layout_width="150dp"
                             android:layout_height="150dp"
-                            android:layout_marginLeft="30dp"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="5dp"
                             android:background="@drawable/profile_rounded_shape"
@@ -188,28 +381,37 @@
                             android:elevation="3dp" />
                     </LinearLayout>
                 </HorizontalScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/RecommendLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:orientation="vertical">
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintTop_toBottomOf="@+id/RecommendLayout2">
 
                 <TextView
+                    android:id="@+id/title3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
                     android:fontFamily="@font/notosans_bold"
-                    android:text="근처에 있는 놀거리 🎡"
+                    android:text="자전거 추천 코스 🚲 ‍"
                     android:textColor="@color/black"
-                    android:textSize="17dp"></TextView>
+                    android:textSize="17dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <HorizontalScrollView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:scrollbars="none">
+                    android:layout_marginTop="5dp"
+                    android:scrollbars="none"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title3"
+
+                    >
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -218,7 +420,6 @@
                         <View
                             android:layout_width="150dp"
                             android:layout_height="150dp"
-                            android:layout_marginLeft="30dp"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="5dp"
                             android:background="@drawable/profile_rounded_shape"
@@ -261,13 +462,17 @@
                             android:elevation="3dp" />
                     </LinearLayout>
                 </HorizontalScrollView>
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
+                android:id="@+id/blankView"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"></View>
-        </LinearLayout>
-    </ScrollView>
+                android:layout_height="100dp"
+                app:layout_constraintTop_toBottomOf="@+id/RecommendLayout3" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
@@ -283,6 +488,5 @@
         app:labelVisibilityMode="unlabeled"
 
         />
-
 
 </RelativeLayout>
