@@ -106,7 +106,9 @@ public class ProfileActivity extends AppCompatActivity {
         dialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                SignUtil.kakaoSign(ProfileActivity.this, 2);
+//                SignUtil.kakaoSign(ProfileActivity.this, 2);
+                Intent intent = new Intent(ProfileActivity.this, WithdrawalActivity.class);
+                startActivity(intent);
             }
         });
         dialog.setNegativeButton("아니오",null);

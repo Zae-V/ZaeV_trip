@@ -47,5 +47,5 @@ public class MySharedPreferences {
     public static String getUserSignType(Context ctx) {
         return get_shared_preferences(ctx).getString("signType", "");
     }
-    
+
 }
