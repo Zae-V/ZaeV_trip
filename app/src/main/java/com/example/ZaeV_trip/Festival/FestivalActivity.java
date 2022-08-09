@@ -9,6 +9,8 @@ import android.widget.GridView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Festival.FestivalAdapter;
@@ -27,7 +29,7 @@ public class FestivalActivity extends AppCompatActivity {
     ArrayList<Festival> festivals = new ArrayList<>();
     String local;
 
-    GridView gridView;
+    RecyclerView festivalList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,7 @@ public class FestivalActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_festival);
 
-        gridView = findViewById(R.id.FestivalList);
+        festivalList = findViewById(R.id.festivalList);
 
         new Thread(new Runnable() {
             @Override
@@ -50,20 +52,29 @@ public class FestivalActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        FestivalAdapter adapter = new FestivalAdapter(FestivalActivity.this);
+                        ArrayList<Festival> filteredList = new ArrayList<Festival>();
+
                         for(int i = 0; i< festivals.size(); i++) {
                             if(local.equals("전체 지역") || local.equals("전체")){
-                                adapter.addItem(festivals.get(i));
+//                                adapter.addItem(festivals.get(i));
+                                filteredList.add(festivals.get(i));
                             }else{
                                 if(festivals.get(i).getAddr1().split(" ").length > 1 && festivals.get(i).getAddr1().split(" ")[1].equals(local)){
-                                    adapter.addItem(festivals.get(i));
+//                                    adapter.addItem(festivals.get(i));
+                                    filteredList.add(festivals.get(i));
                                 }
                             }
                         }
-                        gridView.setAdapter(adapter);
-                        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        FestivalAdapter adapter = new FestivalAdapter(FestivalActivity.this, filteredList);
+                        festivalList.setLayoutManager(new LinearLayoutManager(FestivalActivity.this, RecyclerView.VERTICAL, false));
+                        festivalList.setAdapter(adapter);
+
+
+
+                        adapter.setOnItemClickListener(new FestivalAdapter.OnItemClickListener() {
+
                             @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            public void onItemClick(View view, int i) {
                                 Bundle bundle = new Bundle();
                                 bundle.putString("name", festivals.get(i).getTitle());
                                 bundle.putString("location", festivals.get(i).getAddr1());
@@ -97,7 +108,7 @@ public class FestivalActivity extends AppCompatActivity {
 //        String location = URLEncoder.encode(str);
         String query="%EC%A0%84%EB%A0%A5%EB%A1%9C";
         String key = getString(R.string.portal_key);
-        String address = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/";
+        String address = "https://api.visitkorea.or.kr/openapi/service/rest/KorService/";
         String listType = "searchFestival";
         String pageNo = "1";
         String numOfRows = "1000";
@@ -152,8 +163,12 @@ public class FestivalActivity extends AppCompatActivity {
                                     "",
                                     "",
                                     "",
+                                    "",
                                     ""
                             );
+                        }
+                        else if(tag.equals("contentid")){
+                            festival.setId(xpp.nextText());
                         }
                         else if(tag.equals("title")){
                             festival.setTitle(xpp.nextText());

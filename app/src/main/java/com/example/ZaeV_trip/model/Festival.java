@@ -7,7 +7,17 @@ public class Festival {
     private String mapY;
     private String title;
     private String startDate;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String endDate;
+    private String id;
 
     public String getAddr1() {
         return addr1;
@@ -65,7 +75,8 @@ public class Festival {
         this.endDate = endDate;
     }
 
-    public Festival(String addr1, String firstImage, String mapX, String mapY, String title, String startDate, String endDate) {
+    public Festival(String id, String addr1, String firstImage, String mapX, String mapY, String title, String startDate, String endDate) {
+        this.id = id;
         this.addr1 = addr1;
         this.firstImage = firstImage;
         this.mapX = mapX;
