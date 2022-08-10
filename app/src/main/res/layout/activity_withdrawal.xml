@@ -84,6 +84,16 @@
                 android:inputType="textPersonName"
                 android:text="" />
 
+            <TextView
+                android:id="@+id/errorTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FF6347"
+                android:textAlignment="center"
+                android:layout_marginTop="20dp"
+                />
+
+
             <android.widget.Button
                 android:id="@+id/signInBtn"
                 android:layout_width="match_parent"

@@ -22,6 +22,12 @@ public class WithdrawalActivity extends AppCompatActivity {
 
     public static Button withdrawalBtn;
     public static Button kakaoCertificationBtn;
+    public static Button signInBtn;
+    public static TextView errorTextView;
+    public static TextView emailTextView;
+    public static EditText editID;
+    public static TextView passwordTextView;
+    public static EditText editPW;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +37,12 @@ public class WithdrawalActivity extends AppCompatActivity {
         String signType = MySharedPreferences.getUserSignType(WithdrawalActivity.this);
 
         kakaoCertificationBtn = findViewById(R.id.kakaoCertificationBtn);
-        TextView emailTextView = findViewById(R.id.emailTextView);
-        EditText editID = findViewById(R.id.editID);
-        TextView passwordTextView = findViewById(R.id.passwordTextView);
-        EditText editPW = findViewById(R.id.editPW);
-        Button signInBtn = findViewById(R.id.signInBtn);
+        emailTextView = findViewById(R.id.emailTextView);
+        editID = findViewById(R.id.editID);
+        passwordTextView = findViewById(R.id.passwordTextView);
+        editPW = findViewById(R.id.editPW);
+        errorTextView = findViewById(R.id.errorTextView);
+        signInBtn = findViewById(R.id.signInBtn);
         withdrawalBtn = findViewById(R.id.withdrawalBtn);
 
         Log.d("signType", signType);
@@ -45,9 +52,19 @@ public class WithdrawalActivity extends AppCompatActivity {
             passwordTextView.setVisibility(View.GONE);
             editPW.setVisibility(View.GONE);
             signInBtn.setVisibility(View.GONE);
+            errorTextView.setVisibility(View.GONE);
         } else {
             kakaoCertificationBtn.setVisibility(View.GONE);
         }
+
+        signInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = editID.getText().toString().trim();
+                String pwd = editPW.getText().toString().trim();
+                SignUtil.emailSignIn(WithdrawalActivity.this, email, pwd, 2);
+            }
+        });
 
         kakaoCertificationBtn.setOnClickListener(new View.OnClickListener() {
             @Override

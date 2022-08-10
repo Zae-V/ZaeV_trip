@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -194,7 +195,7 @@ public class SignUtil {
         }
     }
 
-    public static void emailSignIn(Context ctx, String email, String pwd) {
+    public static void emailSignIn(Context ctx, String email, String pwd, Integer type) {
         if (!email.equals("") && !pwd.equals("")) {
             mAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener((Activity) ctx, new OnCompleteListener<AuthResult>() {
                 @Override
@@ -213,16 +214,27 @@ public class SignUtil {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                             if (task.isSuccessful()) {
-                                                DocumentSnapshot document = task.getResult();
-                                                HashMap userInfo = (HashMap) document.getData();
-                                                String userName = (String) userInfo.get("userName");
-                                                String signType = "email";
+                                                if (type == 1) {
+                                                    DocumentSnapshot document = task.getResult();
+                                                    HashMap userInfo = (HashMap) document.getData();
+                                                    String userName = (String) userInfo.get("userName");
+                                                    String signType = "email";
 
-                                                Users user = new Users(userName, email, bookmarkList, currentPosition, profileImage, false, signType);
-                                                MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), user);
+                                                    Users user = new Users(userName, email, bookmarkList, currentPosition, profileImage, false, signType);
+                                                    MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), user);
 
-                                                Intent intent = new Intent(ctx, MainActivity.class);
-                                                ctx.startActivity(intent);
+                                                    Intent intent = new Intent(ctx, MainActivity.class);
+                                                    ctx.startActivity(intent);
+                                                } else {
+                                                    WithdrawalActivity.emailTextView.setVisibility(View.GONE);
+                                                    WithdrawalActivity.editID.setVisibility(View.GONE);
+                                                    WithdrawalActivity.passwordTextView.setVisibility(View.GONE);
+                                                    WithdrawalActivity.editPW.setVisibility(View.GONE);
+                                                    WithdrawalActivity.errorTextView.setVisibility(View.GONE);
+                                                    WithdrawalActivity.signInBtn.setText("로그인 완료");
+                                                    WithdrawalActivity.withdrawalBtn.setBackground(ctx.getDrawable(R.drawable.rounded_shape));
+                                                    WithdrawalActivity.withdrawalBtn.setEnabled(true);
+                                                }
 
                                             } else {
                                                 Log.d("ERROR", "get failed with ", task.getException());
@@ -235,9 +247,18 @@ public class SignUtil {
                             @Override
                             public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
                                 if (!task.isSuccessful()) {
-                                    SignInFragment.msg.setText("가입되지 않은 이메일입니다.");
+                                    if (type == 1) {
+                                        SignInFragment.msg.setText("가입되지 않은 이메일입니다.");
+                                    } else {
+                                        WithdrawalActivity.errorTextView.setText("가입되지 않은 이메일입니다.");
+                                    }
+
                                 } else {
-                                    SignInFragment.msg.setText("비밀번호를 확인해주십시오.");
+                                    if (type == 1) {
+                                        SignInFragment.msg.setText("비밀번호를 확인해주십시오.");
+                                    } else {
+                                        WithdrawalActivity.errorTextView.setText("비밀번호를 확인해주십시오.");
+                                    }
 
                                 }
                             }
