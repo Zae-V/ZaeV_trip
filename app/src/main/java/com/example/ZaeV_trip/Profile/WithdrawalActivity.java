@@ -1,5 +1,8 @@
 package com.example.ZaeV_trip.Profile;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,10 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.util.MySharedPreferences;
+import com.example.ZaeV_trip.util.SignUtil;
 
 import java.util.Objects;
 
 public class WithdrawalActivity extends AppCompatActivity {
+
+    public static Button withdrawalBtn;
+    public static Button kakaoCertificationBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +30,13 @@ public class WithdrawalActivity extends AppCompatActivity {
 
         String signType = MySharedPreferences.getUserSignType(WithdrawalActivity.this);
 
-        Button kakaoCertificationBtn = findViewById(R.id.kakaoCertificationBtn);
+        kakaoCertificationBtn = findViewById(R.id.kakaoCertificationBtn);
         TextView emailTextView = findViewById(R.id.emailTextView);
         EditText editID = findViewById(R.id.editID);
         TextView passwordTextView = findViewById(R.id.passwordTextView);
         EditText editPW = findViewById(R.id.editPW);
         Button signInBtn = findViewById(R.id.signInBtn);
-        Button withdrawalBtn = findViewById(R.id.withdrawalBtn);
+        withdrawalBtn = findViewById(R.id.withdrawalBtn);
 
         Log.d("signType", signType);
         if (Objects.equals(signType, "kakao")) {
@@ -41,5 +48,35 @@ public class WithdrawalActivity extends AppCompatActivity {
         } else {
             kakaoCertificationBtn.setVisibility(View.GONE);
         }
+
+        kakaoCertificationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SignUtil.kakaoSign(WithdrawalActivity.this, 2);
+            }
+        });
+
+        withdrawalBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showWithdrawalDialog();
+            }
+        });
+    }
+
+    public void showWithdrawalDialog() {
+        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+        dialog.setIcon(R.mipmap.ic_launcher);//알림창 아이콘 설정
+        dialog.setMessage("탈퇴 하시겠습니까?"); //알림창 메세지 설정
+
+        dialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String email = MySharedPreferences.getUserEmail(getApplicationContext());
+                SignUtil.withdrawal(WithdrawalActivity.this, email);
+            }
+        });
+        dialog.setNegativeButton("아니오",null);
+        dialog.show();
     }
 }

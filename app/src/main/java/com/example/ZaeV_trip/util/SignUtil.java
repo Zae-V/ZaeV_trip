@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import com.example.ZaeV_trip.Intro.IntroActivity;
 import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.Profile.ProfileActivity;
+import com.example.ZaeV_trip.Profile.WithdrawalActivity;
+import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Sign.SignActivity;
 import com.example.ZaeV_trip.Sign.SignInFragment;
 import com.example.ZaeV_trip.Sign.SignUpFragment;
@@ -118,24 +120,9 @@ public class SignUtil {
                         Intent intent = new Intent(ctx, MainActivity.class);
                         ctx.startActivity(intent);
                     } else {
-
-                        MySharedPreferences.clearUser(ctx.getApplicationContext()); // SharedPreferences 정보 삭제
-                        mFirestore.collection("User").document(user.userEmail).delete(); // Firestore 정보 삭제
-
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser(); // Authentication 정보 삭제
-                        user.delete()
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.d(TAG, "User account deleted.");
-                                        }
-                                    }
-                                });
-
-                        Intent intent = new Intent(ctx, IntroActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        ctx.startActivity(intent);
+                        WithdrawalActivity.kakaoCertificationBtn.setText("계정 인증 완료");
+                        WithdrawalActivity.withdrawalBtn.setBackground(ctx.getDrawable(R.drawable.rounded_shape));
+                        WithdrawalActivity.withdrawalBtn.setEnabled(true);
                     }
 
                 }else{
@@ -168,6 +155,25 @@ public class SignUtil {
         });
     }
 
+    public static void withdrawal(Context ctx, String uid) {
+        MySharedPreferences.clearUser(ctx.getApplicationContext()); // SharedPreferences 정보 삭제
+        mFirestore.collection("User").document(uid).delete(); // Firestore 정보 삭제
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser(); // Authentication 정보 삭제
+        firebaseUser.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User account deleted.");
+                        }
+                    }
+                });
+
+        Intent intent = new Intent(ctx, IntroActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        ctx.startActivity(intent);
+    }
     public static void signOut(Context ctx) {
         FirebaseAuth.getInstance().signOut();
         MySharedPreferences.clearUser(ctx.getApplicationContext());
