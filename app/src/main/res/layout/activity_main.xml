@@ -212,7 +212,7 @@
                     android:layout_width="75dp"
                     android:layout_height="80dp"
                     android:background="#00ff0000"
-                    android:drawableTop="@drawable/ic_festival"
+                    android:drawableTop="@drawable/festival_btn"
                     android:fontFamily="@font/notosans_regular"
                     android:text="축제·행사"
                     android:textColor="#E6000000"
