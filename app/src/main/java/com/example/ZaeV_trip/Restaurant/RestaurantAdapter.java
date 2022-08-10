@@ -23,10 +23,13 @@ import com.example.ZaeV_trip.model.Cafe;
 import com.example.ZaeV_trip.model.Restaurant;
 import com.example.ZaeV_trip.model.TouristSpot;
 import com.example.ZaeV_trip.util.MySharedPreferences;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -39,7 +42,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     LayoutInflater inflater;
     ArrayList<Restaurant> restaurants;
     ArrayList<Restaurant> filtered;
-    FirebaseFirestore mDatabase;
+    FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
+    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     public RestaurantAdapter() {
 
@@ -76,6 +80,22 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         holder.nameview.setText(filtered.get(position).getTitle());
         holder.locview.setText(filtered.get(position).getAddr1());
         holder.catview.setText(filtered.get(position).getAddr2());
+
+        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getContentID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        holder.bookmarkbtn.setActivated(true);
+                    } else {
+                        holder.bookmarkbtn.setActivated(false);
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     @Override
@@ -137,6 +157,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         public TextView locview;
         public TextView catview;
         public ImageView imgView;
+        public ImageView bookmarkbtn;
 
         public ViewHolder(Context context, @NonNull View itemView) {
             super(itemView);
@@ -145,7 +166,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             locview = itemView.findViewById(R.id.list_location);
             catview = itemView.findViewById(R.id.list_category);
 
-            ImageView bookmarkbtn = itemView.findViewById(R.id.bookmarkBtn);
+            bookmarkbtn = itemView.findViewById(R.id.bookmarkBtn);
             imgView = itemView.findViewById(R.id.list_image);
 
 
@@ -181,8 +202,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     }
 
     private void writeBookmark(int position){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabase = FirebaseFirestore.getInstance();
         Map<String, Object> info = new HashMap<>();
         info.put("name", filtered.get(position).getTitle());
         info.put("type", "식당");
@@ -193,14 +212,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         info.put("image", filtered.get(position).getFirstImage());
         info.put("tel", filtered.get(position).getNumber());
 
-        String userId = user.getUid();
         mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getContentID()).set(info);
     }
     private void deleteBookmark(int position){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabase = FirebaseFirestore.getInstance();
-        Map<String, Object> info = new HashMap<>();
-        String userId = user.getUid();
         mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getContentID()).delete();
     }
 }
