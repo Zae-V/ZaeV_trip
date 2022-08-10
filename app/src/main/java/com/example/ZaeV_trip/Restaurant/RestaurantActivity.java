@@ -1,14 +1,8 @@
 package com.example.ZaeV_trip.Restaurant;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ImageView;
 import androidx.appcompat.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -22,13 +16,10 @@ import com.example.ZaeV_trip.model.Restaurant;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.List;
 
 public class RestaurantActivity extends AppCompatActivity {
     ArrayList<Restaurant> restaurants = new ArrayList<>();

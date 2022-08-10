@@ -6,7 +6,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,14 +17,13 @@ import com.example.ZaeV_trip.Bookmark.BookmarkActivity;
 import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.Festival.FestivalActivity;
 import com.example.ZaeV_trip.Lodging.LodgingActivity;
-import com.example.ZaeV_trip.MainActivity;
+import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.Plogging.PloggingActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Restaurant.RestaurantActivity;
 import com.example.ZaeV_trip.Reusable.ReusableActivity;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
 import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
-import com.example.ZaeV_trip.util.SharedViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SearchActivity extends AppCompatActivity {

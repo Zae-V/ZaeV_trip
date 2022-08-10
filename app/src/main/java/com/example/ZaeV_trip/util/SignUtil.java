@@ -9,8 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.ZaeV_trip.Intro.IntroActivity;
-import com.example.ZaeV_trip.MainActivity;
-import com.example.ZaeV_trip.Profile.ProfileActivity;
+import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.Sign.SignActivity;
 import com.example.ZaeV_trip.Sign.SignInFragment;
 import com.example.ZaeV_trip.Sign.SignUpFragment;

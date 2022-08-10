@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -13,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.example.ZaeV_trip.MainActivity;
+import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Search.Adapter.CityAdapter;
 import com.example.ZaeV_trip.Search.Adapter.VisitedAdapter;

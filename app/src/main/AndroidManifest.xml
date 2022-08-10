@@ -59,7 +59,7 @@
             android:name=".Search.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Main.MainActivity"
             android:exported="true" />
 
         <meta-data

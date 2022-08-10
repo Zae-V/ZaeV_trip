@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".Main.MainActivity"
     android:id="@+id/main_container"
     >
 
@@ -242,6 +242,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
+
                 <HorizontalScrollView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -256,6 +257,7 @@
                         android:layout_height="wrap_content">
 
                         <View
+                            android:id="@+id/eventView1"
                             android:layout_width="150dp"
                             android:layout_height="150dp"
                             android:layout_marginTop="5dp"
@@ -264,15 +266,7 @@
                             android:elevation="3dp" />
 
                         <View
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/profile_rounded_shape"
-                            android:elevation="3dp" />
-
-                        <View
+                            android:id="@+id/eventView2"
                             android:layout_width="150dp"
                             android:layout_height="150dp"
                             android:layout_marginLeft="25dp"
@@ -282,6 +276,7 @@
                             android:elevation="3dp" />
 
                         <View
+                            android:id="@+id/eventView3"
                             android:layout_width="150dp"
                             android:layout_height="150dp"
                             android:layout_marginLeft="25dp"
@@ -291,6 +286,17 @@
                             android:elevation="3dp" />
 
                         <View
+                            android:id="@+id/eventView4"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/profile_rounded_shape"
+                            android:elevation="3dp" />
+
+                        <View
+                            android:id="@+id/eventView5"
                             android:layout_width="150dp"
                             android:layout_height="150dp"
                             android:layout_marginLeft="25dp"
@@ -402,66 +408,75 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <HorizontalScrollView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/bike_course_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:scrollbars="none"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/title3"
+                    app:layout_constraintTop_toBottomOf="@id/title3">
+                </androidx.recyclerview.widget.RecyclerView>
 
-                    >
+<!--                <HorizontalScrollView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginTop="5dp"-->
+<!--                    android:scrollbars="none"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/title3"-->
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+<!--                    >-->
 
-                        <View
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/profile_rounded_shape"
-                            android:elevation="3dp" />
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content">-->
 
-                        <View
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/profile_rounded_shape"
-                            android:elevation="3dp" />
+<!--                        <View-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="150dp"-->
+<!--                            android:layout_marginTop="5dp"-->
+<!--                            android:layout_marginBottom="5dp"-->
+<!--                            android:background="@drawable/profile_rounded_shape"-->
+<!--                            android:elevation="3dp" />-->
 
-                        <View
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/profile_rounded_shape"
-                            android:elevation="3dp" />
+<!--                        <View-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="150dp"-->
+<!--                            android:layout_marginLeft="25dp"-->
+<!--                            android:layout_marginTop="5dp"-->
+<!--                            android:layout_marginBottom="5dp"-->
+<!--                            android:background="@drawable/profile_rounded_shape"-->
+<!--                            android:elevation="3dp" />-->
 
-                        <View
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/profile_rounded_shape"
-                            android:elevation="3dp" />
+<!--                        <View-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="150dp"-->
+<!--                            android:layout_marginLeft="25dp"-->
+<!--                            android:layout_marginTop="5dp"-->
+<!--                            android:layout_marginBottom="5dp"-->
+<!--                            android:background="@drawable/profile_rounded_shape"-->
+<!--                            android:elevation="3dp" />-->
 
-                        <View
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/profile_rounded_shape"
-                            android:elevation="3dp" />
-                    </LinearLayout>
-                </HorizontalScrollView>
+<!--                        <View-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="150dp"-->
+<!--                            android:layout_marginLeft="25dp"-->
+<!--                            android:layout_marginTop="5dp"-->
+<!--                            android:layout_marginBottom="5dp"-->
+<!--                            android:background="@drawable/profile_rounded_shape"-->
+<!--                            android:elevation="3dp" />-->
+
+<!--                        <View-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="150dp"-->
+<!--                            android:layout_marginLeft="25dp"-->
+<!--                            android:layout_marginTop="5dp"-->
+<!--                            android:layout_marginBottom="5dp"-->
+<!--                            android:background="@drawable/profile_rounded_shape"-->
+<!--                            android:elevation="3dp" />-->
+<!--                    </LinearLayout>-->
+<!--                </HorizontalScrollView>-->
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View

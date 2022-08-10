@@ -1,9 +1,7 @@
 package com.example.ZaeV_trip.Sign;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,24 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.captaindroid.tvg.Tvg;
-import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.util.SignUtil;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.SignInMethodQueryResult;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.text.BreakIterator;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-
-import com.example.ZaeV_trip.model.Users;
-import com.example.ZaeV_trip.util.MySharedPreferences;
 
 public class SignInFragment extends Fragment {
     TextView userGreetingText;
