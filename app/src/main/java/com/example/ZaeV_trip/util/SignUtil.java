@@ -121,9 +121,7 @@ public class SignUtil {
                         Intent intent = new Intent(ctx, MainActivity.class);
                         ctx.startActivity(intent);
                     } else {
-                        WithdrawalActivity.kakaoCertificationBtn.setText("계정 인증 완료");
-                        WithdrawalActivity.withdrawalBtn.setBackground(ctx.getDrawable(R.drawable.rounded_shape));
-                        WithdrawalActivity.withdrawalBtn.setEnabled(true);
+                        ((WithdrawalActivity)WithdrawalActivity.ctx).setWithdrawal(2);
                     }
 
                 }else{
@@ -226,14 +224,12 @@ public class SignUtil {
                                                     Intent intent = new Intent(ctx, MainActivity.class);
                                                     ctx.startActivity(intent);
                                                 } else {
-                                                    WithdrawalActivity.emailTextView.setVisibility(View.GONE);
-                                                    WithdrawalActivity.editID.setVisibility(View.GONE);
-                                                    WithdrawalActivity.passwordTextView.setVisibility(View.GONE);
-                                                    WithdrawalActivity.editPW.setVisibility(View.GONE);
-                                                    WithdrawalActivity.errorTextView.setVisibility(View.GONE);
-                                                    WithdrawalActivity.signInBtn.setText("로그인 완료");
-                                                    WithdrawalActivity.withdrawalBtn.setBackground(ctx.getDrawable(R.drawable.rounded_shape));
-                                                    WithdrawalActivity.withdrawalBtn.setEnabled(true);
+                                                    ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(1);
+                                                    ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(2);
+                                                    ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(3);
+                                                    ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(4);
+                                                    ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(6);
+                                                    ((WithdrawalActivity)WithdrawalActivity.ctx).setWithdrawal(1);
                                                 }
 
                                             } else {
@@ -250,14 +246,14 @@ public class SignUtil {
                                     if (type == 1) {
                                         SignInFragment.msg.setText("가입되지 않은 이메일입니다.");
                                     } else {
-                                        WithdrawalActivity.errorTextView.setText("가입되지 않은 이메일입니다.");
+                                        ((WithdrawalActivity)WithdrawalActivity.ctx).setErrorText("가입되지 않은 이메일입니다.");
                                     }
 
                                 } else {
                                     if (type == 1) {
                                         SignInFragment.msg.setText("비밀번호를 확인해주십시오.");
                                     } else {
-                                        WithdrawalActivity.errorTextView.setText("비밀번호를 확인해주십시오.");
+                                        ((WithdrawalActivity)WithdrawalActivity.ctx).setErrorText("비밀번호를 확인해주십시오.");
                                     }
 
                                 }

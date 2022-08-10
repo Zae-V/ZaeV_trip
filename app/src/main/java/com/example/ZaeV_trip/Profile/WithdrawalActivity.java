@@ -1,6 +1,7 @@
 package com.example.ZaeV_trip.Profile;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,19 +21,21 @@ import java.util.Objects;
 
 public class WithdrawalActivity extends AppCompatActivity {
 
-    public static Button withdrawalBtn;
-    public static Button kakaoCertificationBtn;
-    public static Button signInBtn;
-    public static TextView errorTextView;
-    public static TextView emailTextView;
-    public static EditText editID;
-    public static TextView passwordTextView;
-    public static EditText editPW;
+    public static Context ctx;
+    Button withdrawalBtn;
+    Button kakaoCertificationBtn;
+    Button signInBtn;
+    TextView errorTextView;
+    TextView emailTextView;
+    EditText editID;
+    TextView passwordTextView;
+    EditText editPW;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_withdrawal);
+        ctx = this;
 
         String signType = MySharedPreferences.getUserSignType(WithdrawalActivity.this);
 
@@ -47,14 +50,14 @@ public class WithdrawalActivity extends AppCompatActivity {
 
         Log.d("signType", signType);
         if (Objects.equals(signType, "kakao")) {
-            emailTextView.setVisibility(View.GONE);
-            editID.setVisibility(View.GONE);
-            passwordTextView.setVisibility(View.GONE);
-            editPW.setVisibility(View.GONE);
-            signInBtn.setVisibility(View.GONE);
-            errorTextView.setVisibility(View.GONE);
+            setVisibility(1);
+            setVisibility(2);
+            setVisibility(3);
+            setVisibility(4);
+            setVisibility(5);
+            setVisibility(6);
         } else {
-            kakaoCertificationBtn.setVisibility(View.GONE);
+            setVisibility(7);
         }
 
         signInBtn.setOnClickListener(new View.OnClickListener() {
@@ -95,5 +98,51 @@ public class WithdrawalActivity extends AppCompatActivity {
         });
         dialog.setNegativeButton("아니오",null);
         dialog.show();
+    }
+    public void setVisibility(Integer idx) {
+        switch (idx) {
+            case 1:
+                emailTextView.setVisibility(View.GONE);
+                break;
+            case 2:
+                editID.setVisibility(View.GONE);
+                break;
+            case 3:
+                passwordTextView.setVisibility(View.GONE);
+                break;
+            case 4:
+                editPW.setVisibility(View.GONE);
+                break;
+            case 5:
+                signInBtn.setVisibility(View.GONE);
+                break;
+            case 6:
+                errorTextView.setVisibility(View.GONE);
+                break;
+            case 7:
+                kakaoCertificationBtn.setVisibility(View.GONE);
+                break;
+            default:
+                Log.d("WithdrawalActivity", "default");
+        }
+    }
+
+    public void setWithdrawal(Integer idx) {
+        switch (idx) {
+            case 1:
+                signInBtn.setText("로그인 완료");
+                withdrawalBtn.setBackground(ctx.getDrawable(R.drawable.rounded_shape));
+                withdrawalBtn.setEnabled(true);
+                break;
+            case 2:
+                kakaoCertificationBtn.setText("계정 인증 완료");
+                withdrawalBtn.setBackground(ctx.getDrawable(R.drawable.rounded_shape));
+                withdrawalBtn.setEnabled(true);
+                break;
+        }
+    }
+
+    public void setErrorText(String message) {
+        errorTextView.setText(message);
     }
 }
