@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         //Perform ItemSelectedListener
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.search:
+                case R.id.profile:
                     startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
