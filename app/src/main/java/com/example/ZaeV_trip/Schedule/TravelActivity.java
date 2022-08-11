@@ -16,10 +16,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.ZaeV_trip.Bookmark.BookmarkActivity;
-import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.Profile.ProfileActivity;
+import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.R;
-import com.example.ZaeV_trip.Search.SearchActivity;
 import com.example.ZaeV_trip.util.ItemTouchHelperCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

@@ -13,32 +13,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Sign.SignActivity;
-import com.example.ZaeV_trip.model.Users;
-import com.example.ZaeV_trip.util.MySharedPreferences;
 import com.example.ZaeV_trip.util.SignUtil;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.kakao.sdk.auth.model.OAuthToken;
-import com.kakao.sdk.user.UserApiClient;
-import com.kakao.sdk.user.model.User;
-
-import java.util.ArrayList;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function2;
 
 public class IntroActivity extends AppCompatActivity {
     private static final String TAG = "IntroActivity";

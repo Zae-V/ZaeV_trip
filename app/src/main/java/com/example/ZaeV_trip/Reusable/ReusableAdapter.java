@@ -1,6 +1,7 @@
 package com.example.ZaeV_trip.Reusable;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,11 @@ import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Restaurant;
 import com.example.ZaeV_trip.model.Reusable;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -30,7 +34,8 @@ public class ReusableAdapter extends RecyclerView.Adapter<ReusableAdapter.ViewHo
     LayoutInflater inflater;
     ArrayList<Reusable> reusables;
     ArrayList<Reusable> filtered;
-    FirebaseFirestore mDatabase;
+    FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
+    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     public ReusableAdapter() {
 
@@ -67,6 +72,22 @@ public class ReusableAdapter extends RecyclerView.Adapter<ReusableAdapter.ViewHo
         holder.nameview.setText(filtered.get(position).getName());
         holder.locview.setText(filtered.get(position).getLocation());
         holder.catview.setText(filtered.get(position).getReason());
+
+        mDatabase.collection("BookmarkItem").document(userId).collection("reusable").document(filtered.get(position).getName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        holder.bookmarkbtn.setActivated(true);
+                    } else {
+                        holder.bookmarkbtn.setActivated(false);
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     @Override
@@ -128,6 +149,7 @@ public class ReusableAdapter extends RecyclerView.Adapter<ReusableAdapter.ViewHo
         public TextView locview;
         public TextView catview;
         public ImageView imgView;
+        public ImageView bookmarkbtn;
 
         public ViewHolder(Context context, @NonNull View itemView) {
             super(itemView);
@@ -136,7 +158,7 @@ public class ReusableAdapter extends RecyclerView.Adapter<ReusableAdapter.ViewHo
             locview = itemView.findViewById(R.id.list_location);
             catview = itemView.findViewById(R.id.list_category);
 
-            ImageView bookmarkbtn = itemView.findViewById(R.id.bookmarkBtn);
+            bookmarkbtn = itemView.findViewById(R.id.bookmarkBtn);
             imgView = itemView.findViewById(R.id.list_image);
 
 
@@ -172,8 +194,6 @@ public class ReusableAdapter extends RecyclerView.Adapter<ReusableAdapter.ViewHo
     }
 
     private void writeBookmark(int position){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabase = FirebaseFirestore.getInstance();
         Map<String, Object> info = new HashMap<>();
         info.put("name", filtered.get(position).getName());
         info.put("type", "다회용기");
@@ -182,14 +202,9 @@ public class ReusableAdapter extends RecyclerView.Adapter<ReusableAdapter.ViewHo
         info.put("position_y", filtered.get(position).getMapY());
         info.put("reason", filtered.get(position).getReason());
 
-        String userId = user.getUid();
         mDatabase.collection("BookmarkItem").document(userId).collection("reusable").document(filtered.get(position).getName()).set(info);
     }
     private void deleteBookmark(int position){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabase = FirebaseFirestore.getInstance();
-        Map<String, Object> info = new HashMap<>();
-        String userId = user.getUid();
         mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getName()).delete();
     }
 }

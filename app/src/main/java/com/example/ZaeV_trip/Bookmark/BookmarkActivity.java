@@ -6,12 +6,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.ZaeV_trip.MainActivity;
 import com.example.ZaeV_trip.Profile.ProfileActivity;
+import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
 import com.example.ZaeV_trip.Search.SearchActivity;
