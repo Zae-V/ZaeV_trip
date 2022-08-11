@@ -68,7 +68,7 @@ public class SignInFragment extends Fragment {
             public void onClick(View view) {
                 String email = editID.getText().toString().trim();
                 String pwd = editPW.getText().toString().trim();
-                SignUtil.emailSignIn(getActivity(), email, pwd);
+                SignUtil.emailSignIn(getActivity(), email, pwd, 1);
             }
         });
 

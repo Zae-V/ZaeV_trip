@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.ZaeV_trip.Profile.ProfileActivity;
 import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
@@ -80,8 +81,8 @@ public class BookmarkActivity extends AppCompatActivity {
         //Perform ItemSelectedListener
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.search:
-                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                case R.id.profile:
+                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
                 case R.id.bookmark:

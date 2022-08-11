@@ -22,6 +22,7 @@ import com.example.ZaeV_trip.Main.Bike.BikeAdapter;
 import com.example.ZaeV_trip.Plogging.PloggingActivity;
 import com.example.ZaeV_trip.Plogging.PloggingAdapter;
 import com.example.ZaeV_trip.Plogging.PloggingFragment;
+import com.example.ZaeV_trip.Profile.ProfileActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Restaurant.RestaurantActivity;
 import com.example.ZaeV_trip.Reusable.ReusableActivity;
@@ -214,8 +215,8 @@ public class MainActivity extends AppCompatActivity {
         //Perform ItemSelectedListener
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.search:
-                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                case R.id.profile:
+                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
                 case R.id.bookmark:

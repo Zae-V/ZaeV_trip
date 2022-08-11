@@ -19,6 +19,7 @@ public class MySharedPreferences {
         editor.putString("userName", user.userName);
         editor.putString("userEmail", user.userEmail);
         editor.putString("userProfileImage", user.profileImage);
+        editor.putString("signType", user.signType);
 
         editor.commit();
 
@@ -42,4 +43,9 @@ public class MySharedPreferences {
     public static String getUserProfileImage(Context ctx) {
         return get_shared_preferences(ctx).getString("userProfileImage", "");
     }
+
+    public static String getUserSignType(Context ctx) {
+        return get_shared_preferences(ctx).getString("signType", "");
+    }
+
 }

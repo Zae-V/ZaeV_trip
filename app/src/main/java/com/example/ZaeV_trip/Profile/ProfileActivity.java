@@ -78,7 +78,8 @@ public class ProfileActivity extends AppCompatActivity {
         withdrawalTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showWithdrawalDialog();
+                Intent intent = new Intent(ProfileActivity.this, WithdrawalActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -92,21 +93,6 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SignUtil.signOut(ProfileActivity.this);
-            }
-        });
-        dialog.setNegativeButton("아니오",null);
-        dialog.show();
-    }
-
-    public void showWithdrawalDialog() {
-        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
-        dialog.setIcon(R.mipmap.ic_launcher);//알림창 아이콘 설정
-        dialog.setMessage("탈퇴 하시겠습니까?"); //알림창 메세지 설정
-
-        dialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                SignUtil.kakaoSign(ProfileActivity.this, 2);
             }
         });
         dialog.setNegativeButton("아니오",null);

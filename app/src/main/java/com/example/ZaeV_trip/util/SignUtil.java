@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.ZaeV_trip.Intro.IntroActivity;
+import com.example.ZaeV_trip.Profile.WithdrawalActivity;
 import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.Sign.SignActivity;
 import com.example.ZaeV_trip.Sign.SignInFragment;
@@ -60,8 +61,9 @@ public class SignUtil {
                                 ArrayList currentPosition = new ArrayList();
                                 String profileImage = user.getKakaoAccount().getProfile().getProfileImageUrl();
                                 Boolean notification = false;
+                                String signType = "kakao";
 
-                                Users newUser = new Users(userName, userEmail, bookmarkList, currentPosition, profileImage, notification);
+                                Users newUser = new Users(userName, userEmail, bookmarkList, currentPosition, profileImage, notification, signType);
 
                                 // 이메일 중복 체크
                                 mFirestore.collection("User").document(userEmail)
@@ -116,24 +118,7 @@ public class SignUtil {
                         Intent intent = new Intent(ctx, MainActivity.class);
                         ctx.startActivity(intent);
                     } else {
-
-                        MySharedPreferences.clearUser(ctx.getApplicationContext()); // SharedPreferences 정보 삭제
-                        mFirestore.collection("User").document(user.userEmail).delete(); // Firestore 정보 삭제
-
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser(); // Authentication 정보 삭제
-                        user.delete()
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.d(TAG, "User account deleted.");
-                                        }
-                                    }
-                                });
-
-                        Intent intent = new Intent(ctx, IntroActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        ctx.startActivity(intent);
+                        ((WithdrawalActivity)WithdrawalActivity.ctx).setWithdrawal(2);
                     }
 
                 }else{
@@ -166,6 +151,25 @@ public class SignUtil {
         });
     }
 
+    public static void withdrawal(Context ctx, String uid) {
+        MySharedPreferences.clearUser(ctx.getApplicationContext()); // SharedPreferences 정보 삭제
+        mFirestore.collection("User").document(uid).delete(); // Firestore 정보 삭제
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser(); // Authentication 정보 삭제
+        firebaseUser.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User account deleted.");
+                        }
+                    }
+                });
+
+        Intent intent = new Intent(ctx, IntroActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        ctx.startActivity(intent);
+    }
     public static void signOut(Context ctx) {
         FirebaseAuth.getInstance().signOut();
         MySharedPreferences.clearUser(ctx.getApplicationContext());
@@ -186,7 +190,7 @@ public class SignUtil {
         }
     }
 
-    public static void emailSignIn(Context ctx, String email, String pwd) {
+    public static void emailSignIn(Context ctx, String email, String pwd, Integer type) {
         if (!email.equals("") && !pwd.equals("")) {
             mAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener((Activity) ctx, new OnCompleteListener<AuthResult>() {
                 @Override
@@ -205,15 +209,25 @@ public class SignUtil {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                             if (task.isSuccessful()) {
-                                                DocumentSnapshot document = task.getResult();
-                                                HashMap userInfo = (HashMap) document.getData();
-                                                String userName = (String) userInfo.get("userName");
+                                                if (type == 1) {
+                                                    DocumentSnapshot document = task.getResult();
+                                                    HashMap userInfo = (HashMap) document.getData();
+                                                    String userName = (String) userInfo.get("userName");
+                                                    String signType = "email";
 
-                                                Users user = new Users(userName, email, bookmarkList, currentPosition, profileImage, false);
-                                                MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), user);
+                                                    Users user = new Users(userName, email, bookmarkList, currentPosition, profileImage, false, signType);
+                                                    MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), user);
 
-                                                Intent intent = new Intent(ctx, MainActivity.class);
-                                                ctx.startActivity(intent);
+                                                    Intent intent = new Intent(ctx, MainActivity.class);
+                                                    ctx.startActivity(intent);
+                                                } else {
+                                                    ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(1);
+                                                    ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(2);
+                                                    ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(3);
+                                                    ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(4);
+                                                    ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(6);
+                                                    ((WithdrawalActivity)WithdrawalActivity.ctx).setWithdrawal(1);
+                                                }
 
                                             } else {
                                                 Log.d("ERROR", "get failed with ", task.getException());
@@ -226,9 +240,18 @@ public class SignUtil {
                             @Override
                             public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
                                 if (!task.isSuccessful()) {
-                                    SignInFragment.msg.setText("가입되지 않은 이메일입니다.");
+                                    if (type == 1) {
+                                        SignInFragment.msg.setText("가입되지 않은 이메일입니다.");
+                                    } else {
+                                        ((WithdrawalActivity)WithdrawalActivity.ctx).setErrorText("가입되지 않은 이메일입니다.");
+                                    }
+
                                 } else {
-                                    SignInFragment.msg.setText("비밀번호를 확인해주십시오.");
+                                    if (type == 1) {
+                                        SignInFragment.msg.setText("비밀번호를 확인해주십시오.");
+                                    } else {
+                                        ((WithdrawalActivity)WithdrawalActivity.ctx).setErrorText("비밀번호를 확인해주십시오.");
+                                    }
 
                                 }
                             }
@@ -262,7 +285,8 @@ public class SignUtil {
                             }
                         });
 
-                        Users userInfo = new Users(username, email, bookmarkList, currentPosition, profileImage,false);
+                        String signType = "email";
+                        Users userInfo = new Users(username, email, bookmarkList, currentPosition, profileImage,false, signType);
 
                         mFirestore.collection("User").document(userInfo.userEmail).set(userInfo);
                         MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), userInfo);
