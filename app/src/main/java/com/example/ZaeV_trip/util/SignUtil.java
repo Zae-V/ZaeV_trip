@@ -9,6 +9,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.ZaeV_trip.Intro.IntroActivity;
+import com.example.ZaeV_trip.Profile.ModifyActivity;
+import com.example.ZaeV_trip.Profile.ProfileModifyDetailFragment;
+import com.example.ZaeV_trip.Profile.ProfileModifyFragment;
 import com.example.ZaeV_trip.Profile.WithdrawalActivity;
 import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.Sign.SignActivity;
@@ -16,6 +19,7 @@ import com.example.ZaeV_trip.Sign.SignInFragment;
 import com.example.ZaeV_trip.Sign.SignUpFragment;
 import com.example.ZaeV_trip.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +28,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
@@ -36,7 +42,7 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
 
 // SignUtil - 로그인 관련 함수 모음
-// type 1 - 로그인, type 2 - 탈퇴
+// type 1 - 로그인, type 2 - 탈퇴, type 3 - 정보 변경
 public class SignUtil {
     private static final String TAG = "SignUtil";
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -73,6 +79,11 @@ public class SignUtil {
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                 if (task.isSuccessful()) {
                                                     DocumentSnapshot document = task.getResult();
+                                                    HashMap userInfo = (HashMap) document.getData();
+                                                    String userName = (String) userInfo.get("userName");
+
+                                                    newUser.userName = userName;
+
                                                     if (document.exists()) {
                                                         checkedEmailDuplicate(ctx, type, true, newUser, userPassword);
                                                     } else {
@@ -117,8 +128,10 @@ public class SignUtil {
                         MySharedPreferences.saveUserInfo(ctx, user);
                         Intent intent = new Intent(ctx, MainActivity.class);
                         ctx.startActivity(intent);
-                    } else {
+                    } else if (type == 2) {
                         ((WithdrawalActivity)WithdrawalActivity.ctx).setWithdrawal(2);
+                    } else {
+                        ((ModifyActivity)ModifyActivity.ctx).replaceFragment(ProfileModifyDetailFragment.newInstance());
                     }
 
                 }else{
@@ -220,13 +233,15 @@ public class SignUtil {
 
                                                     Intent intent = new Intent(ctx, MainActivity.class);
                                                     ctx.startActivity(intent);
-                                                } else {
+                                                } else if (type == 2) {
                                                     ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(1);
                                                     ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(2);
                                                     ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(3);
                                                     ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(4);
                                                     ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(6);
                                                     ((WithdrawalActivity)WithdrawalActivity.ctx).setWithdrawal(1);
+                                                } else {
+                                                    ((ModifyActivity)ModifyActivity.ctx).replaceFragment(ProfileModifyDetailFragment.newInstance());
                                                 }
 
                                             } else {
@@ -242,17 +257,20 @@ public class SignUtil {
                                 if (!task.isSuccessful()) {
                                     if (type == 1) {
                                         SignInFragment.msg.setText("가입되지 않은 이메일입니다.");
-                                    } else {
+                                    } else if (type == 2) {
                                         ((WithdrawalActivity)WithdrawalActivity.ctx).setErrorText("가입되지 않은 이메일입니다.");
+                                    } else {
+                                        ProfileModifyFragment.setErrorText("가입되지 않은 이메일입니다.");
                                     }
 
                                 } else {
                                     if (type == 1) {
                                         SignInFragment.msg.setText("비밀번호를 확인해주십시오.");
-                                    } else {
+                                    } else if (type == 2) {
                                         ((WithdrawalActivity)WithdrawalActivity.ctx).setErrorText("비밀번호를 확인해주십시오.");
+                                    } else {
+                                        ProfileModifyFragment.setErrorText("비밀번호를 확인해주십시오.");
                                     }
-
                                 }
                             }
                         });
@@ -320,6 +338,20 @@ public class SignUtil {
         }else{
             return false;
         }
+    }
+
+    public static void updateEmailPassword(String newPassword) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.updatePassword(newPassword)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User password updated.");
+                        }
+                    }
+                });
     }
 }
 
