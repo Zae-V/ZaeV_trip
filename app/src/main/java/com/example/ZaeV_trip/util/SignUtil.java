@@ -79,6 +79,11 @@ public class SignUtil {
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                 if (task.isSuccessful()) {
                                                     DocumentSnapshot document = task.getResult();
+                                                    HashMap userInfo = (HashMap) document.getData();
+                                                    String userName = (String) userInfo.get("userName");
+
+                                                    newUser.userName = userName;
+
                                                     if (document.exists()) {
                                                         checkedEmailDuplicate(ctx, type, true, newUser, userPassword);
                                                     } else {
@@ -120,10 +125,9 @@ public class SignUtil {
                     Log.d(TAG, "로그인 성공");
 
                     if (type == 1) {
-                        getUserName(ctx, user);
-//                        MySharedPreferences.saveUserInfo(ctx, user);
-//                        Intent intent = new Intent(ctx, MainActivity.class);
-//                        ctx.startActivity(intent);
+                        MySharedPreferences.saveUserInfo(ctx, user);
+                        Intent intent = new Intent(ctx, MainActivity.class);
+                        ctx.startActivity(intent);
                     } else if (type == 2) {
                         ((WithdrawalActivity)WithdrawalActivity.ctx).setWithdrawal(2);
                     } else {
@@ -156,24 +160,6 @@ public class SignUtil {
                     Log.d(TAG, "회원가입 실패");
                     Log.d(TAG, String.valueOf(task.getException()));
                 }
-            }
-        });
-    }
-
-    public static void getUserName(Context ctx, Users user) {
-        mFirestore.collection("User").document(user.userEmail)
-                .get().
-                addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String userName = (String) documentSnapshot.get("userName");
-                user.userName = userName;
-
-                mFirestore.collection("User").document(user.userEmail).set(user);
-                MySharedPreferences.saveUserInfo(ctx, user);
-
-                Intent intent = new Intent(ctx, MainActivity.class);
-                ctx.startActivity(intent);
             }
         });
     }
