@@ -9,6 +9,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.ZaeV_trip.Intro.IntroActivity;
+import com.example.ZaeV_trip.Profile.ModifyActivity;
+import com.example.ZaeV_trip.Profile.ProfileModifyDetailFragment;
+import com.example.ZaeV_trip.Profile.ProfileModifyFragment;
 import com.example.ZaeV_trip.Profile.WithdrawalActivity;
 import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.Sign.SignActivity;
@@ -16,6 +19,7 @@ import com.example.ZaeV_trip.Sign.SignInFragment;
 import com.example.ZaeV_trip.Sign.SignUpFragment;
 import com.example.ZaeV_trip.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +28,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
@@ -36,7 +42,7 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
 
 // SignUtil - 로그인 관련 함수 모음
-// type 1 - 로그인, type 2 - 탈퇴
+// type 1 - 로그인, type 2 - 탈퇴, type 3 - 정보 변경
 public class SignUtil {
     private static final String TAG = "SignUtil";
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -114,11 +120,14 @@ public class SignUtil {
                     Log.d(TAG, "로그인 성공");
 
                     if (type == 1) {
-                        MySharedPreferences.saveUserInfo(ctx, user);
-                        Intent intent = new Intent(ctx, MainActivity.class);
-                        ctx.startActivity(intent);
-                    } else {
+                        getUserName(ctx, user);
+//                        MySharedPreferences.saveUserInfo(ctx, user);
+//                        Intent intent = new Intent(ctx, MainActivity.class);
+//                        ctx.startActivity(intent);
+                    } else if (type == 2) {
                         ((WithdrawalActivity)WithdrawalActivity.ctx).setWithdrawal(2);
+                    } else {
+                        ((ModifyActivity)ModifyActivity.ctx).replaceFragment(ProfileModifyDetailFragment.newInstance());
                     }
 
                 }else{
@@ -147,6 +156,24 @@ public class SignUtil {
                     Log.d(TAG, "회원가입 실패");
                     Log.d(TAG, String.valueOf(task.getException()));
                 }
+            }
+        });
+    }
+
+    public static void getUserName(Context ctx, Users user) {
+        mFirestore.collection("User").document(user.userEmail)
+                .get().
+                addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String userName = (String) documentSnapshot.get("userName");
+                user.userName = userName;
+
+                mFirestore.collection("User").document(user.userEmail).set(user);
+                MySharedPreferences.saveUserInfo(ctx, user);
+
+                Intent intent = new Intent(ctx, MainActivity.class);
+                ctx.startActivity(intent);
             }
         });
     }

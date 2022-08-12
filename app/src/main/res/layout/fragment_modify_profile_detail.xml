@@ -60,6 +60,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/nameTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="이름"
@@ -70,6 +71,7 @@
                 android:layout_marginRight="30dp"/>
 
             <EditText
+                android:id="@+id/editName"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:ems="10"
@@ -81,6 +83,7 @@
                 android:layout_marginRight="30dp"/>
 
             <TextView
+                android:id="@+id/passwordTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="비밀번호"
@@ -91,6 +94,7 @@
                 android:layout_marginRight="30dp"/>
 
             <EditText
+                android:id="@+id/editPW"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:ems="10"
@@ -102,6 +106,7 @@
                 android:layout_marginRight="30dp"/>
 
             <TextView
+                android:id="@+id/checkPWTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="비밀번호 확인"
@@ -112,7 +117,7 @@
                 android:layout_marginRight="30dp"/>
 
             <EditText
-                android:id="@+id/editTextTextPassword"
+                android:id="@+id/editPWCheck"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:ems="10"
