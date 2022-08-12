@@ -62,6 +62,29 @@ public class MySharedPreferences {
                 });
     }
 
+    public static void modifyUserPassword(Context ctx, String userEmail, String userPassword) {
+        Log.d("로그인", "사용자 정보를 수정합니다.");
+
+//        SharedPreferences.Editor editor = get_shared_preferences(ctx).edit();
+//        editor.putString("userName", userName);
+//        editor.commit();
+//
+//        mFirestore.collection("User").document(userEmail)
+//                .update("userName", userName)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w(TAG, "Error updating document", e);
+//                    }
+//                });
+    }
+
     public static void clearUser(Context ctx) {
         SharedPreferences.Editor editor = get_shared_preferences(ctx).edit();
 

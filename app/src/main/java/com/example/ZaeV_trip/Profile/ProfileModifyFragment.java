@@ -27,6 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.util.SignUtil;
 
+import java.text.BreakIterator;
 import java.util.Objects;
 
 public class ProfileModifyFragment extends Fragment {
@@ -36,7 +37,7 @@ public class ProfileModifyFragment extends Fragment {
 
     Button kakaoCertificationBtn;
     Button signInBtn;
-    TextView errorTextView;
+    public static TextView errorTextView;
     TextView passwordTextView;
     EditText editPW;
 
@@ -99,9 +100,16 @@ public class ProfileModifyFragment extends Fragment {
         kakaoCertificationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 비밀번호 확인 하기 //
                 SignUtil.kakaoSign(getActivity(), 3);
 //                activity.replaceFragment(ProfileModifyDetailFragment.newInstance());
+            }
+        });
+
+        signInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String pwd = editPW.getText().toString().trim();
+                SignUtil.emailSignIn(getActivity(), userEmail, pwd, 3);
             }
         });
 
@@ -133,7 +141,7 @@ public class ProfileModifyFragment extends Fragment {
     public void changeFragment() {
         activity.replaceFragment(ProfileModifyDetailFragment.newInstance());
     }
-    public void setErrorText(String message) {
+    public static void setErrorText(String message) {
         errorTextView.setText(message);
     }
 }

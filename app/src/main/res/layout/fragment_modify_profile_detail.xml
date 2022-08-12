@@ -128,6 +128,17 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"/>
 
+            <TextView
+                android:id="@+id/errorTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FF6347"
+                android:textAlignment="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                />
+
             <android.widget.Button
                 android:id="@+id/modifyBtn"
                 android:layout_width="match_parent"
@@ -139,7 +150,7 @@
                 android:textAlignment="center"
                 android:includeFontPadding="false"
                 android:background="@drawable/rounded_shape"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp" />
 

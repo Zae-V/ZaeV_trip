@@ -21,7 +21,9 @@ import com.captaindroid.tvg.Tvg;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.Sign.SignUpFragment;
 import com.example.ZaeV_trip.util.MySharedPreferences;
+import com.example.ZaeV_trip.util.SignUtil;
 
 import org.w3c.dom.Text;
 
@@ -36,6 +38,7 @@ public class ProfileModifyDetailFragment extends Fragment {
     TextView nameTextView;
     TextView passwordTextView;
     TextView checkPWTextView;
+    TextView errorTextView;
     EditText editName;
     EditText editPW;
     EditText editPWCheck;
@@ -75,6 +78,7 @@ public class ProfileModifyDetailFragment extends Fragment {
         nameTextView = v.findViewById(R.id.nameTextView);
         passwordTextView = v.findViewById(R.id.passwordTextView);
         checkPWTextView = v.findViewById(R.id.checkPWTextView);
+        errorTextView = v.findViewById(R.id.errorTextView);
         editName = v.findViewById(R.id.editName);
         editPW = v.findViewById(R.id.editPW);
         editPWCheck = v.findViewById(R.id.editPWCheck);
@@ -92,13 +96,49 @@ public class ProfileModifyDetailFragment extends Fragment {
         modifyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 정보 수정 //
-                String name = editName.getText().toString().trim();
-                MySharedPreferences.modifyUserName(getActivity(), userEmail, name);
+                Boolean check = false;
+                if (Objects.equals(signType, "kakao")) {
+                    String name = editName.getText().toString().trim();
 
-                Intent intent = new Intent(getActivity(), ProfileActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                    if (name.length() != 0 && !Objects.equals(name, userName)) {
+                        MySharedPreferences.modifyUserName(getActivity(), userEmail, name);
+                    }
+
+                    check = true;
+                } else {
+                    String name = editName.getText().toString().trim();
+                    String password = editPW.getText().toString().trim();
+                    String passwordCheck = editPWCheck.getText().toString().trim();
+
+                    if (name.length() != 0 && !Objects.equals(name, userName)) {
+                        MySharedPreferences.modifyUserName(getActivity(), userEmail, name);
+                    }
+
+                    if (password.length() == 0 && passwordCheck.length() == 0) {
+                        check = true;
+                    } else {
+                        if(password.length() < 6){
+                            errorTextView.setText("비밀번호는 6자리 이상으로 설정해주세요.");
+                        } else {
+                            if (password.length() == 0 || passwordCheck.length() == 0) {
+                                errorTextView.setText("비밀번호 항목을 모두 입력해주세요.");
+                            } else {
+                                if (Objects.equals(password, passwordCheck)) {
+                                    check = true;
+                                    SignUtil.updateEmailPassword(password);
+                                } else {
+                                    errorTextView.setText("비밀번호가 일치하지 않습니다.");
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (check) {
+                    Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
             }
         });
 

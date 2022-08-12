@@ -247,13 +247,15 @@ public class SignUtil {
 
                                                     Intent intent = new Intent(ctx, MainActivity.class);
                                                     ctx.startActivity(intent);
-                                                } else {
+                                                } else if (type == 2) {
                                                     ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(1);
                                                     ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(2);
                                                     ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(3);
                                                     ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(4);
                                                     ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(6);
                                                     ((WithdrawalActivity)WithdrawalActivity.ctx).setWithdrawal(1);
+                                                } else {
+                                                    ((ModifyActivity)ModifyActivity.ctx).replaceFragment(ProfileModifyDetailFragment.newInstance());
                                                 }
 
                                             } else {
@@ -269,17 +271,20 @@ public class SignUtil {
                                 if (!task.isSuccessful()) {
                                     if (type == 1) {
                                         SignInFragment.msg.setText("가입되지 않은 이메일입니다.");
-                                    } else {
+                                    } else if (type == 2) {
                                         ((WithdrawalActivity)WithdrawalActivity.ctx).setErrorText("가입되지 않은 이메일입니다.");
+                                    } else {
+                                        ProfileModifyFragment.setErrorText("가입되지 않은 이메일입니다.");
                                     }
 
                                 } else {
                                     if (type == 1) {
                                         SignInFragment.msg.setText("비밀번호를 확인해주십시오.");
-                                    } else {
+                                    } else if (type == 2) {
                                         ((WithdrawalActivity)WithdrawalActivity.ctx).setErrorText("비밀번호를 확인해주십시오.");
+                                    } else {
+                                        ProfileModifyFragment.setErrorText("비밀번호를 확인해주십시오.");
                                     }
-
                                 }
                             }
                         });
@@ -347,6 +352,20 @@ public class SignUtil {
         }else{
             return false;
         }
+    }
+
+    public static void updateEmailPassword(String newPassword) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.updatePassword(newPassword)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User password updated.");
+                        }
+                    }
+                });
     }
 }
 
