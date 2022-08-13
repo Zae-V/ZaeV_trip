@@ -21,7 +21,7 @@
         android:paddingTop="15dp">
 
         <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchBar"
+            android:id="@+id/lodgingSearchBar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="20dp"
@@ -34,7 +34,7 @@
             android:imeOptions="actionSearch"
             android:inputType="text"
             app:queryHint="검색어를 입력하세요"
-            app:layout_constraintBottom_toTopOf="@+id/cafeImageView"
+            app:layout_constraintBottom_toTopOf="@id/cafeImageView"
             app:searchIcon="@drawable/ic_search" />
 
         <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
@@ -43,7 +43,7 @@
         <!--            android:layout_marginLeft="30dp"-->
         <!--            android:layout_marginTop="20dp"-->
         <!--            android:gravity="center_vertical"-->
-        <!--            app:layout_constraintTop_toBottomOf="@+id/searchBar"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/lodgingSearchBar"-->
         <!--            >-->
         <ImageView
             android:id="@+id/cafeImageView"
@@ -51,8 +51,8 @@
             android:layout_height="20dp"
             android:layout_marginTop="25dp"
             android:src="@drawable/hotel_img"
-            app:layout_constraintTop_toBottomOf="@+id/searchBar"
-            app:layout_constraintStart_toStartOf="@+id/searchBar"
+            app:layout_constraintTop_toBottomOf="@id/lodgingSearchBar"
+            app:layout_constraintStart_toStartOf="@id/lodgingSearchBar"
             />
         <TextView
             android:id="@+id/cafeText"
@@ -63,7 +63,7 @@
             android:layout_marginLeft="25dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/searchBar"
+            app:layout_constraintTop_toBottomOf="@id/lodgingSearchBar"
             app:layout_constraintStart_toStartOf="@id/cafeImageView"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -74,7 +74,7 @@
     <!--        app:layout_constraintTop_toBottomOf="@+id/topCafeLayout"-->
     <!--        app:layout_constraintStart_toStartOf="parent">-->
 
-    <GridView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/LodgingList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,9 +86,5 @@
         app:layout_constraintTop_toBottomOf="@+id/topCafeLayout"
         app:layout_constraintStart_toStartOf="parent"
         />
-
-    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
