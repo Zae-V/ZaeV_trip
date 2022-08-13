@@ -38,6 +38,9 @@ public class CalendarFragment extends Fragment{
                              @Nullable Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.fragment_calendar, container, false);
 
+        TravelActivity travelActivity = (TravelActivity) getActivity();
+        travelActivity.fab.setVisibility(View.GONE);
+
         searchDateBtn = v.findViewById(R.id.searchDate);
         startDateTextView = v.findViewById(R.id.startDateTextView);
         endDateTextView = v.findViewById(R.id.endDateTextView);

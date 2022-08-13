@@ -22,6 +22,9 @@ public class SetScheduleFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_set_schedule, container, false);
 
+        TravelActivity travelActivity = (TravelActivity) getActivity();
+        travelActivity.fab.setVisibility(View.GONE);
+
         ImageView editTitleImageView = v.findViewById(R.id.editTitleImageView);
         editTitleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,12 +52,21 @@ public class SetScheduleFragment extends Fragment {
         dialog.show();
 
         Button okBtn = dialog.findViewById(R.id.titleOKBtn);
+        Button cancelBtn = dialog.findViewById(R.id.cancelBtn);
+
         okBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 // addSchedule fragment 로 이동
                 TravelActivity activity = (TravelActivity) getActivity();
                 activity.changeFragment(2);
+                dialog.hide();
+            }
+        });
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 dialog.hide();
             }
         });
