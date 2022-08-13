@@ -306,13 +306,17 @@ public class MainActivity extends AppCompatActivity {
         String numOfRows = "100";
         String mobileApp = "ZaeVTour";
         String mobileOS = "AND";
+        String crsKorNm = "%EC%84%9C%EC%9A%B8"; // "서울" 인코딩
+        String brdDiv = "DNBW"; // 걷기/자전거 구분(DNWW : 걷기길, DNBW : 자전거길)
 
         String queryUrl = address + "?"
                 + "serviceKey=" + key
                 + "&pageNo=" + pageNo
                 + "&numOfRows=" + numOfRows
                 + "&MobileOS=" + mobileOS
-                + "&MobileApp=" + mobileApp;
+                + "&MobileApp=" + mobileApp
+                + "&crsKorNm=" + crsKorNm
+                + "&brdDiv=" + brdDiv;
 
         try{
             URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
