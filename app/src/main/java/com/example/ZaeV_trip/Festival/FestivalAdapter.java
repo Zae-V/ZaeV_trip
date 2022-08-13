@@ -1,6 +1,7 @@
 package com.example.ZaeV_trip.Festival;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,11 @@ import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
 import com.example.ZaeV_trip.model.Cafe;
 import com.example.ZaeV_trip.model.Festival;
 import com.example.ZaeV_trip.model.TouristSpot;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -73,6 +77,22 @@ public class FestivalAdapter extends RecyclerView.Adapter<FestivalAdapter.ViewHo
                 .error(R.drawable.default_profile_image)
                 .fallback(R.drawable.default_profile_image)
                 .into(holder.imageView);
+
+        mDatabase.collection("BookmarkItem").document(userId).collection("festival").document(filtered.get(position).getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        holder.bookmarkbtn.setActivated(true);
+                    } else {
+                        holder.bookmarkbtn.setActivated(false);
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     @Override
