@@ -26,6 +26,7 @@
                 android:layout_marginTop="25dp">
 
                 <EditText
+                    android:id="@+id/travel_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="여행 제목을 정해주세요!"
@@ -61,6 +62,14 @@
                     android:src="@drawable/vegan_burger">
                 </ImageView>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/addBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_btn_green"
+                android:text="일정 추가"
+                />
 
         </LinearLayout>
     </ScrollView>

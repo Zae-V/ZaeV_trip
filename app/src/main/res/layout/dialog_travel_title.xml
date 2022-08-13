@@ -27,10 +27,11 @@
     </TextView>
 
     <EditText
+        android:id="@+id/set_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="여행 제목"
+        android:hint="여행 제목"
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp">
 

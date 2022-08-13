@@ -48,7 +48,7 @@ public class FestivalAdapter extends RecyclerView.Adapter<FestivalAdapter.ViewHo
 
     }
 
-    public FestivalAdapter(FestivalActivity festivalActivity, ArrayList<Festival> festivals) {
+    public FestivalAdapter(Context festivalActivity, ArrayList<Festival> festivals) {
         this.context = festivalActivity;
         this.filtered = festivals;
         this.festivals = new ArrayList<Festival>(festivals);
