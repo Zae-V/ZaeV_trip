@@ -1,13 +1,25 @@
 package com.example.ZaeV_trip.model;
 
 public class Lodging {
+    private String contentID;
     private String addr1;
+    private String addr2;
     private String firstImage;
+    private String firstImage2;
     private String mapX;
     private String mapY;
     private String title;
-    private String startDate;
-    private String endDate;
+
+    public Lodging(String contentID, String addr1, String addr2, String firstImage, String firstImage2, String mapX, String mapY, String title) {
+        this.contentID = contentID;
+        this.addr1 = addr1;
+        this.addr2 = addr2;
+        this.firstImage = firstImage;
+        this.firstImage2 = firstImage2;
+        this.mapX = mapX;
+        this.mapY = mapY;
+        this.title = title;
+    }
 
     public String getAddr1() {
         return addr1;
@@ -17,12 +29,28 @@ public class Lodging {
         this.addr1 = addr1;
     }
 
+    public String getAddr2() {
+        return addr2;
+    }
+
+    public void setAddr2(String addr2) {
+        this.addr2 = addr2;
+    }
+
     public String getFirstImage() {
         return firstImage;
     }
 
     public void setFirstImage(String firstImage) {
         this.firstImage = firstImage;
+    }
+
+    public String getFirstImage2() {
+        return firstImage2;
+    }
+
+    public void setFirstImage2(String firstImage2) {
+        this.firstImage2 = firstImage2;
     }
 
     public String getMapX() {
@@ -49,30 +77,13 @@ public class Lodging {
         this.title = title;
     }
 
-    public String getStartDate() {
-        return startDate;
+    public String getContentID() {
+        return contentID;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public void setContentID(String contentID) {
+        this.contentID = contentID;
     }
 
-    public String getEndDate() {
-        return endDate;
-    }
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public Lodging(String addr1, String firstImage, String mapX, String mapY, String title, String startDate, String endDate) {
-        this.addr1 = addr1;
-        this.firstImage = firstImage;
-        this.mapX = mapX;
-        this.mapY = mapY;
-        this.title = title;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
 }
-

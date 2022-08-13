@@ -32,8 +32,6 @@ public class LodgingFragment extends Fragment {
         //Bundle
         String name = getArguments().getString("name");
         String location = getArguments().getString("location");
-        String startDate = getArguments().getString("startDate");
-        String endDate = getArguments().getString("endDate");
         String x = getArguments().getString("x");
         String y = getArguments().getString("y");
         String img = getArguments().getString("img");
@@ -42,7 +40,6 @@ public class LodgingFragment extends Fragment {
         //xml
         TextView list_name = v.findViewById(R.id.list_name);
         TextView list_location = v.findViewById(R.id.list_location);
-        TextView list_category = v.findViewById(R.id.list_date);
 
         ImageView image = v.findViewById(R.id.list_image);
         ImageView poster = v.findViewById(R.id.content_img);
@@ -50,7 +47,6 @@ public class LodgingFragment extends Fragment {
 
         list_name.setText(name);
         list_location.setText(location);
-        list_category.setText(startDate + "~" + endDate);
 
 
         Glide.with(v)

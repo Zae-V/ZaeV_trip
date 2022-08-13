@@ -1,13 +1,16 @@
 package com.example.ZaeV_trip.Lodging;
 
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Lodging;
@@ -17,97 +20,107 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 
 public class LodgingActivity extends AppCompatActivity {
-
     ArrayList<Lodging> lodgings = new ArrayList<>();
     String local;
 
-    GridView gridView;
+    SearchView searchView;
+    RecyclerView list;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Bundle extras = getIntent().getExtras();
-        if(extras != null){
-            local = extras.getString("local");
-        }
         setContentView(R.layout.activity_lodging);
 
-        gridView = findViewById(R.id.LodgingList);
+        list = (RecyclerView) findViewById(R.id.LodgingList);
+        searchView = findViewById(R.id.lodgingSearchBar);
+        Bundle extras = getIntent().getExtras();
+
+        if(extras!=null){
+            local = extras.getString("local");
+        }
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 lodgings = getXmlData();
 
-
                 runOnUiThread(new Runnable() {
+                    ArrayList<Lodging> filteredLodging = new ArrayList<Lodging>();
+
                     @Override
                     public void run() {
-                        LodgingAdapter adapter = new LodgingAdapter(LodgingActivity.this);
                         for(int i = 0; i< lodgings.size(); i++) {
-                            if(local.equals("전체 지역") || local.equals("전체")){
-                                adapter.addItem(lodgings.get(i));
-                            }else{
-                                if(lodgings.get(i).getAddr1().split(" ").length > 1 && lodgings.get(i).getAddr1().split(" ")[1].equals(local)){
-                                    adapter.addItem(lodgings.get(i));
+                            if (local.equals("전체 지역") || local.equals("전체")) {
+                                filteredLodging.add(lodgings.get(i));
+                            }
+                            else {
+                                if (lodgings.get(i).getAddr1().contains(local)) {
+                                    filteredLodging.add(lodgings.get(i));
                                 }
                             }
-                        }
-                        gridView.setAdapter(adapter);
+                            LodgingAdapter adapter = new LodgingAdapter(LodgingActivity.this, filteredLodging);
+                            list.setLayoutManager(new LinearLayoutManager(LodgingActivity.this, RecyclerView.VERTICAL, false));
+                            list.setAdapter(adapter);
 
-                        //항목 클릭했을 때 상세화면 띄우기
-                        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Bundle bundle = new Bundle();
-                                bundle.putString("name", lodgings.get(i).getTitle());
-                                bundle.putString("location", lodgings.get(i).getAddr1());
-                                bundle.putString("startDate", lodgings.get(i).getStartDate());
-                                bundle.putString("endDate",lodgings.get(i).getEndDate());
-                                bundle.putString("img",lodgings.get(i).getFirstImage());
-                                bundle.putString("x", lodgings.get(i).getMapX());
-                                bundle.putString("y",lodgings.get(i).getMapY());
+                            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                                    @Override
+                                    public boolean onQueryTextSubmit(String s) {
+                                        adapter.getFilter().filter(s);
+                                        return false;
+                                    }
 
-                                LodgingFragment lodgingFragment = new LodgingFragment();
-                                lodgingFragment.setArguments(bundle);
+                                    @Override
+                                    public boolean onQueryTextChange(String s) {
+                                        return false;
+                                    }
+                                });
 
-                                FragmentManager fragmentManager = getSupportFragmentManager();
-                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                fragmentTransaction.replace(R.id.container_lodging, lodgingFragment);
-                                fragmentTransaction.addToBackStack(null);
-                                fragmentTransaction.commit();
+                            adapter.setOnItemClickListener(new LodgingAdapter.OnItemClickListener() {
+                                    @Override
+                                        public void onItemClick(View v, int i) {
+                                            Bundle bundle = new Bundle();
+                                            bundle.putSerializable("lodging", (Serializable) filteredLodging.get(i));
 
+                                            LodgingFragment lodgingFragment = new LodgingFragment();
+                                            lodgingFragment.setArguments(bundle);
+
+                                            FragmentManager fragmentManager = getSupportFragmentManager();
+                                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                            fragmentTransaction.replace(R.id.container_lodging, lodgingFragment);
+                                            fragmentTransaction.addToBackStack(null);
+                                            fragmentTransaction.commit();
+
+                                        }
+                                    });
+
+                                }
                             }
                         });
                     }
-
-                });
+                }).start();
             }
-        }).start();
-
-    }
     public ArrayList<Lodging> getXmlData(){
         ArrayList<Lodging> lodgings = new ArrayList<Lodging>();
 //        String str= edit.getText().toString();//EditText에 작성된 Text얻어오기
 //        String location = URLEncoder.encode(str);
         String query="%EC%A0%84%EB%A0%A5%EB%A1%9C";
         String key = getString(R.string.portal_key);
-        String address = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/";
+        String address = "https://api.visitkorea.or.kr/openapi/service/rest/KorService/";
         String listType = "searchStay";
         String pageNo = "1";
         String numOfRows = "1000";
         String mobileApp = "ZaeVTour";
         String mobileOS = "AND";
         String arrange = "A"; // (A=제목순, B=조회순, C=수정일순, D=생성일순) , 대표이미지가 반드시 있는 정렬 (O=제목순, P=조회순, Q=수정일순, R=생성일순)
-        String contentTypeID = "15";
+        String contentTypeID = "32";
         String areaCode = "1"; // 서울시 = 1
         String listYN = "Y"; // (Y=목록, N=개수)
-        String sigunguCode = ""; //시군구 코드
+        String sigunguCode = "13"; //시군구 코드
 
 
         String queryUrl = address + listType + "?"
@@ -152,6 +165,7 @@ public class LodgingActivity extends AppCompatActivity {
                                     "",
                                     "",
                                     "",
+                                    "",
                                     ""
                             );
                         }
@@ -160,6 +174,9 @@ public class LodgingActivity extends AppCompatActivity {
                         }
                         else if(tag.equals("addr1")){
                             lodging.setAddr1(xpp.nextText());
+                        }
+                        else if(tag.equals("addr2")){
+                            lodging.setAddr2(xpp.nextText());
                         }
                         else if(tag.equals("mapx")){
                             lodging.setMapX(xpp.nextText());
@@ -170,11 +187,11 @@ public class LodgingActivity extends AppCompatActivity {
                         else if(tag.equals("firstimage")){
                             lodging.setFirstImage(xpp.nextText());
                         }
-                        else if(tag.equals("eventenddate")){
-                            lodging.setEndDate(xpp.nextText());
+                        else if(tag.equals("firstimage2")){
+                            lodging.setFirstImage2(xpp.nextText());
                         }
-                        else if(tag.equals("eventstartdate")){
-                            lodging.setStartDate(xpp.nextText());
+                        else if(tag.equals("contentid")){
+                            lodging.setContentID(xpp.nextText());
                         }
                         break;
 
