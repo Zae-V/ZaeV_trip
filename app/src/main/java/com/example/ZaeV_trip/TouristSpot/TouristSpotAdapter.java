@@ -1,6 +1,7 @@
 package com.example.ZaeV_trip.TouristSpot;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,11 @@ import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Restaurant.RestaurantAdapter;
 import com.example.ZaeV_trip.model.Restaurant;
 import com.example.ZaeV_trip.model.TouristSpot;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -32,7 +36,8 @@ public class TouristSpotAdapter extends RecyclerView.Adapter<TouristSpotAdapter.
     LayoutInflater inflater;
     ArrayList<TouristSpot> touristSpots;
     ArrayList<TouristSpot> filtered;
-    FirebaseFirestore mDatabase;
+    FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
+    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     public TouristSpotAdapter() {
 
@@ -70,6 +75,22 @@ public class TouristSpotAdapter extends RecyclerView.Adapter<TouristSpotAdapter.
         holder.nameview.setText(filtered.get(position).getTitle());
         holder.locview.setText(filtered.get(position).getAddr1());
         holder.catview.setText(filtered.get(position).getAddr2());
+
+        mDatabase.collection("BookmarkItem").document(userId).collection("touristSpot").document(filtered.get(position).getContentID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        holder.bookmarkbtn.setActivated(true);
+                    } else {
+                        holder.bookmarkbtn.setActivated(false);
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     @Override
@@ -131,6 +152,7 @@ public class TouristSpotAdapter extends RecyclerView.Adapter<TouristSpotAdapter.
         public TextView locview;
         public TextView catview;
         public ImageView imgView;
+        public ImageView bookmarkbtn;
 
         public ViewHolder(Context context, @NonNull View itemView) {
             super(itemView);
@@ -139,7 +161,7 @@ public class TouristSpotAdapter extends RecyclerView.Adapter<TouristSpotAdapter.
             locview = itemView.findViewById(R.id.list_location);
             catview = itemView.findViewById(R.id.list_category);
 
-            ImageView bookmarkbtn = itemView.findViewById(R.id.bookmarkBtn);
+            bookmarkbtn = itemView.findViewById(R.id.bookmarkBtn);
             imgView = itemView.findViewById(R.id.list_image);
 
 
