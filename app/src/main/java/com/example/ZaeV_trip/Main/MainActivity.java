@@ -17,8 +17,10 @@ import android.widget.TextView;
 import com.example.ZaeV_trip.Bookmark.BookmarkActivity;
 import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.Festival.FestivalActivity;
+import com.example.ZaeV_trip.Festival.FestivalFragment;
 import com.example.ZaeV_trip.Lodging.LodgingActivity;
 import com.example.ZaeV_trip.Main.Bike.BikeAdapter;
+import com.example.ZaeV_trip.Main.EventList.EventAdapter;
 import com.example.ZaeV_trip.Plogging.PloggingActivity;
 import com.example.ZaeV_trip.Plogging.PloggingAdapter;
 import com.example.ZaeV_trip.Plogging.PloggingFragment;
@@ -34,6 +36,7 @@ import com.example.ZaeV_trip.model.Festival;
 import com.example.ZaeV_trip.model.Plogging;
 import com.example.ZaeV_trip.model.Restaurant;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.type.DateTime;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -42,15 +45,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView current;
     String local;
-    ArrayList<Festival> festivals = new ArrayList<>();
+    ArrayList<Festival> eventLists = new ArrayList<>();
     ArrayList<Plogging> bikes = new ArrayList<>();
-    RecyclerView list;
+    RecyclerView bikeList;
+    RecyclerView eventList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +64,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         current = findViewById(R.id.currentPosition);
-        list = (RecyclerView) findViewById(R.id.bike_course_list);
+        bikeList = (RecyclerView) findViewById(R.id.bike_course_list);
+        eventList = (RecyclerView) findViewById(R.id.event_list);
 
+        local = "전체";
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             local = extras.getString("current");
             current.setText(local);
         }
-        local = "전체";
+
 
         Log.d("테스트", local);
 
@@ -89,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         BikeAdapter adapter = new BikeAdapter(MainActivity.this, filteredBike);
-                        list.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false));
-                        list.setAdapter(adapter);
+                        bikeList.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false));
+                        bikeList.setAdapter(adapter);
 
                         adapter.setOnItemClickListener(new BikeAdapter.OnItemClickListener() {
                             @Override
@@ -109,8 +117,61 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
+                    }
+                });
 
+            }
+        }).start();
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                eventLists = getXmlEventData();
+
+                runOnUiThread(new Runnable() {
+                    ArrayList<Festival> filteredEvent = new ArrayList<>();
+                    @Override
+                    public void run() {
+                        for(int i = 0; i< eventLists.size();i++){
+                            if(local.equals("전체 지역") || local.equals("전체")){
+//                                filteredBike.add(bikes.get(i));
+                                filteredEvent.add(eventLists.get(i));
+                            }
+                            else{
+                                if(eventLists.get(i).getAddr1().split(" ").length > 1 && eventLists.get(i).getAddr1().split(" ")[1].equals(local)){
+//                                    filteredBike.add(bikes.get(i));
+                                    filteredEvent.add(eventLists.get(i));
+                                }
+                            }
+                        }
+
+                        EventAdapter adapterE = new EventAdapter(MainActivity.this, filteredEvent);
+                        eventList.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false));
+                        eventList.setAdapter(adapterE);
+
+                        adapterE.setOnItemClickListener(new EventAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View v, int i) {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("name", filteredEvent.get(i).getTitle());
+                                bundle.putString("location", filteredEvent.get(i).getAddr1());
+                                bundle.putString("startDate", filteredEvent.get(i).getStartDate());
+                                bundle.putString("endDate",filteredEvent.get(i).getEndDate());
+                                bundle.putString("img",filteredEvent.get(i).getFirstImage());
+                                bundle.putString("x", filteredEvent.get(i).getMapX());
+                                bundle.putString("y",filteredEvent.get(i).getMapY());
+
+                                FestivalFragment festivalFragment = new FestivalFragment();
+                                festivalFragment.setArguments(bundle);
+
+                                FragmentManager fragmentManager = getSupportFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.main_container, festivalFragment);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
+
+                            }
+                        });
                     }
                 });
 
@@ -239,9 +300,6 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<Plogging> getXmlBikeData(){
         ArrayList<Plogging> bikes = new ArrayList<Plogging>();
-//        String str= edit.getText().toString();//EditText에 작성된 Text얻어오기
-//        String location = URLEncoder.encode(str);
-        String query="%EC%A0%84%EB%A0%A5%EB%A1%9C";
         String key = getString(R.string.portal_key);
         String address = "http://api.visitkorea.or.kr/openapi/service/rest/Durunubi/courseList";
         String pageNo = "1";
@@ -345,5 +403,115 @@ public class MainActivity extends AppCompatActivity {
         return bikes;
     }
 
+    public ArrayList<Festival> getXmlEventData(){
+        ArrayList<Festival> eventLists = new ArrayList<Festival>();
+        String key = getString(R.string.portal_key);
+        String address = "https://api.visitkorea.or.kr/openapi/service/rest/KorService/";
+        String listType = "searchFestival";
+        String pageNo = "1";
+        String numOfRows = "1000";
+        String mobileApp = "ZaeVTour";
+        String mobileOS = "AND";
+        String arrange = "A"; // (A=제목순, B=조회순, C=수정일순, D=생성일순) , 대표이미지가 반드시 있는 정렬 (O=제목순, P=조회순, Q=수정일순, R=생성일순)
+        String areaCode = "1"; // 서울시 = 1
+        String listYN = "Y"; // (Y=목록, N=개수)
+        String sigunguCode = ""; //시군구 코드
+        // 현재 날짜 구하기
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String startDate = now.format(formatter);
+
+        String queryUrl = address + listType + "?"
+                + "serviceKey=" + key
+                + "&numOfRows=" + numOfRows
+                + "&pageNo=" + pageNo
+                + "&MobileOS=" + mobileOS
+                + "&MobileApp=" + mobileApp
+                + "&arrange=" + arrange
+                + "&listYN=" + listYN
+                + "&areaCode=" + areaCode
+                + "&eventStartDate=" + startDate;
+
+        try{
+            URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+            InputStream is= url.openStream(); //url위치로 입력스트림 연결
+
+            XmlPullParserFactory factory= XmlPullParserFactory.newInstance();//xml파싱을 위한
+            XmlPullParser xpp= factory.newPullParser();
+            xpp.setInput( new InputStreamReader(is, "UTF-8") ); //inputstream 으로부터 xml 입력받기
+
+            String tag;
+            Integer count = 0;
+
+            xpp.next();
+            Festival festival = null;
+
+            int eventType= xpp.getEventType();
+            while( eventType != XmlPullParser.END_DOCUMENT ){
+                switch( eventType ){
+                    case XmlPullParser.START_DOCUMENT:
+                        break;
+
+                    case XmlPullParser.START_TAG:
+                        tag= xpp.getName();//테그 이름 얻어오기
+
+                        if(tag.equals("item")) {
+                            festival = new Festival(
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    ""
+                            );
+                        }
+                        else if(tag.equals("contentid")){
+                            festival.setId(xpp.nextText());
+                        }
+                        else if(tag.equals("title")){
+                            festival.setTitle(xpp.nextText());
+                        }
+                        else if(tag.equals("addr1")){
+                            festival.setAddr1(xpp.nextText());
+                        }
+                        else if(tag.equals("mapx")){
+                            festival.setMapX(xpp.nextText());
+                        }
+                        else if(tag.equals("mapy")){
+                            festival.setMapY(xpp.nextText());
+                        }
+                        else if(tag.equals("firstimage")){
+                            festival.setFirstImage(xpp.nextText());
+                        }
+                        else if(tag.equals("eventenddate")){
+                            festival.setEndDate(xpp.nextText());
+                        }
+                        else if(tag.equals("eventstartdate")){
+                            festival.setStartDate(xpp.nextText());
+                        }
+                        break;
+
+                    case XmlPullParser.TEXT:
+                        break;
+
+                    case XmlPullParser.END_TAG:
+                        tag= xpp.getName();
+
+                        if(tag.equals("item")) {
+                            eventLists.add(festival);
+                        }
+                        break;
+
+                }
+                eventType= xpp.next();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return eventLists;
+    }
 
 }

@@ -41,7 +41,7 @@
                     android:layout_marginTop="13dp"
                     android:text="식당 이름"
                     android:textColor="@color/white"
-                    android:textSize="15dp"/>
+                    android:textSize="15dp" />
 
                 <TextView
                     android:id="@+id/list_menu"
@@ -51,7 +51,7 @@
                     android:layout_marginTop="3dp"
                     android:text="메뉴 1, 메뉴 2"
                     android:textColor="@color/white"
-                    android:textSize="15dp"/>
+                    android:textSize="15dp" />
 
             </LinearLayout>
         </FrameLayout>

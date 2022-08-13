@@ -22,6 +22,8 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class FestivalActivity extends AppCompatActivity {
@@ -119,18 +121,22 @@ public class FestivalActivity extends AppCompatActivity {
         String areaCode = "1"; // 서울시 = 1
         String listYN = "Y"; // (Y=목록, N=개수)
         String sigunguCode = ""; //시군구 코드
+        // 현재 날짜 구하기
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String startDate = now.format(formatter);
 
 
         String queryUrl = address + listType + "?"
                 + "serviceKey=" + key
-                + "&pageNo=" + pageNo
                 + "&numOfRows=" + numOfRows
-                + "&MobileApp=" + mobileApp
+                + "&pageNo=" + pageNo
                 + "&MobileOS=" + mobileOS
+                + "&MobileApp=" + mobileApp
                 + "&arrange=" + arrange
-//                + "&contentTypeId=" + contentTypeID
+                + "&listYN=" + listYN
                 + "&areaCode=" + areaCode
-                + "&listYN=" + listYN;
+                + "&eventStartDate=" + startDate;
 
         try{
             URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
