@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,10 +33,13 @@ public class FestivalActivity extends AppCompatActivity {
     String local;
 
     RecyclerView festivalList;
+    SearchView searchView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
@@ -43,7 +47,9 @@ public class FestivalActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_festival);
 
+
         festivalList = findViewById(R.id.festivalList);
+        searchView = findViewById(R.id.searchBar);
 
         new Thread(new Runnable() {
             @Override
@@ -71,7 +77,20 @@ public class FestivalActivity extends AppCompatActivity {
                         festivalList.setLayoutManager(new LinearLayoutManager(FestivalActivity.this, RecyclerView.VERTICAL, false));
                         festivalList.setAdapter(adapter);
 
+                        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String query) {
+                                adapter.getFilter().filter(query);
 
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onQueryTextChange(String newText) {
+
+                                return false;
+                            }
+                        });
 
                         adapter.setOnItemClickListener(new FestivalAdapter.OnItemClickListener() {
 
