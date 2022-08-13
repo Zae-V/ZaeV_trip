@@ -99,7 +99,7 @@
             android:name=".Reusable.ReusableActivity"
             android:exported="false" />
         <activity
-            android:name=".Zerowaste.ZeroWasteActivity"
+            android:name=".ZeroWaste.ZeroWasteActivity"
             android:exported="false" />
     </application>
 
