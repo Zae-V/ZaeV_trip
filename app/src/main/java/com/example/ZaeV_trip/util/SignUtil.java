@@ -80,9 +80,9 @@ public class SignUtil {
                                                 if (task.isSuccessful()) {
                                                     DocumentSnapshot document = task.getResult();
                                                     HashMap userInfo = (HashMap) document.getData();
-                                                    String userName = (String) userInfo.get("userName");
+//                                                    String userName = (String) userInfo.get("userName");
 
-                                                    newUser.userName = userName;
+//                                                    newUser.userName = userName;
 
                                                     if (document.exists()) {
                                                         checkedEmailDuplicate(ctx, type, true, newUser, userPassword);
