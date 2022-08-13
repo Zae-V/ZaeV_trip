@@ -67,12 +67,13 @@ public class MainActivity extends AppCompatActivity {
         bikeList = (RecyclerView) findViewById(R.id.bike_course_list);
         eventList = (RecyclerView) findViewById(R.id.event_list);
 
+        local = "전체";
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             local = extras.getString("current");
             current.setText(local);
         }
-        local = "전체";
+
 
         Log.d("테스트", local);
 
@@ -80,32 +81,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 bikes = getXmlBikeData();
-//                eventLists = getXmlEventData();
 
                 runOnUiThread(new Runnable() {
                     ArrayList<Plogging> filteredBike = new ArrayList<Plogging>();
-//                    ArrayList<Festival> filteredEvent = new ArrayList<>();
                     @Override
                     public void run() {
                         for(int i = 0; i< bikes.size();i++){
                             if(local.equals("전체 지역") || local.equals("전체")){
                                 filteredBike.add(bikes.get(i));
-//                                filteredEvent.add(eventLists.get(i));
                             }
                             else{
                                 if(bikes.get(i).getSigun().contains(local)){
                                     filteredBike.add(bikes.get(i));
-//                                    filteredEvent.add(eventLists.get(i));
                                 }
                             }
                         }
                         BikeAdapter adapter = new BikeAdapter(MainActivity.this, filteredBike);
                         bikeList.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false));
                         bikeList.setAdapter(adapter);
-
-//                        EventAdapter adapterE = new EventAdapter(MainActivity.this, filteredEvent);
-//                        eventList.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false));
-//                        eventList.setAdapter(adapterE);
 
                         adapter.setOnItemClickListener(new BikeAdapter.OnItemClickListener() {
                             @Override
@@ -124,33 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
-
-//                        adapterE.setOnItemClickListener(new EventAdapter.OnItemClickListener() {
-//                            @Override
-//                            public void onItemClick(View v, int i) {
-//                                Bundle bundle = new Bundle();
-//                                bundle.putString("name", filteredEvent.get(i).getTitle());
-//                                bundle.putString("location", filteredEvent.get(i).getAddr1());
-//                                bundle.putString("startDate", filteredEvent.get(i).getStartDate());
-//                                bundle.putString("endDate",filteredEvent.get(i).getEndDate());
-//                                bundle.putString("img",filteredEvent.get(i).getFirstImage());
-//                                bundle.putString("x", filteredEvent.get(i).getMapX());
-//                                bundle.putString("y",filteredEvent.get(i).getMapY());
-//
-//                                FestivalFragment festivalFragment = new FestivalFragment();
-//                                festivalFragment.setArguments(bundle);
-//
-//                                FragmentManager fragmentManager = getSupportFragmentManager();
-//                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                                fragmentTransaction.replace(R.id.main_container, festivalFragment);
-//                                fragmentTransaction.addToBackStack(null);
-//                                fragmentTransaction.commit();
-//
-//                            }
-//                        });
-
-
-
                     }
                 });
 
@@ -160,11 +126,9 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-//                bikes = getXmlBikeData();
                 eventLists = getXmlEventData();
 
                 runOnUiThread(new Runnable() {
-//                    ArrayList<Plogging> filteredBike = new ArrayList<Plogging>();
                     ArrayList<Festival> filteredEvent = new ArrayList<>();
                     @Override
                     public void run() {
@@ -180,31 +144,10 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
                         }
-//                        BikeAdapter adapter = new BikeAdapter(MainActivity.this, filteredBike);
-//                        bikeList.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false));
-//                        bikeList.setAdapter(adapter);
 
                         EventAdapter adapterE = new EventAdapter(MainActivity.this, filteredEvent);
                         eventList.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false));
                         eventList.setAdapter(adapterE);
-
-//                        adapter.setOnItemClickListener(new BikeAdapter.OnItemClickListener() {
-//                            @Override
-//                            public void onItemClick(View v, int i) {
-//                                Bundle bundle = new Bundle();
-//                                bundle.putSerializable("plogging", (Serializable) filteredBike.get(i));
-//
-//                                PloggingFragment ploggingFragment = new PloggingFragment();
-//                                ploggingFragment.setArguments(bundle);
-//
-//                                FragmentManager fragmentManager = getSupportFragmentManager();
-//                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                                fragmentTransaction.replace(R.id.main_container, ploggingFragment);
-//                                fragmentTransaction.addToBackStack(null);
-//                                fragmentTransaction.commit();
-//
-//                            }
-//                        });
 
                         adapterE.setOnItemClickListener(new EventAdapter.OnItemClickListener() {
                             @Override
@@ -229,9 +172,6 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
-
-
-
                     }
                 });
 
@@ -360,9 +300,6 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<Plogging> getXmlBikeData(){
         ArrayList<Plogging> bikes = new ArrayList<Plogging>();
-//        String str= edit.getText().toString();//EditText에 작성된 Text얻어오기
-//        String location = URLEncoder.encode(str);
-        String query="%EC%A0%84%EB%A0%A5%EB%A1%9C";
         String key = getString(R.string.portal_key);
         String address = "http://api.visitkorea.or.kr/openapi/service/rest/Durunubi/courseList";
         String pageNo = "1";
@@ -468,7 +405,6 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<Festival> getXmlEventData(){
         ArrayList<Festival> eventLists = new ArrayList<Festival>();
-        String query="%EC%A0%84%EB%A0%A5%EB%A1%9C";
         String key = getString(R.string.portal_key);
         String address = "https://api.visitkorea.or.kr/openapi/service/rest/KorService/";
         String listType = "searchFestival";
