@@ -16,6 +16,7 @@ import com.example.ZaeV_trip.Restaurant.RestaurantAdapter;
 import com.example.ZaeV_trip.Restaurant.RestaurantFragment;
 import com.example.ZaeV_trip.model.Restaurant;
 import com.example.ZaeV_trip.model.Reusable;
+import com.example.ZaeV_trip.util.getXmlData;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -52,7 +53,7 @@ public class ReusableActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                reusables = readExcel();
+                reusables = getXmlData.getResusableData(ReusableActivity.this);
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -110,65 +111,6 @@ public class ReusableActivity extends AppCompatActivity {
             }
         }).start();
 
-    }
-
-    public ArrayList<Reusable> readExcel() {
-        ArrayList<Reusable> reusables = new ArrayList<Reusable>();
-
-        try {
-            InputStream is = getBaseContext().getResources().getAssets().open("noplasticstore.bom.xls");
-            Workbook wb = Workbook.getWorkbook(is);
-            Reusable reusable = null;
-            if (wb != null) {
-                Sheet sheet = wb.getSheet(0);   // 시트 불러오기
-                if (sheet != null) {
-                    Log.i("test", "불러오기");
-                    int colTotal = sheet.getColumns();    // 전체 컬럼
-                    int rowIndexStart = 1;                  // row 인덱스 시작
-                    Log.i("test", "전체 칼럼: " + colTotal);
-                    int rowTotal = sheet.getColumn(colTotal - 2).length;
-                    Log.i("test", "전체 로우: " + rowTotal);
-
-                    StringBuilder sb;
-                    for (int row = rowIndexStart; row < rowTotal; row++) {
-                        sb = new StringBuilder();
-                        reusable = new Reusable(
-                                "",
-                                "",
-                                "",
-                                "",
-                                ""
-                        );
-                        for (int col = 0; col < colTotal; col++) {
-                            String contents = sheet.getCell(col, row).getContents();
-                            if (col == 0) {
-                                reusable.setName(contents);
-                            } else if (col == 1) {
-                                reusable.setLocation(contents);
-                            } else if (col == 2) {
-                                reusable.setMapY(contents);
-                            } else if (col == 3) {
-                                reusable.setMapX(contents);
-                            } else if (col == 4) {
-                                reusable.setReason(contents);
-                            }
-                            sb.append("col" + col + " : " + contents + " , ");
-
-                        }
-                        reusables.add(reusable);
-//                        Log.i("test", sb.toString());
-                    }
-
-                }
-            }
-
-        }
-        catch (BiffException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return reusables;
     }
 
 

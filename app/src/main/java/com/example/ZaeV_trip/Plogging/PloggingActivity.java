@@ -20,6 +20,7 @@ import com.example.ZaeV_trip.TouristSpot.TouristSpotAdapter;
 import com.example.ZaeV_trip.TouristSpot.TouristSpotFragment;
 import com.example.ZaeV_trip.model.Plogging;
 import com.example.ZaeV_trip.model.TouristSpot;
+import com.example.ZaeV_trip.util.getXmlData;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -52,7 +53,7 @@ public class PloggingActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ploggings = getXmlData();
+                ploggings = getXmlData.getPloggingData(PloggingActivity.this);
 
                 runOnUiThread(new Runnable() {
                     ArrayList<Plogging> filteredPlogging = new ArrayList<Plogging>();
@@ -110,110 +111,4 @@ public class PloggingActivity extends AppCompatActivity {
         }).start();
     }
 
-    public ArrayList<Plogging> getXmlData(){
-        ArrayList<Plogging> ploggings = new ArrayList<Plogging>();
-        String key = getString(R.string.portal_key);
-        String address = "http://api.visitkorea.or.kr/openapi/service/rest/Durunubi/courseList";
-        String pageNo = "1";
-        String numOfRows = "100";
-        String mobileApp = "ZaeVTour";
-        String mobileOS = "AND";
-        String crsKorNm = "%EC%84%9C%EC%9A%B8"; // "서울" 인코딩
-
-        String queryUrl = address + "?"
-                + "serviceKey=" + key
-                + "&pageNo=" + pageNo
-                + "&numOfRows=" + numOfRows
-                + "&MobileOS=" + mobileOS
-                + "&MobileApp=" + mobileApp
-                + "&crsKorNm=" + crsKorNm;
-
-        try{
-            URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
-            InputStream is= url.openStream(); //url위치로 입력스트림 연결
-
-            XmlPullParserFactory factory= XmlPullParserFactory.newInstance(); //xml파싱을 위한
-            XmlPullParser xpp= factory.newPullParser();
-            xpp.setInput( new InputStreamReader(is, "UTF-8") ); //inputstream 으로부터 xml 입력받기
-
-            String tag;
-
-            xpp.next();
-            Plogging plogging = null;
-
-            int eventType= xpp.getEventType();
-            while( eventType != XmlPullParser.END_DOCUMENT ){
-                switch( eventType ){
-                    case XmlPullParser.START_DOCUMENT:
-                        break;
-
-                    case XmlPullParser.START_TAG:
-                        tag= xpp.getName();//테그 이름 얻어오기
-
-                        if(tag.equals("item")) {
-                            plogging = new Plogging(
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    ""
-                            );
-                        }
-                        else if(tag.equals("crsContents")){
-                            plogging.setCrsContents(xpp.nextText());
-                        }
-                        else if(tag.equals("crsDstnc")){
-                            plogging.setCrsDstnc(xpp.nextText());
-                        }
-                        else if(tag.equals("crsKorNm")){
-                            plogging.setCrsKorNm(xpp.nextText());
-                        }
-                        else if(tag.equals("crsLevel")){
-                            plogging.setCrsLevel(xpp.nextText());
-                        }
-                        else if(tag.equals("crsSummary")){
-                            plogging.setCrsSummary(xpp.nextText());
-                        }
-                        else if(tag.equals("crsTotlRqrmHour")){
-                            plogging.setCrsTotlRqrmHour(xpp.nextText());
-                        }
-                        else if(tag.equals("crsTourInfo")){
-                            plogging.setCrsTourInfo(xpp.nextText());
-                        }
-                        else if(tag.equals("sigun")){
-                            plogging.setSigun(xpp.nextText());
-                        }
-                        else if(tag.equals("travelerinfo")){
-                            plogging.setTravelerinfo(xpp.nextText());
-                        }
-                        else if(tag.equals("brdDiv")){
-                            plogging.setBrdDiv(xpp.nextText());
-                        }
-                        break;
-
-                    case XmlPullParser.TEXT:
-                        break;
-
-                    case XmlPullParser.END_TAG:
-                        tag= xpp.getName();
-
-                        if(tag.equals("item")) {
-                            ploggings.add(plogging);
-                        }
-                        break;
-
-                }
-                eventType= xpp.next();
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return ploggings;
-    }
 }
