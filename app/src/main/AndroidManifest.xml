@@ -21,10 +21,6 @@
         android:theme="@style/Theme.ZaeV_trip"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
-        <!-- <activity -->
-        <!-- android:name=".Cafe.CafeActivity" -->
-        <!-- android:exported="false" /> -->
         <activity
             android:name=".Intro.SplashActivity"
             android:exported="true">
@@ -101,6 +97,9 @@
             android:exported="false" />
         <activity
             android:name=".Reusable.ReusableActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Zerowaste.ZeroWasteActivity"
             android:exported="false" />
     </application>
 
