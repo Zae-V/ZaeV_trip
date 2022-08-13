@@ -11,10 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-<<<<<<< Updated upstream
 import android.os.Bundle;
-import com.example.ZaeV_trip.R;
-=======
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.ZeroWaste;
 
@@ -25,7 +22,6 @@ import java.util.ArrayList;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
->>>>>>> Stashed changes
 
 public class ZeroWasteActivity extends AppCompatActivity {
     ArrayList<ZeroWaste> zeroWastes = new ArrayList<>();
@@ -65,7 +61,7 @@ public class ZeroWasteActivity extends AppCompatActivity {
                                     filteredZeroWaste.add(zeroWastes.get(i));
                                 }
                             }
-                            ZeroWasteAdapter adapter = new ZeroWasteAdapter(ZeroWasteActivity.this, filteredZeroWaste);
+                            ZeroWasteAdapter adapter = new com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter(ZeroWasteActivity.this, filteredZeroWaste);
                             list.setLayoutManager(new LinearLayoutManager(ZeroWasteActivity.this, RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
                             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -80,7 +76,7 @@ public class ZeroWasteActivity extends AppCompatActivity {
                                     return false;
                                 }
                             });
-                            adapter.setOnItemClickListener(new ZeroWasteAdapter.OnItemClickListener() {
+                            adapter.setOnItemClickListener(new com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View v, int i) {
                                     Bundle bundle = new Bundle();
@@ -90,7 +86,7 @@ public class ZeroWasteActivity extends AppCompatActivity {
                                     bundle.putString("y", filteredZeroWaste.get(i).getMapY());
                                     bundle.putString("reason",filteredZeroWaste.get(i).getReason());
 
-                                    ZeroWasteFragment zeroWasteFragment = new ZeroWasteFragment();
+                                    ZeroWasteFragment zeroWasteFragment = new com.example.ZaeV_trip.ZeroWaste.ZeroWasteFragment();
                                     zeroWasteFragment.setArguments(bundle);
 
                                     FragmentManager fragmentManager = getSupportFragmentManager();

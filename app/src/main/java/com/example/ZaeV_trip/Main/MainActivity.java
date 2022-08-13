@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,7 @@ import com.example.ZaeV_trip.Schedule.TravelActivity;
 import com.example.ZaeV_trip.Search.SearchActivity;
 import com.example.ZaeV_trip.Search.SearchFragment;
 import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
+import com.example.ZaeV_trip.ZeroWaste.ZeroWasteActivity;
 import com.example.ZaeV_trip.model.Festival;
 import com.example.ZaeV_trip.model.Plogging;
 import com.example.ZaeV_trip.model.Restaurant;
@@ -260,6 +262,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
+                intent.putExtra("local", current.getText());
+                startActivity(intent);
+            }
+        });
+
+        Button shopBtn = findViewById(R.id.shopBtn);
+        shopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ZeroWasteActivity.class);
                 intent.putExtra("local", current.getText());
                 startActivity(intent);
             }
