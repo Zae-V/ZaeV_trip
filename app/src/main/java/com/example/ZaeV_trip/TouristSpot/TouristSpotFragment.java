@@ -127,7 +127,7 @@ public class TouristSpotFragment extends Fragment {
 
         String query="%EC%A0%84%EB%A0%A5%EB%A1%9C";
         String key = getString(R.string.portal_key);
-        String address = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/";
+        String address = "https://api.visitkorea.or.kr/openapi/service/rest/KorService/";
         String listType = "detailCommon";
         String pageNo = "1";
         String numOfRows = "10";
@@ -158,6 +158,7 @@ public class TouristSpotFragment extends Fragment {
 
         try{
             URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+            Log.d("TouristSpotInfori", String.valueOf(url));
             InputStream is= url.openStream(); //url위치로 입력스트림 연결
 
             XmlPullParserFactory factory= XmlPullParserFactory.newInstance();//xml파싱을 위한

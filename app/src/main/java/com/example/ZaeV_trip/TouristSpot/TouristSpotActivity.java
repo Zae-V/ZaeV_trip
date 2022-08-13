@@ -89,7 +89,7 @@ public class TouristSpotActivity extends AppCompatActivity {
                                 public void onItemClick(View v, int i) {
                                     Bundle bundle = new Bundle();
                                     bundle.putString("name", filteredTouristSpot.get(i).getTitle());
-                                    bundle.putString("id", filteredTouristSpot.get(i).getContentID());
+                                    bundle.putString("contentID", filteredTouristSpot.get(i).getContentID());
                                     bundle.putString("location", filteredTouristSpot.get(i).getAddr1());
                                     bundle.putString("x", filteredTouristSpot.get(i).getMapX());
                                     bundle.putString("y", filteredTouristSpot.get(i).getMapY());
@@ -121,7 +121,7 @@ public class TouristSpotActivity extends AppCompatActivity {
 //        String location = URLEncoder.encode(str);
         String query="%EC%A0%84%EB%A0%A5%EB%A1%9C";
         String key = getString(R.string.portal_key);
-        String address = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/";
+        String address = "https://api.visitkorea.or.kr/openapi/service/rest/KorService/";
         String listType = "areaBasedList";
         String pageNo = "1";
         String numOfRows = "100";
