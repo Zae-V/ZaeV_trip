@@ -112,22 +112,21 @@ public class PloggingActivity extends AppCompatActivity {
 
     public ArrayList<Plogging> getXmlData(){
         ArrayList<Plogging> ploggings = new ArrayList<Plogging>();
-//        String str= edit.getText().toString();//EditText에 작성된 Text얻어오기
-//        String location = URLEncoder.encode(str);
-        String query="%EC%A0%84%EB%A0%A5%EB%A1%9C";
         String key = getString(R.string.portal_key);
         String address = "http://api.visitkorea.or.kr/openapi/service/rest/Durunubi/courseList";
         String pageNo = "1";
         String numOfRows = "100";
         String mobileApp = "ZaeVTour";
         String mobileOS = "AND";
+        String crsKorNm = "%EC%84%9C%EC%9A%B8"; // "서울" 인코딩
 
         String queryUrl = address + "?"
                 + "serviceKey=" + key
                 + "&pageNo=" + pageNo
                 + "&numOfRows=" + numOfRows
                 + "&MobileOS=" + mobileOS
-                + "&MobileApp=" + mobileApp;
+                + "&MobileApp=" + mobileApp
+                + "&crsKorNm=" + crsKorNm;
 
         try{
             URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
