@@ -6,8 +6,8 @@
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="170dp"
-        android:layout_height="170dp"
+        android:layout_width="190dp"
+        android:layout_height="190dp"
         app:cardCornerRadius="15dp"
         app:cardBackgroundColor="#FFFFFF"
         app:cardUseCompatPadding="true">
@@ -27,34 +27,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="25dp"
                     android:layout_marginRight="20dp"
                     android:fontFamily="@font/notosans_bold"
                     android:lineSpacingExtra="-3dp"
                     android:maxLines="2"
                     android:text="둘레길"
                     android:textColor="@color/black"
-                    android:textSize="12dp" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/addressText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginTop="70dp"
                     android:fontFamily="@font/notosans_regular"
                     android:text="서울 강북구"
                     android:textColor="#72000000"
-                    android:textSize="10dp" />
+                    android:textSize="11dp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="1.5dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="110dp"
                     android:layout_marginRight="20dp"
-                    android:background="#632E2E2E">
+                    android:background="#162E2E2E">
 
                 </View>
 
@@ -64,11 +64,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="110dp"
                     android:fontFamily="@font/notosans_bold"
-                    android:text="난이도: 보통"
-                    android:textColor="@color/text_gradient_end"
-                    android:textSize="12dp" />
+                    android:text="난이도 보통"
+                    android:textColor="#525252"
+                    android:textSize="14dp" />
 
 
             </RelativeLayout>

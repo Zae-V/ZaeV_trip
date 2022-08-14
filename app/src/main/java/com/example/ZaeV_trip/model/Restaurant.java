@@ -1,46 +1,45 @@
 package com.example.ZaeV_trip.model;
 
 public class Restaurant {
-    private String contentID;
-    private String addr1;
-    private String addr2;
-    private String firstImage;
-    private String firstImage2;
-    private String mapX;
-    private String mapY;
-    private String title;
-    private String number;
+    String id;
+    String name;
+    String location;
+    String category;
+    String mapX;
+    String mapY;
+    String number;
+    String menu;
 
-    public String getAddr1() {
-        return addr1;
+    public String getId() {
+        return id;
     }
 
-    public void setAddr1(String addr1) {
-        this.addr1 = addr1;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getAddr2() {
-        return addr2;
+    public String getName() {
+        return name;
     }
 
-    public void setAddr2(String addr2) {
-        this.addr2 = addr2;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getFirstImage() {
-        return firstImage;
+    public String getLocation() {
+        return location;
     }
 
-    public void setFirstImage(String firstImage) {
-        this.firstImage = firstImage;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public String getFirstImage2() {
-        return firstImage2;
+    public String getCategory() {
+        return category;
     }
 
-    public void setFirstImage2(String firstImage2) {
-        this.firstImage2 = firstImage2;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getMapX() {
@@ -59,35 +58,30 @@ public class Restaurant {
         this.mapY = mapY;
     }
 
-    public String getTitle() {
-        return title;
+    public String getNumber() {
+        return number;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
-    public String getContentID() {
-        return contentID;
+    public String getMenu() {
+        return menu;
     }
 
-    public void setContentID(String contentID) {
-        this.contentID = contentID;
+    public void setMenu(String menu) {
+        this.menu = menu;
     }
 
-    public String getNumber(){return number;}
-
-    public void setNumber(String number) {this.number = number;}
-
-    public Restaurant(String contentID, String addr1, String addr2, String firstImage, String firstImage2, String mapX, String mapY, String title, String number) {
-        this.contentID = contentID;
-        this.addr1 = addr1;
-        this.addr2 = addr2;
-        this.firstImage = firstImage;
-        this.firstImage2 = firstImage2;
+    public Restaurant(String id, String name, String location, String category, String mapX, String mapY, String number, String menu) {
+        this.id = id;
+        this.name = name;
+        this.location = location;
+        this.category = category;
         this.mapX = mapX;
         this.mapY = mapY;
-        this.title = title;
         this.number = number;
+        this.menu = menu;
     }
 }

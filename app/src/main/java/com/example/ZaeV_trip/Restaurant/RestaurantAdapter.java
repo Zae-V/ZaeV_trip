@@ -71,17 +71,17 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Glide.with(holder.itemView.getContext())
-                .load(restaurants.get(position).getFirstImage())
-                .placeholder(R.drawable.default_profile_image)
-                .error(R.drawable.default_profile_image)
-                .fallback(R.drawable.default_profile_image)
-                .into(holder.imgView);
-        holder.nameview.setText(filtered.get(position).getTitle());
-        holder.locview.setText(filtered.get(position).getAddr1());
-        holder.catview.setText(filtered.get(position).getAddr2());
+//        Glide.with(holder.itemView.getContext())
+//                .load(restaurants.get(position).getFirstImage())
+//                .placeholder(R.drawable.default_profile_image)
+//                .error(R.drawable.default_profile_image)
+//                .fallback(R.drawable.default_profile_image)
+//                .into(holder.imgView);
+        holder.nameview.setText(filtered.get(position).getName());
+        holder.locview.setText(filtered.get(position).getLocation());
+        holder.catview.setText(filtered.get(position).getCategory());
 
-        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getContentID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -121,7 +121,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                 String filterString = charSequence.toString().toLowerCase();
                 String filterableString;
                 for (int i = 0; i < restaurants.size(); i++) {
-                    filterableString = restaurants.get(i).getTitle();
+                    filterableString = restaurants.get(i).getName();
                     if (filterableString.contains(filterString)) {
                         filteredList.add(restaurants.get(i));
                     }
@@ -203,18 +203,18 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
     private void writeBookmark(int position){
         Map<String, Object> info = new HashMap<>();
-        info.put("name", filtered.get(position).getTitle());
+        info.put("name", filtered.get(position).getName());
         info.put("type", "식당");
-        info.put("address", filtered.get(position).getAddr1());
+        info.put("address", filtered.get(position).getLocation());
         info.put("position_x", filtered.get(position).getMapX());
         info.put("position_y", filtered.get(position).getMapY());
-        info.put("serialNumber", filtered.get(position).getContentID());
-        info.put("image", filtered.get(position).getFirstImage());
+        info.put("serialNumber", filtered.get(position).getId());
         info.put("tel", filtered.get(position).getNumber());
+        info.put("menu", filtered.get(position).getMenu());
 
-        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getContentID()).set(info);
+        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getId()).set(info);
     }
     private void deleteBookmark(int position){
-        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getContentID()).delete();
+        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getId()).delete();
     }
 }

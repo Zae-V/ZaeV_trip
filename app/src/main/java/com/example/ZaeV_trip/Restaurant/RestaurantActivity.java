@@ -56,7 +56,7 @@ public class RestaurantActivity extends AppCompatActivity {
                                 filteredRestaurant.add(restaurants.get(i));
                             }
                             else {
-                                if (restaurants.get(i).getAddr1().contains(local)) {
+                                if (restaurants.get(i).getLocation().contains(local)) {
                                     filteredRestaurant.add(restaurants.get(i));
                                 }
                             }
@@ -79,12 +79,11 @@ public class RestaurantActivity extends AppCompatActivity {
                                 @Override
                                 public void onItemClick(View v, int i) {
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("name", filteredRestaurant.get(i).getTitle());
-                                    bundle.putString("id", filteredRestaurant.get(i).getContentID());
-                                    bundle.putString("location", filteredRestaurant.get(i).getAddr1());
+                                    bundle.putString("name", filteredRestaurant.get(i).getName());
+                                    bundle.putString("id", filteredRestaurant.get(i).getId());
+                                    bundle.putString("location", filteredRestaurant.get(i).getLocation());
                                     bundle.putString("x", filteredRestaurant.get(i).getMapX());
                                     bundle.putString("y", filteredRestaurant.get(i).getMapY());
-                                    bundle.putString("firstImg", filteredRestaurant.get(i).getFirstImage());
                                     bundle.putString("number",filteredRestaurant.get(i).getNumber());
 
                                     RestaurantFragment restaurantFragment = new RestaurantFragment();

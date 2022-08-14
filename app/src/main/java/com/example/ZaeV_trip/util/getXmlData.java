@@ -454,108 +454,167 @@ public class getXmlData {
 
     public static ArrayList<Restaurant> getRestaurantData(Context cnt){
         ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+        String key= cnt.getString(R.string.vegan_key);
+        String address = "http://openapi.seoul.go.kr:8088/";
+        String listType = "CrtfcUpsoInfo";
+        String startIndex = "800";
+        String endIndex = "1700";
 
-        String query = "%EC%A0%84%EB%A0%A5%EB%A1%9C";
-        String key = cnt.getString(R.string.portal_key);
-        String address = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/";
-        String listType = "areaBasedList";
-        String pageNo = "1";
-        String numOfRows = "100";
-        String mobileApp = "ZaeVTour";
-        String mobileOS = "AND";
-        String arrange = "A"; // (A=제목순, B=조회순, C=수정일순, D=생성일순) , 대표이미지가 반드시 있는 정렬 (O=제목순, P=조회순, Q=수정일순, R=생성일순)
-        String contentTypeID = "39";
-        String areaCode = "1"; // 서울시 = 1
-        String listYN = "Y"; // (Y=목록, N=개수)
+        String queryUrl = address + key
+                + "/xml/" + listType
+                + "/" + startIndex
+                + "/" + endIndex + "/";
+        try{
+            URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+            InputStream is= url.openStream(); //url위치로 입력스트림 연결
 
-        String queryUrl = address + listType + "?"
-                + "serviceKey=" + key
-                + "&pageNo=" + pageNo
-                + "&numOfRows=" + numOfRows
-                + "&MobileApp=" + mobileApp
-                + "&MobileOS=" + mobileOS
-                + "&arrange=" + arrange
-                + "&contentTypeId=" + contentTypeID
-                + "&areaCode=" + areaCode
-                + "&listYN=" + listYN;
-
-        try {
-            URL url = new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
-            InputStream is = url.openStream(); //url위치로 입력스트림 연결
-
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();//xml파싱을 위한
-            XmlPullParser xpp = factory.newPullParser();
-            xpp.setInput(new InputStreamReader(is, "UTF-8")); //inputstream 으로부터 xml 입력받기
+            XmlPullParserFactory factory= XmlPullParserFactory.newInstance();//xml파싱을 위한
+            XmlPullParser xpp= factory.newPullParser();
+            xpp.setInput( new InputStreamReader(is, "UTF-8") ); //inputstream 으로부터 xml 입력받기
 
             String tag;
 
             xpp.next();
             Restaurant restaurant = null;
-            int eventType = xpp.getEventType();
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                switch (eventType) {
+            int eventType= xpp.getEventType();
+            while( eventType != XmlPullParser.END_DOCUMENT ){
+                switch( eventType ){
                     case XmlPullParser.START_DOCUMENT:
                         break;
 
                     case XmlPullParser.START_TAG:
-                        tag = xpp.getName();//테그 이름 얻어오기
-
-                        if(tag.equals("item")) {
-                            restaurant = new Restaurant(
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    ""
-                            );
+                        tag= xpp.getName();//테그 이름 얻어오기
+                        if(tag.equals("row")){
+                            restaurant = new Restaurant("","","","","","","","");
                         }
-                        else if(tag.equals("title")){
-                            restaurant.setTitle(xpp.nextText());
+                        else if(tag.equals("CRTFC_UPSO_MGT_SNO")){
+                            restaurant.setId(xpp.nextText());
                         }
-                        else if(tag.equals("addr1")){
-                            restaurant.setAddr1(xpp.nextText());
+                        else if(tag.equals("UPSO_NM")){
+                            restaurant.setName(xpp.nextText());
                         }
-                        else if(tag.equals("addr2")){
-                            restaurant.setAddr2(xpp.nextText());
+                        else if(tag.equals("RDN_CODE_NM")){
+                            restaurant.setLocation(xpp.nextText());
                         }
-                        else if(tag.equals("mapx")){
-                            restaurant.setMapX(xpp.nextText());
+                        else if(tag.equals("BIZCND_CODE_NM")){
+                            restaurant.setCategory(xpp.nextText());
                         }
-                        else if(tag.equals("mapy")){
+                        else if(tag.equals("Y_DNTS")){
                             restaurant.setMapY(xpp.nextText());
                         }
-                        else if(tag.equals("firstimage")){
-                            restaurant.setFirstImage(xpp.nextText());
+                        else if(tag.equals("X_CNTS")){
+                            restaurant.setMapX(xpp.nextText());
                         }
-                        else if(tag.equals("firstimage2")){
-                            restaurant.setFirstImage2(xpp.nextText());
+                        else if(tag.equals("FOOD_MENU")){
+                            restaurant.setMenu(xpp.nextText());
                         }
-                        else if(tag.equals("contentid")){
-                            restaurant.setContentID(xpp.nextText());
-                        }
-                        else if(tag.equals("tel")){
+                        else if(tag.equals("TEL_NO")){
                             restaurant.setNumber(xpp.nextText());
                         }
+
                         break;
 
                     case XmlPullParser.TEXT:
                         break;
 
                     case XmlPullParser.END_TAG:
-                        tag= xpp.getName();
+                        tag= xpp.getName(); //테그 이름 얻어오기
 
-                        if(tag.equals("item")) {
+                        if(tag.equals("row")) {
                             restaurants.add(restaurant);
-                        }
+                        };// 첫번째 검색결과종료..줄바꿈
                         break;
-
                 }
+
                 eventType= xpp.next();
             }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return restaurants;
+
+    }
+
+    public static ArrayList<Restaurant> getOpenRestaurantData(Context cnt){
+        // 서울시 일반음식점 인허가 정보 API 불러오기
+        ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+        String key= cnt.getString(R.string.vegan_key);
+        String address = "http://openapi.seoul.go.kr:8088/";
+        String listType = "LOCALDATA_072404";
+        String startIndex = "800";
+        String endIndex = "1700";
+
+        String queryUrl = address + key
+                + "/xml/" + listType
+                + "/" + startIndex
+                + "/" + endIndex + "/";
+        try{
+            URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+            InputStream is= url.openStream(); //url위치로 입력스트림 연결
+
+            XmlPullParserFactory factory= XmlPullParserFactory.newInstance();//xml파싱을 위한
+            XmlPullParser xpp= factory.newPullParser();
+            xpp.setInput( new InputStreamReader(is, "UTF-8") ); //inputstream 으로부터 xml 입력받기
+
+            String tag;
+
+            xpp.next();
+            Restaurant restaurant = null;
+            int eventType= xpp.getEventType();
+            while( eventType != XmlPullParser.END_DOCUMENT ){
+                switch( eventType ){
+                    case XmlPullParser.START_DOCUMENT:
+                        break;
+
+                    case XmlPullParser.START_TAG:
+                        tag= xpp.getName();//테그 이름 얻어오기
+                        if(tag.equals("row")){
+                            restaurant = new Restaurant("","","","","","","","");
+                        }
+                        else if(tag.equals("CRTFC_UPSO_MGT_SNO")){
+                            restaurant.setId(xpp.nextText());
+                        }
+                        else if(tag.equals("UPSO_NM")){
+                            restaurant.setName(xpp.nextText());
+                        }
+                        else if(tag.equals("RDN_CODE_NM")){
+                            restaurant.setLocation(xpp.nextText());
+                        }
+                        else if(tag.equals("BIZCND_CODE_NM")){
+                            restaurant.setCategory(xpp.nextText());
+                        }
+                        else if(tag.equals("Y_DNTS")){
+                            restaurant.setMapY(xpp.nextText());
+                        }
+                        else if(tag.equals("X_CNTS")){
+                            restaurant.setMapX(xpp.nextText());
+                        }
+                        else if(tag.equals("FOOD_MENU")){
+                            restaurant.setMenu(xpp.nextText());
+                        }
+                        else if(tag.equals("TEL_NO")){
+                            restaurant.setNumber(xpp.nextText());
+                        }
+
+                        break;
+
+                    case XmlPullParser.TEXT:
+                        break;
+
+                    case XmlPullParser.END_TAG:
+                        tag= xpp.getName(); //테그 이름 얻어오기
+
+                        if(tag.equals("row")) {
+                            restaurants.add(restaurant);
+                        };// 첫번째 검색결과종료..줄바꿈
+                        break;
+                }
+
+                eventType= xpp.next();
+            }
+
         } catch (Exception e){
             e.printStackTrace();
         }

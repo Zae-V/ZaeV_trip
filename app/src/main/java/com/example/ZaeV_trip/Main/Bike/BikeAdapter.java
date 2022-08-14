@@ -1,6 +1,11 @@
 package com.example.ZaeV_trip.Main.Bike;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,18 +62,36 @@ public class BikeAdapter extends RecyclerView.Adapter<BikeAdapter.ViewHolder> {
         holder.locview.setText(bikes.get(position).getSigun());
         int level = Integer.parseInt(bikes.get(position).getCrsLevel());
         String lev="";
+        String word = "";
+        String color = "";
+        int term = 2;
         switch (level){
             case 1:
-                lev = "난이도: 쉬움";
+                lev = "난이도 쉬움";
+                word = "쉬움";
+                color = "#418EE8";
                 break;
             case 2:
-                lev = "난이도: 보통";
+                lev = "난이도 보통";
+                word = "보통";
+                color = "#FF9C41";
                 break;
             case 3:
-                lev = "난이도: 어려움";
+                lev = "난이도 어려움";
+                word = "어려움";
+                color = "#F255A0";
+                term = 3;
                 break;
         }
-        holder.catview.setText(lev);
+        // 글자색 바꾸기
+        SpannableString spannableString = new SpannableString(lev);
+
+        int loc = lev.indexOf(word);
+
+        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor(color)),
+                loc, loc + term, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        holder.catview.setText(spannableString);
     }
 
     @Override
