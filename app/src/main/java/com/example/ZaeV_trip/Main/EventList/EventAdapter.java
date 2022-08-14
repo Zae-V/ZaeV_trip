@@ -54,11 +54,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull EventAdapter.ViewHolder holder, int position) {
         String eventName = eventLists.get(position).getTitle();
-//        int nameLen = eventName.length();
-//        if (nameLen > 24){
-//            eventName = eventName.substring(0,25) + "...";
-//        }
-
         holder.nameview.setText(eventName);
         String startDate = eventLists.get(position).getStartDate().substring(4,6) +"."+ eventLists.get(position).getStartDate().substring(6);
         String endDate = eventLists.get(position).getEndDate().substring(4,6) + "." + eventLists.get(position).getEndDate().substring(6);
@@ -67,9 +62,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
         Glide.with(context)
                 .load(eventLists.get(position).getFirstImage())
-                .placeholder(R.drawable.background_gradient)
-                .error(R.drawable.background_gradient)
-                .fallback(R.drawable.background_gradient)
+                .placeholder(R.drawable.default_bird_img)
+                .error(R.drawable.default_bird_img)
+                .fallback(R.drawable.default_bird_img)
                 .into(holder.imageView);
     }
 
@@ -116,23 +111,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             });
         }
 
-    }
-    public class CharacterWrapTextView extends TextView {
-        public CharacterWrapTextView(Context context) {
-            super(context);
-        }
-
-        public CharacterWrapTextView(Context context, AttributeSet attrs) {
-            super(context, attrs);
-        }
-
-        public CharacterWrapTextView(Context context, AttributeSet attrs, int defStyleAttr) {
-            super(context, attrs, defStyleAttr);
-        }
-
-        @Override public void setText(CharSequence text, BufferType type) {
-            super.setText(text.toString().replace(" ", "\u00A0"), type);
-        }
     }
 }
 

@@ -59,13 +59,13 @@ public class BikeAdapter extends RecyclerView.Adapter<BikeAdapter.ViewHolder> {
         String lev="";
         switch (level){
             case 1:
-                lev = "쉬움";
+                lev = "난이도: 쉬움";
                 break;
             case 2:
-                lev = "보통";
+                lev = "난이도: 보통";
                 break;
             case 3:
-                lev = "어려움";
+                lev = "난이도: 어려움";
                 break;
         }
         holder.catview.setText(lev);

@@ -22,47 +22,53 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/list_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="0dp"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/background_gradient" />
-
-                <TextView
+                <com.example.ZaeV_trip.util.CharacterWrapTextView
                     android:id="@+id/routeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="-8dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
                     android:fontFamily="@font/notosans_bold"
+                    android:lineSpacingExtra="-3dp"
+                    android:maxLines="2"
                     android:text="둘레길"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
 
                 <TextView
                     android:id="@+id/addressText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="60dp"
                     android:fontFamily="@font/notosans_regular"
                     android:text="서울 강북구"
-                    android:textColor="@color/white"
-                    android:textSize="13dp" />
+                    android:textColor="#72000000"
+                    android:textSize="10dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginRight="20dp"
+                    android:background="#632E2E2E">
+
+                </View>
 
                 <TextView
                     android:id="@+id/levelText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="120dp"
-                    android:fontFamily="@font/notosans_regular"
-                    android:text="난이도"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="100dp"
+                    android:fontFamily="@font/notosans_bold"
+                    android:text="난이도: 보통"
+                    android:textColor="@color/text_gradient_end"
+                    android:textSize="12dp" />
 
 
             </RelativeLayout>
