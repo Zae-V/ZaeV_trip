@@ -1,6 +1,7 @@
 package com.example.ZaeV_trip.Main.EventList;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,8 +53,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     }
     @Override
     public void onBindViewHolder(@NonNull EventAdapter.ViewHolder holder, int position) {
-        holder.nameview.setText(eventLists.get(position).getTitle());
-        holder.locview.setText(eventLists.get(position).getAddr1());
+        String eventName = eventLists.get(position).getTitle();
+//        int nameLen = eventName.length();
+//        if (nameLen > 24){
+//            eventName = eventName.substring(0,25) + "...";
+//        }
+
+        holder.nameview.setText(eventName);
         String startDate = eventLists.get(position).getStartDate().substring(4,6) +"."+ eventLists.get(position).getStartDate().substring(6);
         String endDate = eventLists.get(position).getEndDate().substring(4,6) + "." + eventLists.get(position).getEndDate().substring(6);
         String date = startDate + " ~ " + endDate;
@@ -87,7 +93,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
         public ImageView imageView;
         public TextView nameview;
-        public TextView locview;
         public TextView catview;
         public ImageView bookmarkbtn;
 
@@ -95,8 +100,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             super(itemView);
 
             imageView = itemView.findViewById(R.id.eventImage);
-            nameview = itemView.findViewById(R.id.eventTitle);
-            locview = itemView.findViewById(R.id.eventAddressText);
+            nameview = itemView.findViewById(R.id.eventName);
             catview = itemView.findViewById(R.id.eventDate);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +114,24 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
                     }
                 }
             });
+        }
+
+    }
+    public class CharacterWrapTextView extends TextView {
+        public CharacterWrapTextView(Context context) {
+            super(context);
+        }
+
+        public CharacterWrapTextView(Context context, AttributeSet attrs) {
+            super(context, attrs);
+        }
+
+        public CharacterWrapTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+            super(context, attrs, defStyleAttr);
+        }
+
+        @Override public void setText(CharSequence text, BufferType type) {
+            super.setText(text.toString().replace(" ", "\u00A0"), type);
         }
     }
 }
