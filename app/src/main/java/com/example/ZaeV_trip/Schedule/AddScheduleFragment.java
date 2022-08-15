@@ -71,6 +71,9 @@ public class AddScheduleFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         v =  inflater.inflate(R.layout.fragment_add_schedule, container, false);
 
+        TravelActivity travelActivity = (TravelActivity) getActivity();
+        travelActivity.bottomNavigationView.setVisibility(View.GONE);
+
         //recyclerview
         list = (RecyclerView) v.findViewById(R.id.addRecycler);
 
@@ -164,27 +167,27 @@ public class AddScheduleFragment extends Fragment {
             case "카페":
                 getCafeList(local);
                 break;
-            case "다회용기":
-                getReusableList(local);
-                break;
+//            case "다회용기":
+//                getReusableList(local);
+//                break;
             case "축제":
                 getFestivalList(local);
                 break;
-            case "식당":
-                getRestaurantList(local);
-                break;
-            case "플로깅":
-                getPloggingList(local);
-                break;
-            case "제로웨이스트 샵":
-                getZeroWasteList(local);
-                break;
-            case "숙소":
-                getLodgingList(local);
-                break;
-            default:
-                getTourSpotList(local);
-                break;
+//            case "식당":
+//                getRestaurantList(local);
+//                break;
+//            case "플로깅":
+//                getPloggingList(local);
+//                break;
+//            case "제로웨이스트 샵":
+//                getZeroWasteList(local);
+//                break;
+//            case "숙소":
+//                getLodgingList(local);
+//                break;
+//            default:
+//                getTourSpotList(local);
+//                break;
 
         }
     }
@@ -198,23 +201,25 @@ public class AddScheduleFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ArrayList<Cafe> filterdList = new ArrayList<Cafe>();
+                        ArrayList<SelectItem> filterdList = new ArrayList<SelectItem>();
 
                         for(int i = 0; i< cafes.size();i++){
                             if(cafes.get(i).getCategory() != null && (cafes.get(i).getCategory().equals("카페") || cafes.get(i).getCategory().equals("베이커리") || cafes.get(i).getCategory().equals("까페"))){
                                 if(local.equals("전체 지역") || local.equals("전체")){
-                                    filterdList.add(cafes.get(i));
+                                    filterdList.add(
+                                            new SelectItem(null, cafes.get(i).getName(), cafes.get(i).getLocation(), cafes.get(i).getCategory()));
                                 }
                                 else{
                                     if(cafes.get(i).getLocation().split(" ")[1].equals(local)){
-                                        filterdList.add(cafes.get(i));
+                                        filterdList.add(new SelectItem(null, cafes.get(i).getName(), cafes.get(i).getLocation(), cafes.get(i).getCategory()));
                                     }
                                 }
                             }
                         }
-                        CafeAdapter cafeAdapter = new CafeAdapter(getActivity() ,filterdList);
+                        SelectListAdapter adapter = new SelectListAdapter(getActivity(),filterdList);
+//                        CafeAdapter cafeAdapter = new CafeAdapter(getActivity() ,filterdList);
                         list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
-                        list.setAdapter(cafeAdapter);
+                        list.setAdapter(adapter);
 
                     }
                 });
@@ -232,20 +237,20 @@ public class AddScheduleFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ArrayList<Festival> filteredList = new ArrayList<Festival>();
+                        ArrayList<SelectItem> filteredList = new ArrayList<SelectItem>();
 
                         for(int i = 0; i< festivals.size(); i++) {
                             if(local.equals("전체 지역") || local.equals("전체")){
 //                                adapter.addItem(festivals.get(i));
-                                filteredList.add(festivals.get(i));
+                                filteredList.add(new SelectItem(festivals.get(i).getFirstImage(),festivals.get(i).getTitle(),festivals.get(i).getAddr1(), festivals.get(i).getStartDate()));
                             }else{
                                 if(festivals.get(i).getAddr1().split(" ").length > 1 && festivals.get(i).getAddr1().split(" ")[1].equals(local)){
 //                                    adapter.addItem(festivals.get(i));
-                                    filteredList.add(festivals.get(i));
+                                    filteredList.add(new SelectItem(festivals.get(i).getFirstImage(),festivals.get(i).getTitle(),festivals.get(i).getAddr1(), festivals.get(i).getStartDate()));
                                 }
                             }
                         }
-                        FestivalAdapter adapter = new FestivalAdapter(getActivity(), filteredList);
+                        SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredList);
                         list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                         list.setAdapter(adapter);
 

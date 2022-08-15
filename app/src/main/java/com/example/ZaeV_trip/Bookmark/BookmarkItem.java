@@ -6,6 +6,10 @@ public class BookmarkItem {
     String location;
     String hours;
 
+    public BookmarkItem(){
+
+    }
+
     public BookmarkItem(int image, String name, String location, String hours){
         this.image = image;
         this.name = name;

@@ -1,5 +1,6 @@
 package com.example.ZaeV_trip.Schedule;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.Bookmark.BookmarkItem;
 import com.example.ZaeV_trip.R;
 
@@ -18,11 +20,12 @@ import java.util.ArrayList;
 
 public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.ItemViewHolder>
         {
-
-    ArrayList<BookmarkItem> items = new ArrayList<>();
+    Context context;
+    ArrayList<SelectItem> items = new ArrayList<>();
 //    OnTravelItemClickListener listener;
 
-    public SelectListAdapter(ArrayList<BookmarkItem> items){
+    public SelectListAdapter(Context context, ArrayList<SelectItem> items){
+        this.context = context;
         this.items = items;
     }
 
@@ -30,6 +33,7 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //LayoutInflater를 이용해서 원하는 레이아웃을 띄워줌
+        context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_add_schedule, parent, false);
         return new ItemViewHolder(view);
@@ -37,8 +41,19 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        //ItemViewHolder가 생성되고 넣어야할 코드들을 넣어준다.
+        //ItemViewHolder 생성되고 넣어야할 코드들을 넣어준다.
         holder.onBind(items.get(position));
+
+        if(items.get(position).getImg() != null){
+            Glide.with(context)
+                    .load(items.get(position).getImg())
+                    .placeholder(R.drawable.default_profile_image)
+                    .error(R.drawable.default_profile_image)
+                    .fallback(R.drawable.default_profile_image)
+                    .into(holder.list_image);
+        }
+
+
     }
 
     @Override
@@ -56,32 +71,9 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
 //        }
 //    }
 
-    public void addItem(BookmarkItem bookmarkItem){
-        items.add(bookmarkItem);
+    public void addItem(SelectItem selectItem){
+        items.add(selectItem);
     }
-
-
-//
-//    @Override
-//    public boolean onItemMove(int from_position, int to_position) {
-//        //이동할 객체 저장
-//        BookmarkItem bookmarkItem = items.get(from_position);
-//        //이동할 객체 삭제
-//        items.remove(from_position);
-//        //이동하고 싶은 position에 추가
-//        items.add(to_position, travelItem);
-//
-//        //Adapter에 데이터 이동알림
-//        notifyItemMoved(from_position,to_position);
-//        return true;
-//    }
-//
-//    @Override
-//    public void onItemSwipe(int position) {
-//        items.remove(position);
-//        notifyItemRemoved(position);
-//    }
-
 
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -121,10 +113,10 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
 //            });
         }
 
-        public void onBind(BookmarkItem bookmarkItem) {
-            list_name.setText(bookmarkItem.getName());
-            list_location.setText(String.valueOf(bookmarkItem.getLocation()));
-            list_hours.setText(String.valueOf(bookmarkItem.getHours()));
+        public void onBind(SelectItem selectItem) {
+            list_name.setText(selectItem.getName());
+            list_location.setText(String.valueOf(selectItem.getLocation()));
+            list_hours.setText(String.valueOf(selectItem.getInfo()));
 //            list_image.setImageResource(bookmarkItem.getImage());
         }
 
