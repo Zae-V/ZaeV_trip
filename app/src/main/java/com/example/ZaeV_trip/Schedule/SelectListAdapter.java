@@ -44,15 +44,12 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
         //ItemViewHolder 생성되고 넣어야할 코드들을 넣어준다.
         holder.onBind(items.get(position));
 
-        if(items.get(position).getImg() != null){
-            Glide.with(context)
-                    .load(items.get(position).getImg())
-                    .placeholder(R.drawable.default_profile_image)
-                    .error(R.drawable.default_profile_image)
-                    .fallback(R.drawable.default_profile_image)
-                    .into(holder.list_image);
-        }
-
+        Glide.with(context)
+                .load(items.get(position).getImg())
+                .placeholder(R.drawable.default_bird_img)
+                .error(R.drawable.default_bird_img)
+                .fallback(R.drawable.default_bird_img)
+                .into(holder.list_image);
 
     }
 

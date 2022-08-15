@@ -167,9 +167,9 @@ public class AddScheduleFragment extends Fragment {
             case "카페":
                 getCafeList(local);
                 break;
-//            case "다회용기":
-//                getReusableList(local);
-//                break;
+            case "다회용기":
+                getReusableList(local);
+                break;
             case "축제":
                 getFestivalList(local);
                 break;
@@ -271,18 +271,18 @@ public class AddScheduleFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ArrayList<Reusable> filteredReusable = new ArrayList<Reusable>();
+                        ArrayList<SelectItem> filteredReusable = new ArrayList<SelectItem>();
 
                         for(int i = 0; i< reusables.size(); i++) {
                             if (local.equals("전체 지역") || local.equals("전체")) {
-                                filteredReusable.add(reusables.get(i));
+                                filteredReusable.add(new SelectItem(null, reusables.get(i).getName(), reusables.get(i).getLocation(), reusables.get(i).getReason()));
                             }
                             else {
                                 if (reusables.get(i).getLocation().contains(local)) {
-                                    filteredReusable.add(reusables.get(i));
+                                    filteredReusable.add(new SelectItem(null, reusables.get(i).getName(), reusables.get(i).getLocation(), reusables.get(i).getReason()));
                                 }
                             }
-                            ReusableAdapter adapter = new ReusableAdapter(getActivity(), filteredReusable);
+                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredReusable);
                             list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
 
