@@ -22,8 +22,8 @@
 
             <ImageView
                 android:id="@+id/restaurantBookmarkBtn"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="25dp"
                 android:background="@drawable/star_selector"
                 android:scaleType="centerCrop"
@@ -36,7 +36,7 @@
                 android:layout_marginTop="25dp"
                 android:text="찜하기"
                 android:textColor="@color/black"
-                android:textSize="15dp"
+                android:textSize="20dp"
                 app:layout_constraintStart_toEndOf="@id/restaurantBookmarkBtn"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -68,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans_bold"
-                android:text="비건"
+                android:text="비건🥗"
                 android:textColor="#00CA51"
                 android:textSize="18dp"
                 android:layout_marginStart="5dp"
@@ -99,42 +99,123 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans_bold"
-                android:text="락토"
+                android:text="락토🥗🥛"
                 android:textColor="#00CA51"
                 android:textSize="18dp"
                 android:layout_marginStart="5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/veganMenuCard" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/lactoMenuList"
-                android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/lactoMenuCard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                app:cardCornerRadius="15dp"
+                app:cardUseCompatPadding="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lactoMenuText">
-            </androidx.recyclerview.widget.RecyclerView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lactoMenuList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lactoMenuText">
+                </androidx.recyclerview.widget.RecyclerView>
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/ovoMenuText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans_bold"
-                android:text="오보"
+                android:text="오보🥗🥚"
                 android:textColor="#00CA51"
                 android:textSize="18dp"
                 android:layout_marginStart="5dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lactoMenuList" />
+                app:layout_constraintTop_toBottomOf="@id/lactoMenuCard" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/ovoMenuList"
-                android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ovoMenuCard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                app:cardCornerRadius="15dp"
+                app:cardUseCompatPadding="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ovoMenuText">
-            </androidx.recyclerview.widget.RecyclerView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ovoMenuList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ovoMenuText">
+                </androidx.recyclerview.widget.RecyclerView>
+            </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/lactoOvoMenuText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_bold"
+                android:text="락토오보🥗🥛🥚"
+                android:textColor="#00CA51"
+                android:textSize="18dp"
+                android:layout_marginStart="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ovoMenuCard" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/lactoOvoMenuCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="15dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lactoOvoMenuText">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lactoOvoMenuList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toStartOf="parent">
+                </androidx.recyclerview.widget.RecyclerView>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/pescoMenuText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_bold"
+                android:text="페스코🥗🥛🥚🍤"
+                android:textColor="#00CA51"
+                android:textSize="18dp"
+                android:layout_marginStart="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lactoOvoMenuCard" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/pescoMenuCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="15dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pescoMenuText">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/pescoMenuList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toStartOf="parent">
+                </androidx.recyclerview.widget.RecyclerView>
+            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

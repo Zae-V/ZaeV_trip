@@ -2,6 +2,7 @@ package com.example.ZaeV_trip.Restaurant;
 
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +31,23 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class RestaurantFragment extends Fragment {
-    ArrayList<Restaurant> restaurants = new ArrayList<>();
-    RecyclerView list;
+    ArrayList<Restaurant> vegans = new ArrayList<>();
+    ArrayList<Restaurant> lactos = new ArrayList<>();
+    ArrayList<Restaurant> ovos = new ArrayList<>();
+    ArrayList<Restaurant> lactoOvos = new ArrayList<>();
+    ArrayList<Restaurant> pescos = new ArrayList<>();
+
+    RecyclerView veganList;
+    RecyclerView lactoList;
+    RecyclerView ovoList;
+    RecyclerView lactoOvoList;
+    RecyclerView pescoList;
+
+    TextView veganText;
+    TextView lactoText;
+    TextView ovoText;
+    TextView lactoOvoText;
+    TextView pescoText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +59,29 @@ public class RestaurantFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_restaurant, container, false);
-        list = (RecyclerView) v.findViewById(R.id.veganMenuList);
+        veganList = (RecyclerView) v.findViewById(R.id.veganMenuList);
+        lactoList = (RecyclerView) v.findViewById(R.id.lactoMenuList);
+        ovoList = (RecyclerView) v.findViewById(R.id.ovoMenuList);
+        lactoOvoList = (RecyclerView) v.findViewById(R.id.lactoOvoMenuList);
+        pescoList = (RecyclerView) v.findViewById(R.id.pescoMenuList);
+
+        veganText = v.findViewById(R.id.veganMenuText);
+        lactoText = v.findViewById(R.id.lactoMenuText);
+        ovoText = v.findViewById(R.id.ovoMenuText);
+        lactoOvoText = v.findViewById(R.id.lactoOvoMenuText);
+        pescoText = v.findViewById(R.id.pescoMenuText);
+
+        veganText.setVisibility(v.GONE);
+        lactoText.setVisibility(v.GONE);
+        ovoText.setVisibility(v.GONE);
+        lactoOvoText.setVisibility(v.GONE);
+        pescoText.setVisibility(v.GONE);
+
+        Boolean isVegan = false;
+        Boolean isLacto = false;
+        Boolean isOvo = false;
+        Boolean isLactoOvo = false;
+        Boolean isPesco = false;
 
         //Bundle
         String name = getArguments().getString("name");
@@ -64,13 +102,73 @@ public class RestaurantFragment extends Fragment {
 
 //        content.setText("☎ : " + number +"\n" + "제공 메뉴 : " + menu);
         Restaurant restaurant = null;
-        restaurant = new Restaurant("","","","","","","","","");
-        restaurant.setMenu(menu);
-        restaurants.add(restaurant);
 
-        RestaurantMenuAdapter adapter = new RestaurantMenuAdapter(getActivity(), restaurants);
-        list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        list.setAdapter(adapter);
+        String[] strArr = menu.split(", ");
+        for(int i=0; i<strArr.length; i++){
+            restaurant = new Restaurant("","","","","","","","","");
+            if (strArr[i].contains("비건")){
+                restaurant.setMenu(strArr[i]);
+                Log.d("테스트", restaurant.getMenu());
+                vegans.add(restaurant);
+                isVegan = true;
+            }
+            else if(strArr[i].contains("락토") && !strArr[i].contains("오보")){
+                restaurant.setMenu(strArr[i]);
+                Log.d("테스트", restaurant.getMenu());
+                lactos.add(restaurant);
+                isLacto = true;
+            }
+            else if(strArr[i].contains("오보") && !strArr[i].contains("락토")){
+                restaurant.setMenu(strArr[i]);
+                Log.d("테스트", restaurant.getMenu());
+                ovos.add(restaurant);
+                isOvo = true;
+            }
+            else if (strArr[i].contains("락토오보")) {
+                restaurant.setMenu(strArr[i]);
+                Log.d("테스트", restaurant.getMenu());
+                ovos.add(restaurant);
+                isLactoOvo = true;
+            }
+            else if(strArr[i].contains("페스코")){
+                restaurant.setMenu(strArr[i]);
+                Log.d("테스트", restaurant.getMenu());
+                pescos.add(restaurant);
+                isPesco = true;
+            }
+        }
+        if(isVegan) {
+            RestaurantMenuAdapter adapter = new RestaurantMenuAdapter(getActivity(), vegans);
+            veganList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+            veganList.setAdapter(adapter);
+            veganText.setVisibility(v.VISIBLE);
+        }
+        if(isLacto) {
+            RestaurantMenuAdapter adapter = new RestaurantMenuAdapter(getActivity(), lactos);
+            lactoList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+            lactoList.setAdapter(adapter);
+            lactoText.setVisibility(v.VISIBLE);
+        }
+        if(isOvo) {
+            RestaurantMenuAdapter adapter = new RestaurantMenuAdapter(getActivity(), ovos);
+            ovoList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+            ovoList.setAdapter(adapter);
+            ovoText.setVisibility(v.VISIBLE);
+        }
+        if(isLactoOvo) {
+            RestaurantMenuAdapter adapter = new RestaurantMenuAdapter(getActivity(), lactoOvos);
+            lactoOvoList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+            lactoOvoList.setAdapter(adapter);
+            lactoOvoText.setVisibility(v.VISIBLE);
+        }
+        if(isPesco) {
+            RestaurantMenuAdapter adapter = new RestaurantMenuAdapter(getActivity(), pescos);
+            pescoList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+            pescoList.setAdapter(adapter);
+            pescoText.setVisibility(v.VISIBLE);
+        }
+
+
         //Map View
 //        MapView mapView = new MapView(getActivity());
 //
