@@ -9,6 +9,7 @@ public class Restaurant {
     String mapY;
     String number;
     String menu;
+    String authType;
 
     public String getId() {
         return id;
@@ -74,7 +75,15 @@ public class Restaurant {
         this.menu = menu;
     }
 
-    public Restaurant(String id, String name, String location, String category, String mapX, String mapY, String number, String menu) {
+    public String getAuthType() {
+        return authType;
+    }
+
+    public void setAuthType(String authType) {
+        this.authType = authType;
+    }
+
+    public Restaurant(String id, String name, String location, String category, String mapX, String mapY, String number, String menu, String authType) {
         this.id = id;
         this.name = name;
         this.location = location;
@@ -83,5 +92,6 @@ public class Restaurant {
         this.mapY = mapY;
         this.number = number;
         this.menu = menu;
+        this.authType = authType;
     }
 }

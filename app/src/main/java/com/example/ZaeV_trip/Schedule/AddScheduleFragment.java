@@ -338,7 +338,7 @@ public class AddScheduleFragment extends Fragment {
                                 filteredRestaurant.add(restaurants.get(i));
                             }
                             else {
-                                if (restaurants.get(i).getAddr1().contains(local)) {
+                                if (restaurants.get(i).getLocation().contains(local)) {
                                     filteredRestaurant.add(restaurants.get(i));
                                 }
                             }
