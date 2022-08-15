@@ -1,6 +1,9 @@
 package com.example.ZaeV_trip.Schedule;
 
+import static com.example.ZaeV_trip.R.id.container_calendar;
+
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.ZaeV_trip.R;
@@ -76,8 +81,15 @@ public class CalendarFragment extends Fragment{
 
                         endDateTextView.setText(dateString1 + "\n" + dateString2);
 
+
+                        long calculate = date1.getTime() - date2.getTime();
+                        int Ddays = (int) (calculate / (24*60*60*1000));
+
                         // fragment -> setSchedule fragment 이동
                         TravelActivity activity = (TravelActivity) getActivity();
+                        Intent intent = new Intent();
+                        intent.putExtra("Dday", Ddays);
+                        activity.setIntent(intent);
                         activity.changeFragment(1);
                     }
                 });
