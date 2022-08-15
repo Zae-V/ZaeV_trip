@@ -12,6 +12,7 @@ import com.example.ZaeV_trip.model.Plogging;
 import com.example.ZaeV_trip.model.Restaurant;
 import com.example.ZaeV_trip.model.Reusable;
 import com.example.ZaeV_trip.model.TouristSpot;
+import com.example.ZaeV_trip.model.ZeroWaste;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -790,5 +791,62 @@ public class getXmlData {
         return touristSpots;
     }
 
+    public static ArrayList<ZeroWaste> getZeroWasteData(Context cnt){
+        ArrayList<ZeroWaste> zeroWastes = new ArrayList<ZeroWaste>();
 
+        try {
+            InputStream is = cnt.getResources().getAssets().open("noplasticstore.bom.xls");
+            Workbook wb = Workbook.getWorkbook(is);
+            ZeroWaste zeroWaste = null;
+            if (wb != null) {
+                Sheet sheet = wb.getSheet(0);   // 시트 불러오기
+                if (sheet != null) {
+                    Log.i("test", "불러오기");
+                    int colTotal = sheet.getColumns();    // 전체 컬럼
+                    int rowIndexStart = 1;                  // row 인덱스 시작
+                    Log.i("test", "전체 칼럼: " + colTotal);
+                    int rowTotal = sheet.getColumn(colTotal - 2).length;
+                    Log.i("test", "전체 로우: " + rowTotal);
+
+                    StringBuilder sb;
+                    for (int row = rowIndexStart; row < rowTotal; row++) {
+                        sb = new StringBuilder();
+                        zeroWaste = new ZeroWaste(
+                                "",
+                                "",
+                                "",
+                                "",
+                                ""
+                        );
+                        for (int col = 0; col < colTotal; col++) {
+                            String contents = sheet.getCell(col, row).getContents();
+                            if (col == 0) {
+                                zeroWaste.setName(contents);
+                            } else if (col == 1) {
+                                zeroWaste.setLocation(contents);
+                            } else if (col == 2) {
+                                zeroWaste.setMapY(contents);
+                            } else if (col == 3) {
+                                zeroWaste.setMapX(contents);
+                            } else if (col == 4) {
+                                zeroWaste.setReason(contents);
+                            }
+                            sb.append("col" + col + " : " + contents + " , ");
+
+                        }
+                        zeroWastes.add(zeroWaste);
+//                        Log.i("test", sb.toString());
+                    }
+
+                }
+            }
+
+        }
+        catch (BiffException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return zeroWastes;
+    }
 }

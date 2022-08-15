@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.ZeroWaste;
+import com.example.ZaeV_trip.util.getXmlData;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +46,7 @@ public class ZeroWasteActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                zeroWastes = readExcel();
+                zeroWastes = getXmlData.getZeroWasteData(ZeroWasteActivity.this);
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -103,65 +104,6 @@ public class ZeroWasteActivity extends AppCompatActivity {
             }
         }).start();
 
-    }
-
-    public ArrayList<ZeroWaste> readExcel() {
-        ArrayList<ZeroWaste> zeroWastes = new ArrayList<ZeroWaste>();
-
-        try {
-            InputStream is = getBaseContext().getResources().getAssets().open("noplasticstore.bom.xls");
-            Workbook wb = Workbook.getWorkbook(is);
-            ZeroWaste zeroWaste = null;
-            if (wb != null) {
-                Sheet sheet = wb.getSheet(0);   // 시트 불러오기
-                if (sheet != null) {
-                    Log.i("test", "불러오기");
-                    int colTotal = sheet.getColumns();    // 전체 컬럼
-                    int rowIndexStart = 1;                  // row 인덱스 시작
-                    Log.i("test", "전체 칼럼: " + colTotal);
-                    int rowTotal = sheet.getColumn(colTotal - 2).length;
-                    Log.i("test", "전체 로우: " + rowTotal);
-
-                    StringBuilder sb;
-                    for (int row = rowIndexStart; row < rowTotal; row++) {
-                        sb = new StringBuilder();
-                        zeroWaste = new ZeroWaste(
-                                "",
-                                "",
-                                "",
-                                "",
-                                ""
-                        );
-                        for (int col = 0; col < colTotal; col++) {
-                            String contents = sheet.getCell(col, row).getContents();
-                            if (col == 0) {
-                                zeroWaste.setName(contents);
-                            } else if (col == 1) {
-                                zeroWaste.setLocation(contents);
-                            } else if (col == 2) {
-                                zeroWaste.setMapY(contents);
-                            } else if (col == 3) {
-                                zeroWaste.setMapX(contents);
-                            } else if (col == 4) {
-                                zeroWaste.setReason(contents);
-                            }
-                            sb.append("col" + col + " : " + contents + " , ");
-
-                        }
-                        zeroWastes.add(zeroWaste);
-//                        Log.i("test", sb.toString());
-                    }
-
-                }
-            }
-
-        }
-        catch (BiffException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return zeroWastes;
     }
 
 

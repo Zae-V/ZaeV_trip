@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,28 +22,60 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ZaeV_trip.Bookmark.BookmarkItem;
 
+import com.example.ZaeV_trip.Cafe.CafeActivity;
+import com.example.ZaeV_trip.Cafe.CafeAdapter;
+import com.example.ZaeV_trip.Cafe.CafeFragment;
+import com.example.ZaeV_trip.Festival.FestivalActivity;
+import com.example.ZaeV_trip.Festival.FestivalAdapter;
+import com.example.ZaeV_trip.Festival.FestivalFragment;
+import com.example.ZaeV_trip.Lodging.LodgingActivity;
+import com.example.ZaeV_trip.Lodging.LodgingAdapter;
+import com.example.ZaeV_trip.Lodging.LodgingFragment;
+import com.example.ZaeV_trip.Plogging.PloggingActivity;
+import com.example.ZaeV_trip.Plogging.PloggingAdapter;
+import com.example.ZaeV_trip.Plogging.PloggingFragment;
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.Restaurant.RestaurantActivity;
+import com.example.ZaeV_trip.Restaurant.RestaurantAdapter;
+import com.example.ZaeV_trip.Restaurant.RestaurantFragment;
+import com.example.ZaeV_trip.Reusable.ReusableActivity;
+import com.example.ZaeV_trip.Reusable.ReusableAdapter;
+import com.example.ZaeV_trip.Reusable.ReusableFragment;
+import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
+import com.example.ZaeV_trip.TouristSpot.TouristSpotAdapter;
+import com.example.ZaeV_trip.TouristSpot.TouristSpotFragment;
+import com.example.ZaeV_trip.ZeroWaste.ZeroWasteActivity;
+import com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter;
+import com.example.ZaeV_trip.ZeroWaste.ZeroWasteFragment;
+import com.example.ZaeV_trip.model.Cafe;
+import com.example.ZaeV_trip.model.Festival;
+import com.example.ZaeV_trip.model.Lodging;
+import com.example.ZaeV_trip.model.Plogging;
+import com.example.ZaeV_trip.model.Restaurant;
+import com.example.ZaeV_trip.model.Reusable;
+import com.example.ZaeV_trip.model.TouristSpot;
+import com.example.ZaeV_trip.model.ZeroWaste;
+import com.example.ZaeV_trip.util.getXmlData;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class AddScheduleFragment extends Fragment {
 //    private FragmentAddScheduleBinding binding;
-    RecyclerView bookmarkRecyclerView;
-    SelectListAdapter listAdapter;
+    RecyclerView list;
     View v;
-    //ItemTouchHelperCallback helper;
-    ArrayList<BookmarkItem> items = new ArrayList<>();
+    String local;
+    String selectedCategory ;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        BookmarkViewModel bookmarkViewModel =
-//                new ViewModelProvider(this).get(BookmarkViewModel.class);
-
-//        binding = FragmentAddScheduleBinding.inflate(inflater, container, false);
-        //final TextView textView = binding.bookmarkText;
-
-        //bookmarkViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         v =  inflater.inflate(R.layout.fragment_add_schedule, container, false);
+
+        //recyclerview
+        list = (RecyclerView) v.findViewById(R.id.addRecycler);
+
+        local = "전체";
+        selectedCategory = "관광명소";
 
         // searchBar
         SearchView searchBar = v.findViewById(R.id.scheduleSearchBar);
@@ -64,7 +98,7 @@ public class AddScheduleFragment extends Fragment {
         // spinner
         String[] cityName = {"전체","강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구",
                 "동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","종구","중랑구"};
-        String[] category = {"전체보기", "관광명소", "숙소", "식당", "카페", "다회용기", "플로깅", "제로웨이스트 샵"};
+        String[] category = {"관광명소", "숙소", "식당", "카페", "다회용기", "플로깅", "제로웨이스트 샵","축제"};
 
         Spinner locationSpinner = v.findViewById(R.id.locationSpinner);
         Spinner categorySpinner = v.findViewById(R.id.categorySpinner);
@@ -78,7 +112,8 @@ public class AddScheduleFragment extends Fragment {
         locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getContext(), cityName[i], Toast.LENGTH_SHORT).show();
+                local = cityName[i];
+                updateRecyclerView(cityName[i], selectedCategory);
             }
 
             @Override
@@ -93,57 +128,21 @@ public class AddScheduleFragment extends Fragment {
         );
         adapter2.setDropDownViewResource(R.layout.dialog_spinner_item);
         categorySpinner.setAdapter(adapter2);
+
+
+
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getContext(), category[i], Toast.LENGTH_SHORT).show();
+                selectedCategory = category[i];
+                updateRecyclerView(local, category[i]);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 Toast.makeText(getContext(), "선택을 취소했습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
-        //recyclerview
-        bookmarkRecyclerView = (RecyclerView) v.findViewById(R.id.addRecycler);
-        bookmarkRecyclerView.setHasFixedSize(true);
-        listAdapter = new SelectListAdapter(items);
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        bookmarkRecyclerView.setLayoutManager(mLayoutManager);
-        bookmarkRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        bookmarkRecyclerView.setAdapter(listAdapter);
-
-        //ItemTouchHelper 생성
-//        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(listAdapter);
-//        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-//        touchHelper.attachToRecyclerView(bookmarkRecyclerView);
-
-
-
-        //Adapter에 데이터 추가
-        BookmarkItem bookmarkItem1 = new BookmarkItem(R.drawable.vegan_burger,"제비식당","서울시 강서구 개화동", "AM 9:00 ~ PM 10:00");
-        BookmarkItem bookmarkItem2 = new BookmarkItem(R.drawable.vegan_burger,"야채꼬치","서울시 강서구 개화동", "AM 9:00 ~ PM 10:00");
-        BookmarkItem bookmarkItem3 = new BookmarkItem(R.drawable.vegan_burger,"비건버거","서울시 강서구 개화동", "AM 9:00 ~ PM 10:00");
-        BookmarkItem bookmarkItem4 = new BookmarkItem(R.drawable.vegan_burger,"초록숲상점","서울시 강서구 개화동", "AM 9:00 ~ PM 10:00");
-        BookmarkItem bookmarkItem5 = new BookmarkItem(R.drawable.vegan_burger,"제로웨이스트샵","서울시 강서구 개화동", "AM 9:00 ~ PM 10:00");
-        BookmarkItem bookmarkItem6 = new BookmarkItem(R.drawable.vegan_burger,"제비식당","서울시 강서구 개화동", "AM 9:00 ~ PM 10:00");
-        BookmarkItem bookmarkItem7 = new BookmarkItem(R.drawable.vegan_burger,"야채꼬치","서울시 강서구 개화동", "AM 9:00 ~ PM 10:00");
-        BookmarkItem bookmarkItem8 = new BookmarkItem(R.drawable.vegan_burger,"비건버거","서울시 강서구 개화동", "AM 9:00 ~ PM 10:00");
-        BookmarkItem bookmarkItem9 = new BookmarkItem(R.drawable.vegan_burger,"초록숲상점","서울시 강서구 개화동", "AM 9:00 ~ PM 10:00");
-        BookmarkItem bookmarkItem10 = new BookmarkItem(R.drawable.vegan_burger,"제로웨이스트샵","서울시 강서구 개화동", "AM 9:00 ~ PM 10:00");
-
-        listAdapter.addItem(bookmarkItem1);
-        listAdapter.addItem(bookmarkItem2);
-        listAdapter.addItem(bookmarkItem3);
-        listAdapter.addItem(bookmarkItem4);
-        listAdapter.addItem(bookmarkItem5);
-        listAdapter.addItem(bookmarkItem6);
-        listAdapter.addItem(bookmarkItem7);
-        listAdapter.addItem(bookmarkItem8);
-        listAdapter.addItem(bookmarkItem9);
-        listAdapter.addItem(bookmarkItem10);
 
         return v;
     }
@@ -159,4 +158,296 @@ public class AddScheduleFragment extends Fragment {
             return false;
         }return true;
     }
+
+    public void updateRecyclerView(String local, String selectedCategory){
+        switch (selectedCategory){
+            case "카페":
+                getCafeList(local);
+                break;
+            case "다회용기":
+                getReusableList(local);
+                break;
+            case "축제":
+                getFestivalList(local);
+                break;
+            case "식당":
+                getRestaurantList(local);
+                break;
+            case "플로깅":
+                getPloggingList(local);
+                break;
+            case "제로웨이스트 샵":
+                getZeroWasteList(local);
+                break;
+            case "숙소":
+                getLodgingList(local);
+                break;
+            default:
+                getTourSpotList(local);
+                break;
+
+        }
+    }
+
+    public void getCafeList(String local){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Cafe> cafes = getXmlData.getCafeData(getActivity());
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<Cafe> filterdList = new ArrayList<Cafe>();
+
+                        for(int i = 0; i< cafes.size();i++){
+                            if(cafes.get(i).getCategory() != null && (cafes.get(i).getCategory().equals("카페") || cafes.get(i).getCategory().equals("베이커리") || cafes.get(i).getCategory().equals("까페"))){
+                                if(local.equals("전체 지역") || local.equals("전체")){
+                                    filterdList.add(cafes.get(i));
+                                }
+                                else{
+                                    if(cafes.get(i).getLocation().split(" ")[1].equals(local)){
+                                        filterdList.add(cafes.get(i));
+                                    }
+                                }
+                            }
+                        }
+                        CafeAdapter cafeAdapter = new CafeAdapter(getActivity() ,filterdList);
+                        list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
+                        list.setAdapter(cafeAdapter);
+
+                    }
+                });
+
+            }
+        }).start();
+    }
+
+    public void getFestivalList(String local){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Festival> festivals = getXmlData.getFestivalData(getActivity());
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<Festival> filteredList = new ArrayList<Festival>();
+
+                        for(int i = 0; i< festivals.size(); i++) {
+                            if(local.equals("전체 지역") || local.equals("전체")){
+//                                adapter.addItem(festivals.get(i));
+                                filteredList.add(festivals.get(i));
+                            }else{
+                                if(festivals.get(i).getAddr1().split(" ").length > 1 && festivals.get(i).getAddr1().split(" ")[1].equals(local)){
+//                                    adapter.addItem(festivals.get(i));
+                                    filteredList.add(festivals.get(i));
+                                }
+                            }
+                        }
+                        FestivalAdapter adapter = new FestivalAdapter(getActivity(), filteredList);
+                        list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+                        list.setAdapter(adapter);
+
+                    }
+
+                });
+            }
+        }).start();
+
+    }
+
+    public void getReusableList(String local){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Reusable> reusables = getXmlData.getResusableData(getActivity());
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<Reusable> filteredReusable = new ArrayList<Reusable>();
+
+                        for(int i = 0; i< reusables.size(); i++) {
+                            if (local.equals("전체 지역") || local.equals("전체")) {
+                                filteredReusable.add(reusables.get(i));
+                            }
+                            else {
+                                if (reusables.get(i).getLocation().contains(local)) {
+                                    filteredReusable.add(reusables.get(i));
+                                }
+                            }
+                            ReusableAdapter adapter = new ReusableAdapter(getActivity(), filteredReusable);
+                            list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+                            list.setAdapter(adapter);
+
+                        }
+                    }
+                });
+            }
+        }).start();
+
+    }
+
+    public void getTourSpotList(String local){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<TouristSpot> touristSpots = getXmlData.getTourSpotData(getActivity());
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<TouristSpot> filteredTouristSpot = new ArrayList<TouristSpot>();
+
+                        for(int i = 0; i< touristSpots.size(); i++) {
+                            if (local.equals("전체 지역") || local.equals("전체")) {
+                                filteredTouristSpot.add(touristSpots.get(i));
+                            }
+                            else {
+                                if (touristSpots.get(i).getAddr1().contains(local)) {
+                                    filteredTouristSpot.add(touristSpots.get(i));
+                                }
+                            }
+                            TouristSpotAdapter adapter = new TouristSpotAdapter(getActivity(), filteredTouristSpot);
+                            list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+                            list.setAdapter(adapter);
+
+
+                        }
+                    }
+                });
+            }
+        }).start();
+
+    }
+
+    public void getRestaurantList(String local){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Restaurant> restaurants = getXmlData.getRestaurantData(getActivity());
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<Restaurant> filteredRestaurant = new ArrayList<Restaurant>();
+
+                        for(int i = 0; i< restaurants.size(); i++) {
+                            if (local.equals("전체 지역") || local.equals("전체")) {
+                                filteredRestaurant.add(restaurants.get(i));
+                            }
+                            else {
+                                if (restaurants.get(i).getAddr1().contains(local)) {
+                                    filteredRestaurant.add(restaurants.get(i));
+                                }
+                            }
+                            RestaurantAdapter adapter = new RestaurantAdapter(getActivity(), filteredRestaurant);
+                            list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+                            list.setAdapter(adapter);
+
+                        }
+                    }
+                });
+            }
+        }).start();
+
+    }
+
+    public void getPloggingList(String local){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Plogging> ploggings = getXmlData.getPloggingData(getActivity());
+
+                getActivity().runOnUiThread(new Runnable() {
+                    ArrayList<Plogging> filteredPlogging = new ArrayList<Plogging>();
+
+                    @Override
+                    public void run() {
+                        for(int i = 0; i< ploggings.size(); i++) {
+                            if (local.equals("전체 지역") || local.equals("전체")) {
+                                filteredPlogging.add(ploggings.get(i));
+                            }
+                            else {
+                                if (ploggings.get(i).getSigun().contains(local)) {
+                                    filteredPlogging.add(ploggings.get(i));
+                                }
+                            }
+                            PloggingAdapter adapter = new PloggingAdapter(getActivity(), filteredPlogging);
+                            list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+                            list.setAdapter(adapter);
+
+                        }
+                    }
+                });
+            }
+        }).start();
+
+    }
+
+    public void getLodgingList(String local){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Lodging> lodgings = getXmlData.getLodgingData(getActivity());
+
+                getActivity().runOnUiThread(new Runnable() {
+                    ArrayList<Lodging> filteredLodging = new ArrayList<Lodging>();
+
+                    @Override
+                    public void run() {
+                        for(int i = 0; i< lodgings.size(); i++) {
+                            if (local.equals("전체 지역") || local.equals("전체")) {
+                                filteredLodging.add(lodgings.get(i));
+                            }
+                            else {
+                                if (lodgings.get(i).getAddr1().contains(local)) {
+                                    filteredLodging.add(lodgings.get(i));
+                                }
+                            }
+                            LodgingAdapter adapter = new LodgingAdapter(getActivity(), filteredLodging);
+                            list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+                            list.setAdapter(adapter);
+
+                        }
+                    }
+                });
+            }
+        }).start();
+
+    }
+
+    public void getZeroWasteList(String local){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<ZeroWaste> zeroWastes = getXmlData.getZeroWasteData(getActivity());
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<ZeroWaste> filteredZeroWaste = new ArrayList<ZeroWaste>();
+
+                        for(int i = 0; i< zeroWastes.size(); i++) {
+                            if (local.equals("전체 지역") || local.equals("전체")) {
+                                filteredZeroWaste.add(zeroWastes.get(i));
+                            }
+                            else {
+                                if (zeroWastes.get(i).getLocation().contains(local)) {
+                                    filteredZeroWaste.add(zeroWastes.get(i));
+                                }
+                            }
+                            ZeroWasteAdapter adapter = new com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter(getActivity(), filteredZeroWaste);
+                            list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+                            list.setAdapter(adapter);
+                         }
+                    }
+                });
+            }
+        }).start();
+
+    }
+
+
 }
