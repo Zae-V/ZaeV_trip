@@ -1,7 +1,9 @@
 package com.example.ZaeV_trip.Schedule;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +15,18 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ZaeV_trip.R;
+
+import java.util.ArrayList;
 
 public class SetScheduleFragment extends Fragment {
 
     EditText title;
+    Integer Dday;
+    RecyclerView recyclerView;
 
     @Nullable
     @Override
@@ -27,6 +35,11 @@ public class SetScheduleFragment extends Fragment {
 
         TravelActivity travelActivity = (TravelActivity) getActivity();
         travelActivity.fab.setVisibility(View.GONE);
+        travelActivity.bottomNavigationView.setVisibility(View.GONE);
+
+        Intent intent = this.getActivity().getIntent();
+        Dday = Math.abs(intent.getIntExtra("Dday",0));
+
 
         ImageView editTitleImageView = v.findViewById(R.id.editTitleImageView);
         title = v.findViewById(R.id.travel_title);
@@ -45,14 +58,25 @@ public class SetScheduleFragment extends Fragment {
             }
         });
 
-        Button addBtn = v.findViewById(R.id.addBtn);
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TravelActivity activity = (TravelActivity) getActivity();
-                activity.changeFragment(2);
-            }
-        });
+//        Button addBtn = v.findViewById(R.id.addBtn);
+//        addBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                TravelActivity activity = (TravelActivity) getActivity();
+//                activity.changeFragment(2);
+//            }
+//        });
+        ArrayList<Integer> Ddays = new ArrayList<Integer>();
+
+        for(int i = 0 ; i <= Dday ; i ++){
+            Ddays.add(i+1);
+        }
+
+
+        recyclerView = v.findViewById(R.id.scheduleList);
+        ScheduleListAdpater adapter = new ScheduleListAdpater(getActivity(), Ddays);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        recyclerView.setAdapter(adapter);
 
         return v;
     }
@@ -71,9 +95,6 @@ public class SetScheduleFragment extends Fragment {
         okBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                // addSchedule fragment 로 이동
-//                TravelActivity activity = (TravelActivity) getActivity();
-//                activity.changeFragment(2);
                 title.setText(setTitle.getText());
                 dialog.hide();
             }

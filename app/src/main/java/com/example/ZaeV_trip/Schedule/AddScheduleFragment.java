@@ -71,6 +71,9 @@ public class AddScheduleFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         v =  inflater.inflate(R.layout.fragment_add_schedule, container, false);
 
+        TravelActivity travelActivity = (TravelActivity) getActivity();
+        travelActivity.bottomNavigationView.setVisibility(View.GONE);
+
         //recyclerview
         list = (RecyclerView) v.findViewById(R.id.addRecycler);
 
@@ -198,23 +201,25 @@ public class AddScheduleFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ArrayList<Cafe> filterdList = new ArrayList<Cafe>();
+                        ArrayList<SelectItem> filterdList = new ArrayList<SelectItem>();
 
                         for(int i = 0; i< cafes.size();i++){
                             if(cafes.get(i).getCategory() != null && (cafes.get(i).getCategory().equals("카페") || cafes.get(i).getCategory().equals("베이커리") || cafes.get(i).getCategory().equals("까페"))){
                                 if(local.equals("전체 지역") || local.equals("전체")){
-                                    filterdList.add(cafes.get(i));
+                                    filterdList.add(
+                                            new SelectItem(null, cafes.get(i).getName(), cafes.get(i).getLocation(), cafes.get(i).getCategory()));
                                 }
                                 else{
                                     if(cafes.get(i).getLocation().split(" ")[1].equals(local)){
-                                        filterdList.add(cafes.get(i));
+                                        filterdList.add(new SelectItem(null, cafes.get(i).getName(), cafes.get(i).getLocation(), cafes.get(i).getCategory()));
                                     }
                                 }
                             }
                         }
-                        CafeAdapter cafeAdapter = new CafeAdapter(getActivity() ,filterdList);
+                        SelectListAdapter adapter = new SelectListAdapter(getActivity(),filterdList);
+//                        CafeAdapter cafeAdapter = new CafeAdapter(getActivity() ,filterdList);
                         list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
-                        list.setAdapter(cafeAdapter);
+                        list.setAdapter(adapter);
 
                     }
                 });
@@ -232,20 +237,20 @@ public class AddScheduleFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ArrayList<Festival> filteredList = new ArrayList<Festival>();
+                        ArrayList<SelectItem> filteredList = new ArrayList<SelectItem>();
 
                         for(int i = 0; i< festivals.size(); i++) {
                             if(local.equals("전체 지역") || local.equals("전체")){
 //                                adapter.addItem(festivals.get(i));
-                                filteredList.add(festivals.get(i));
+                                filteredList.add(new SelectItem(festivals.get(i).getFirstImage(),festivals.get(i).getTitle(),festivals.get(i).getAddr1(), festivals.get(i).getStartDate() + " - " +festivals.get(i).getEndDate()));
                             }else{
                                 if(festivals.get(i).getAddr1().split(" ").length > 1 && festivals.get(i).getAddr1().split(" ")[1].equals(local)){
 //                                    adapter.addItem(festivals.get(i));
-                                    filteredList.add(festivals.get(i));
+                                    filteredList.add(new SelectItem(festivals.get(i).getFirstImage(),festivals.get(i).getTitle(),festivals.get(i).getAddr1(), festivals.get(i).getStartDate() + " - " +festivals.get(i).getEndDate()));
                                 }
                             }
                         }
-                        FestivalAdapter adapter = new FestivalAdapter(getActivity(), filteredList);
+                        SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredList);
                         list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                         list.setAdapter(adapter);
 
@@ -266,18 +271,18 @@ public class AddScheduleFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ArrayList<Reusable> filteredReusable = new ArrayList<Reusable>();
+                        ArrayList<SelectItem> filteredReusable = new ArrayList<SelectItem>();
 
                         for(int i = 0; i< reusables.size(); i++) {
                             if (local.equals("전체 지역") || local.equals("전체")) {
-                                filteredReusable.add(reusables.get(i));
+                                filteredReusable.add(new SelectItem(null, reusables.get(i).getName(), reusables.get(i).getLocation(), reusables.get(i).getReason()));
                             }
                             else {
                                 if (reusables.get(i).getLocation().contains(local)) {
-                                    filteredReusable.add(reusables.get(i));
+                                    filteredReusable.add(new SelectItem(null, reusables.get(i).getName(), reusables.get(i).getLocation(), reusables.get(i).getReason()));
                                 }
                             }
-                            ReusableAdapter adapter = new ReusableAdapter(getActivity(), filteredReusable);
+                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredReusable);
                             list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
 
@@ -298,18 +303,18 @@ public class AddScheduleFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ArrayList<TouristSpot> filteredTouristSpot = new ArrayList<TouristSpot>();
+                        ArrayList<SelectItem> filteredTouristSpot = new ArrayList<SelectItem>();
 
                         for(int i = 0; i< touristSpots.size(); i++) {
                             if (local.equals("전체 지역") || local.equals("전체")) {
-                                filteredTouristSpot.add(touristSpots.get(i));
+                                filteredTouristSpot.add(new SelectItem(touristSpots.get(i).getFirstImage(),touristSpots.get(i).getTitle(),touristSpots.get(i).getAddr1(),touristSpots.get(i).getAddr2()));
                             }
                             else {
                                 if (touristSpots.get(i).getAddr1().contains(local)) {
-                                    filteredTouristSpot.add(touristSpots.get(i));
+                                    filteredTouristSpot.add(new SelectItem(touristSpots.get(i).getFirstImage(),touristSpots.get(i).getTitle(),touristSpots.get(i).getAddr1(),touristSpots.get(i).getAddr2()));
                                 }
                             }
-                            TouristSpotAdapter adapter = new TouristSpotAdapter(getActivity(), filteredTouristSpot);
+                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredTouristSpot);
                             list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
 
@@ -331,18 +336,18 @@ public class AddScheduleFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ArrayList<Restaurant> filteredRestaurant = new ArrayList<Restaurant>();
+                        ArrayList<SelectItem> filteredRestaurant = new ArrayList<SelectItem>();
 
                         for(int i = 0; i< restaurants.size(); i++) {
                             if (local.equals("전체 지역") || local.equals("전체")) {
-                                filteredRestaurant.add(restaurants.get(i));
+                                filteredRestaurant.add(new SelectItem(null, restaurants.get(i).getName(),restaurants.get(i).getLocation(),restaurants.get(i).getCategory()));
                             }
                             else {
                                 if (restaurants.get(i).getLocation().contains(local)) {
-                                    filteredRestaurant.add(restaurants.get(i));
+                                    filteredRestaurant.add(new SelectItem(null, restaurants.get(i).getName(),restaurants.get(i).getLocation(),restaurants.get(i).getCategory()));
                                 }
                             }
-                            RestaurantAdapter adapter = new RestaurantAdapter(getActivity(), filteredRestaurant);
+                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredRestaurant);
                             list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
 
@@ -361,20 +366,18 @@ public class AddScheduleFragment extends Fragment {
                 ArrayList<Plogging> ploggings = getXmlData.getPloggingData(getActivity());
 
                 getActivity().runOnUiThread(new Runnable() {
-                    ArrayList<Plogging> filteredPlogging = new ArrayList<Plogging>();
+                    ArrayList<SelectItem> filteredPlogging = new ArrayList<SelectItem>();
 
                     @Override
                     public void run() {
                         for(int i = 0; i< ploggings.size(); i++) {
                             if (local.equals("전체 지역") || local.equals("전체")) {
-                                filteredPlogging.add(ploggings.get(i));
+                                filteredPlogging.add(new SelectItem(null, ploggings.get(i).getCrsKorNm(), ploggings.get(i).getSigun(), ploggings.get(i).getCrsTourInfo()));
                             }
                             else {
-                                if (ploggings.get(i).getSigun().contains(local)) {
-                                    filteredPlogging.add(ploggings.get(i));
+                                filteredPlogging.add(new SelectItem(null, ploggings.get(i).getCrsKorNm(), ploggings.get(i).getSigun(), ploggings.get(i).getCrsLevel()));
                                 }
-                            }
-                            PloggingAdapter adapter = new PloggingAdapter(getActivity(), filteredPlogging);
+                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredPlogging);
                             list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
 
@@ -393,20 +396,20 @@ public class AddScheduleFragment extends Fragment {
                 ArrayList<Lodging> lodgings = getXmlData.getLodgingData(getActivity());
 
                 getActivity().runOnUiThread(new Runnable() {
-                    ArrayList<Lodging> filteredLodging = new ArrayList<Lodging>();
+                    ArrayList<SelectItem> filteredLodging = new ArrayList<SelectItem>();
 
                     @Override
                     public void run() {
                         for(int i = 0; i< lodgings.size(); i++) {
                             if (local.equals("전체 지역") || local.equals("전체")) {
-                                filteredLodging.add(lodgings.get(i));
+                                filteredLodging.add(new SelectItem(lodgings.get(i).getFirstImage(),lodgings.get(i).getTitle(), lodgings.get(i).getAddr1(), lodgings.get(i).getAddr2()));
                             }
                             else {
                                 if (lodgings.get(i).getAddr1().contains(local)) {
-                                    filteredLodging.add(lodgings.get(i));
+                                    filteredLodging.add(new SelectItem(lodgings.get(i).getFirstImage(),lodgings.get(i).getTitle(), lodgings.get(i).getAddr1(), lodgings.get(i).getAddr2()));
                                 }
                             }
-                            LodgingAdapter adapter = new LodgingAdapter(getActivity(), filteredLodging);
+                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredLodging);
                             list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
 
@@ -427,18 +430,18 @@ public class AddScheduleFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ArrayList<ZeroWaste> filteredZeroWaste = new ArrayList<ZeroWaste>();
+                        ArrayList<SelectItem> filteredZeroWaste = new ArrayList<SelectItem>();
 
                         for(int i = 0; i< zeroWastes.size(); i++) {
                             if (local.equals("전체 지역") || local.equals("전체")) {
-                                filteredZeroWaste.add(zeroWastes.get(i));
+                                filteredZeroWaste.add(new SelectItem(null, zeroWastes.get(i).getName(),zeroWastes.get(i).getLocation(),zeroWastes.get(i).getReason()));
                             }
                             else {
                                 if (zeroWastes.get(i).getLocation().contains(local)) {
-                                    filteredZeroWaste.add(zeroWastes.get(i));
+                                    filteredZeroWaste.add(new SelectItem(null, zeroWastes.get(i).getName(),zeroWastes.get(i).getLocation(),zeroWastes.get(i).getReason()));
                                 }
                             }
-                            ZeroWasteAdapter adapter = new com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter(getActivity(), filteredZeroWaste);
+                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredZeroWaste);
                             list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
                          }

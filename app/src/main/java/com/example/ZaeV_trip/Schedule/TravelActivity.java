@@ -88,22 +88,11 @@ public class TravelActivity extends AppCompatActivity {
         TravelItem item1 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행1");
         TravelItem item2 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행2");
         TravelItem item3 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행3");
-        TravelItem item4 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행4");
-        TravelItem item5 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행5");
-        TravelItem item6 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행6");
-        TravelItem item7 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행7");
-        TravelItem item8 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행8");
-        TravelItem item9 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행9");
 
         listAdapter.addItem(item1);
         listAdapter.addItem(item2);
         listAdapter.addItem(item3);
-        listAdapter.addItem(item4);
-        listAdapter.addItem(item5);
-        listAdapter.addItem(item6);
-        listAdapter.addItem(item7);
-        listAdapter.addItem(item8);
-        listAdapter.addItem(item9);
+
 
         listAdapter.setOnItemClickListener(new OnTravelItemClickListener() {
             @Override
