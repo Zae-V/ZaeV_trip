@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@+id/categoryLayout1"
+                app:layout_constraintBottom_toTopOf="@id/categoryLayout1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -94,7 +94,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="30dp"
-                app:layout_constraintTop_toTopOf="@+id/Position">
+                app:layout_constraintTop_toTopOf="@id/Position">
 
                 <android.widget.Button
                     android:id="@+id/spotBtn"
@@ -106,7 +106,7 @@
                     android:text="관광명소"
                     android:textColor="#E6000000"
                     android:textSize="11dp"
-                    app:layout_constraintEnd_toStartOf="@+id/hotelBtn"
+                    app:layout_constraintEnd_toStartOf="@id/hotelBtn"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -122,8 +122,8 @@
                     android:text="숙소"
                     android:textColor="#E6000000"
                     android:textSize="11dp"
-                    app:layout_constraintEnd_toStartOf="@+id/restaurantBtn"
-                    app:layout_constraintStart_toEndOf="@+id/spotBtn"
+                    app:layout_constraintEnd_toStartOf="@id/restaurantBtn"
+                    app:layout_constraintStart_toEndOf="@id/spotBtn"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <android.widget.Button
@@ -136,8 +136,8 @@
                     android:text="식당"
                     android:textColor="#E6000000"
                     android:textSize="11dp"
-                    app:layout_constraintEnd_toStartOf="@+id/cafeBtn"
-                    app:layout_constraintStart_toEndOf="@+id/hotelBtn"
+                    app:layout_constraintEnd_toStartOf="@id/cafeBtn"
+                    app:layout_constraintStart_toEndOf="@id/hotelBtn"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <android.widget.Button
@@ -151,7 +151,7 @@
                     android:textColor="#E6000000"
                     android:textSize="11dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/restaurantBtn"
+                    app:layout_constraintStart_toEndOf="@id/restaurantBtn"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                app:layout_constraintTop_toBottomOf="@+id/categoryLayout1">
+                app:layout_constraintTop_toBottomOf="@id/categoryLayout1">
 
                 <android.widget.Button
                     android:id="@+id/reuseBtn"
@@ -173,7 +173,7 @@
                     android:text="다회용기"
                     android:textColor="#E6000000"
                     android:textSize="11dp"
-                    app:layout_constraintEnd_toStartOf="@+id/ploggingBtn"
+                    app:layout_constraintEnd_toStartOf="@id/ploggingBtn"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -189,8 +189,8 @@
                     android:text="플로깅"
                     android:textColor="#E6000000"
                     android:textSize="11dp"
-                    app:layout_constraintEnd_toStartOf="@+id/shopBtn"
-                    app:layout_constraintStart_toEndOf="@+id/reuseBtn"
+                    app:layout_constraintEnd_toStartOf="@id/shopBtn"
+                    app:layout_constraintStart_toEndOf="@id/reuseBtn"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <android.widget.Button
@@ -203,8 +203,8 @@
                     android:text="제로웨이스트 샵"
                     android:textColor="#E6000000"
                     android:textSize="11dp"
-                    app:layout_constraintEnd_toStartOf="@+id/allBtn"
-                    app:layout_constraintStart_toEndOf="@+id/ploggingBtn"
+                    app:layout_constraintEnd_toStartOf="@id/allBtn"
+                    app:layout_constraintStart_toEndOf="@id/ploggingBtn"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <android.widget.Button
@@ -218,7 +218,7 @@
                     android:textColor="#E6000000"
                     android:textSize="11dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/shopBtn"
+                    app:layout_constraintStart_toEndOf="@id/shopBtn"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -229,7 +229,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                app:layout_constraintTop_toBottomOf="@+id/categoryLayout2">
+                app:layout_constraintTop_toBottomOf="@id/categoryLayout2">
 
                 <TextView
                     android:id="@+id/title1"
@@ -239,6 +239,7 @@
                     android:text="지금 뜨고있는 이벤트 🎊"
                     android:textColor="@color/black"
                     android:textSize="17dp"
+                    app:layout_constraintTop_toTopOf="@id/RecommendLayout1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -258,7 +259,7 @@
 <!--                    android:scrollbars="none"-->
 <!--                    app:layout_constraintEnd_toEndOf="parent"-->
 <!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/title1">-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/title1">-->
 
 <!--                    <LinearLayout-->
 <!--                        android:layout_width="wrap_content"-->
@@ -322,7 +323,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                app:layout_constraintTop_toBottomOf="@+id/RecommendLayout1">
+                app:layout_constraintTop_toBottomOf="@id/RecommendLayout1">
 
                 <TextView
                     android:id="@+id/title2"
@@ -332,69 +333,19 @@
                     android:text="근처에 있는 비건 식당 🥗 "
                     android:textColor="@color/black"
                     android:textSize="17dp"
+                    app:layout_constraintTop_toTopOf="@id/RecommendLayout2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <HorizontalScrollView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/veganRestaurant_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:scrollbars="none"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/title2"
+                    app:layout_constraintTop_toBottomOf="@id/title2">
+                </androidx.recyclerview.widget.RecyclerView>
 
-                    >
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <View
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/profile_rounded_shape"
-                            android:elevation="3dp" />
-
-                        <View
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/profile_rounded_shape"
-                            android:elevation="3dp" />
-
-                        <View
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/profile_rounded_shape"
-                            android:elevation="3dp" />
-
-                        <View
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/profile_rounded_shape"
-                            android:elevation="3dp" />
-
-                        <View
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/profile_rounded_shape"
-                            android:elevation="3dp" />
-                    </LinearLayout>
-                </HorizontalScrollView>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -403,7 +354,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                app:layout_constraintTop_toBottomOf="@+id/RecommendLayout2">
+                app:layout_constraintTop_toBottomOf="@id/RecommendLayout2">
 
                 <TextView
                     android:id="@+id/title3"
@@ -413,6 +364,7 @@
                     android:text="자전거 추천 코스 🚲 ‍"
                     android:textColor="@color/black"
                     android:textSize="17dp"
+                    app:layout_constraintTop_toTopOf="@id/RecommendLayout3"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -432,7 +384,7 @@
 <!--                    android:scrollbars="none"-->
 <!--                    app:layout_constraintEnd_toEndOf="parent"-->
 <!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/title3"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/title3"-->
 
 <!--                    >-->
 
@@ -491,7 +443,7 @@
                 android:id="@+id/blankView"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                app:layout_constraintTop_toBottomOf="@+id/RecommendLayout3" />
+                app:layout_constraintTop_toBottomOf="@id/RecommendLayout3" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
