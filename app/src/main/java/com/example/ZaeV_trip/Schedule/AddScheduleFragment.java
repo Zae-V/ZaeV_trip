@@ -331,7 +331,7 @@ public class AddScheduleFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ArrayList<Restaurant> restaurants = getXmlData.getRestaurantData(getActivity());
+                ArrayList<Restaurant> restaurants = getXmlData.getRestaurantData(getActivity(), "860", "1859");
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override

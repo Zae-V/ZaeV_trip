@@ -453,7 +453,7 @@ public class getXmlData {
 
     }
 
-    public static ArrayList<Restaurant> getRestaurantData(Context cnt){
+    public static ArrayList<Restaurant> getRestaurantData(Context cnt, String startIdx, String endIdx){
         ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
         String key= cnt.getString(R.string.vegan_key);
         String address = "http://openapi.seoul.go.kr:8088/";
@@ -461,10 +461,13 @@ public class getXmlData {
         String startIndex = "1";
         String endIndex = "1000";
 
+
         String queryUrl = address + key
                 + "/xml/" + listType
-                + "/" + startIndex
-                + "/" + endIndex + "/";
+                + "/" + startIdx
+                + "/" + endIdx + "/";
+        Log.d("테스트", queryUrl);
+
         try{
             URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
             InputStream is= url.openStream(); //url위치로 입력스트림 연결
@@ -527,6 +530,7 @@ public class getXmlData {
 
                         if(tag.equals("row")) {
                             restaurants.add(restaurant);
+                            Log.d("테스트",restaurant.getName());
                         };// 첫번째 검색결과종료..줄바꿈
                         break;
                 }

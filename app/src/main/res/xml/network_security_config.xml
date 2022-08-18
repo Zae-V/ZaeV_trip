@@ -5,11 +5,6 @@
             <certificates src="system" />
         </trust-anchors>
     </base-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">kakao.com</domain>
-        <domain includeSubdomains="true">map.kakao.com</domain>
-        <domain includeSubdomains="true">place.map.kakao.com</domain>
-        <domain includeSubdomains="true">192.168.18.13</domain>
-    </domain-config>
+
 
 </network-security-config>

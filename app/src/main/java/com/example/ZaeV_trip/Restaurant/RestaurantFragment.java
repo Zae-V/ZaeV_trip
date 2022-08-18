@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,10 +21,20 @@ import com.example.ZaeV_trip.model.Restaurant;
 import com.example.ZaeV_trip.util.AddrSearchRepository;
 import com.example.ZaeV_trip.util.Location;
 import com.example.ZaeV_trip.util.ScrollWebView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RestaurantFragment extends Fragment {
+    FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
+    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
     ArrayList<Restaurant> vegans = new ArrayList<>();
     ArrayList<Restaurant> lactos = new ArrayList<>();
     ArrayList<Restaurant> ovos = new ArrayList<>();
@@ -41,8 +53,11 @@ public class RestaurantFragment extends Fragment {
     TextView lactoOvoText;
     TextView pescoText;
 
+    ImageView bookmarkBtn;
+
+
     ScrollWebView webView = null;
-    String id = "";
+    String kakaoId = "";
 
 
     @Override
@@ -77,7 +92,11 @@ public class RestaurantFragment extends Fragment {
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient()); // 새 창 띄우지 않기
         webView.getSettings().setJavaScriptEnabled(true);
-//        webView.getSettings().setSupportZoom(false); // 줌 확대/축소 버튼 없음
+
+        bookmarkBtn = (ImageView) v.findViewById(R.id.restaurantBookmarkBtn);
+
+
+
 
         Boolean isVegan = false;
         Boolean isLacto = false;
@@ -88,15 +107,16 @@ public class RestaurantFragment extends Fragment {
         //Bundle
         String name = getArguments().getString("name");
         String location = getArguments().getString("location");
+        String id = getArguments().getString("id");
         String category = getArguments().getString("category");
         String x = getArguments().getString("x");
         String y = getArguments().getString("y");
         String number = getArguments().getString("number");
         String menu = getArguments().getString("menu");
 
-        Log.d("테스트", "x좌표:"+ x + " y좌표:" + y);
-        Log.d("테스트", "주소:" + location);
-        Log.d("테스트", "주소 슬라이스:" + location.substring(0, 9));
+//        Log.d("테스트", "x좌표:"+ x + " y좌표:" + y);
+//        Log.d("테스트", "주소:" + location);
+//        Log.d("테스트", "주소 슬라이스:" + location.substring(0, 9));
 
         // 카카오 REST API로 장소 아이디 받아오기
         searchKeyword(name, location, x, y);
@@ -167,6 +187,37 @@ public class RestaurantFragment extends Fragment {
             pescoList.setAdapter(adapter);
             pescoText.setVisibility(v.VISIBLE);
         }
+        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        bookmarkBtn.setActivated(true);
+                    } else {
+                        bookmarkBtn.setActivated(false);
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
+
+        bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bookmarkBtn.setActivated(!bookmarkBtn.isActivated());
+                if (!bookmarkBtn.isActivated()){
+                    // 취소 동작
+                    deleteBookmark(id);
+                }
+                else if(bookmarkBtn.isActivated()){
+                    // 선택 동작
+                    writeBookmark(name, location, x, y, id, number, menu);
+                }
+
+            }
+        });
 
         return v;
     }
@@ -187,9 +238,9 @@ public class RestaurantFragment extends Fragment {
             public void onSuccessResponse(Location locationData) {
                 // 제일 상단의 검색 결과 ID 가져오기
                 if(locationData.documentsList.size() != 0){
-                    id = locationData.documentsList.get(0).getId();
-                    Log.d("테스트", id);
-                    webView.loadUrl("https://place.map.kakao.com/" + id);
+                    kakaoId = locationData.documentsList.get(0).getId();
+                    Log.d("테스트", kakaoId);
+                    webView.loadUrl("https://place.map.kakao.com/" + kakaoId);
                 }
                 else{
                     webView.setVisibility(View.GONE);
@@ -201,5 +252,22 @@ public class RestaurantFragment extends Fragment {
                 Log.d("테스트", "실패");
             }
         });
+    }
+
+    private void writeBookmark(String name, String location, String x, String y, String id, String number, String menu){
+        Map<String, Object> info = new HashMap<>();
+        info.put("name", name);
+        info.put("type", "식당");
+        info.put("address", location);
+        info.put("position_x", x);
+        info.put("position_y", y);
+        info.put("serialNumber", id);
+        info.put("tel", number);
+        info.put("menu", menu);
+
+        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(id).set(info);
+    }
+    private void deleteBookmark(String id){
+        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(id).delete();
     }
 }
