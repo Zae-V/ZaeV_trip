@@ -48,8 +48,8 @@ public class LodgingFragment extends Fragment {
 
         TextView list_name = v.findViewById(R.id.list_name);
         TextView list_location = v.findViewById(R.id.list_location);
-        //TextView overview = v.findViewById(R.id.overview);
-        //TextView homepage = v.findViewById(R.id.homepage);
+        TextView overview = v.findViewById(R.id.overview);
+        TextView homepage = v.findViewById(R.id.homepage);
         ImageView content_img = v.findViewById(R.id.content_img);
         ImageView content_img2 = v.findViewById(R.id.content_img2);
 
@@ -65,11 +65,11 @@ public class LodgingFragment extends Fragment {
                     @Override
                     public void run() {
                         if (!lodging.getOverview().equals("")) {
-                            //overview.setText(Html.fromHtml(lodging.getOverview()));
+                            overview.setText(Html.fromHtml(lodging.getOverview()));
                         }
 
                         if (!lodging.getOverview().equals("")) {
-                            //homepage.setText(Html.fromHtml(lodging.getHomepage()));
+                            homepage.setText(Html.fromHtml(lodging.getHomepage()));
                         }
 
                         if (!lodging.getFirstImage().equals("")) {

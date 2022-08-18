@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LodgingAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip.Lodging.LodgingAdapter.ViewHolder> implements Filterable {
-    com.example.ZaeV_trip.Lodging.LodgingAdapter.LodgingFilter filter = new com.example.ZaeV_trip.Lodging.LodgingAdapter.LodgingFilter();
+public class LodgingAdapter extends RecyclerView.Adapter<LodgingAdapter.ViewHolder> implements Filterable {
+    LodgingAdapter.LodgingFilter filter = new LodgingAdapter.LodgingFilter();
     Context context;
     LayoutInflater inflater;
     ArrayList<Lodging> lodgings;
@@ -50,18 +50,18 @@ public class LodgingAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip.L
 
     @NonNull
     @Override
-    public com.example.ZaeV_trip.Lodging.LodgingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public LodgingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.item_tourist_spot, parent, false);
-        com.example.ZaeV_trip.Lodging.LodgingAdapter.ViewHolder viewHolder = new com.example.ZaeV_trip.Lodging.LodgingAdapter.ViewHolder(context, view);
+        LodgingAdapter.ViewHolder viewHolder = new LodgingAdapter.ViewHolder(context, view);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull com.example.ZaeV_trip.Lodging.LodgingAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LodgingAdapter.ViewHolder holder, int position) {
 
         Glide.with(holder.itemView.getContext())
                 .load(filtered.get(position).getFirstImage())
@@ -138,9 +138,9 @@ public class LodgingAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip.L
         void onItemClick(View v, int pos);
     }
 
-    private com.example.ZaeV_trip.Lodging.LodgingAdapter.OnItemClickListener mListener = null;
+    private LodgingAdapter.OnItemClickListener mListener = null;
 
-    public void setOnItemClickListener(com.example.ZaeV_trip.Lodging.LodgingAdapter.OnItemClickListener listener) {
+    public void setOnItemClickListener(LodgingAdapter.OnItemClickListener listener) {
         this.mListener = listener;
     }
 
