@@ -1,7 +1,7 @@
 package com.example.ZaeV_trip.Lodging;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,30 +15,27 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.ZaeV_trip.Lodging.LodgingActivity;
-import com.example.ZaeV_trip.Lodging.LodgingAdapter;
 import com.example.ZaeV_trip.R;
-import com.example.ZaeV_trip.Lodging.LodgingAdapter;
 import com.example.ZaeV_trip.model.Lodging;
-import com.example.ZaeV_trip.model.Lodging;
-import com.example.ZaeV_trip.model.Lodging;
-import com.example.ZaeV_trip.model.Lodging;
-import com.example.ZaeV_trip.model.Lodging;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LodgingAdapter extends RecyclerView.Adapter<LodgingAdapter.ViewHolder> implements Filterable {
-    LodgingAdapter.LodgingFilter filter = new LodgingAdapter.LodgingFilter();
+public class LodgingAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip.Lodging.LodgingAdapter.ViewHolder> implements Filterable {
+    com.example.ZaeV_trip.Lodging.LodgingAdapter.LodgingFilter filter = new com.example.ZaeV_trip.Lodging.LodgingAdapter.LodgingFilter();
     Context context;
     LayoutInflater inflater;
     ArrayList<Lodging> lodgings;
     ArrayList<Lodging> filtered;
-    FirebaseFirestore mDatabase;
+    FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
+    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     public LodgingAdapter() {
 
@@ -53,18 +50,18 @@ public class LodgingAdapter extends RecyclerView.Adapter<LodgingAdapter.ViewHold
 
     @NonNull
     @Override
-    public LodgingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public com.example.ZaeV_trip.Lodging.LodgingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.item_tourist_spot, parent, false);
-        LodgingAdapter.ViewHolder viewHolder = new LodgingAdapter.ViewHolder(context, view);
+        com.example.ZaeV_trip.Lodging.LodgingAdapter.ViewHolder viewHolder = new com.example.ZaeV_trip.Lodging.LodgingAdapter.ViewHolder(context, view);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LodgingAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull com.example.ZaeV_trip.Lodging.LodgingAdapter.ViewHolder holder, int position) {
 
         Glide.with(holder.itemView.getContext())
                 .load(filtered.get(position).getFirstImage())
@@ -76,6 +73,22 @@ public class LodgingAdapter extends RecyclerView.Adapter<LodgingAdapter.ViewHold
         holder.nameview.setText(filtered.get(position).getTitle());
         holder.locview.setText(filtered.get(position).getAddr1());
         holder.catview.setText(filtered.get(position).getAddr2());
+
+        mDatabase.collection("BookmarkItem").document(userId).collection("lodging").document(filtered.get(position).getContentID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        holder.bookmarkbtn.setActivated(true);
+                    } else {
+                        holder.bookmarkbtn.setActivated(false);
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     @Override
@@ -125,9 +138,9 @@ public class LodgingAdapter extends RecyclerView.Adapter<LodgingAdapter.ViewHold
         void onItemClick(View v, int pos);
     }
 
-    private LodgingAdapter.OnItemClickListener mListener = null;
+    private com.example.ZaeV_trip.Lodging.LodgingAdapter.OnItemClickListener mListener = null;
 
-    public void setOnItemClickListener(LodgingAdapter.OnItemClickListener listener) {
+    public void setOnItemClickListener(com.example.ZaeV_trip.Lodging.LodgingAdapter.OnItemClickListener listener) {
         this.mListener = listener;
     }
 
@@ -137,6 +150,7 @@ public class LodgingAdapter extends RecyclerView.Adapter<LodgingAdapter.ViewHold
         public TextView locview;
         public TextView catview;
         public ImageView imgView;
+        public ImageView bookmarkbtn;
 
         public ViewHolder(Context context, @NonNull View itemView) {
             super(itemView);
@@ -145,7 +159,7 @@ public class LodgingAdapter extends RecyclerView.Adapter<LodgingAdapter.ViewHold
             locview = itemView.findViewById(R.id.list_location);
             catview = itemView.findViewById(R.id.list_category);
 
-            ImageView bookmarkbtn = itemView.findViewById(R.id.bookmarkBtn);
+            bookmarkbtn = itemView.findViewById(R.id.bookmarkBtn);
             imgView = itemView.findViewById(R.id.list_image);
 
 
@@ -185,7 +199,7 @@ public class LodgingAdapter extends RecyclerView.Adapter<LodgingAdapter.ViewHold
         mDatabase = FirebaseFirestore.getInstance();
         Map<String, Object> info = new HashMap<>();
         info.put("name", filtered.get(position).getTitle());
-        info.put("type", "관광명소");
+        info.put("type", "숙소");
         info.put("address", filtered.get(position).getAddr1());
         info.put("position_x", filtered.get(position).getMapX());
         info.put("position_y", filtered.get(position).getMapY());
