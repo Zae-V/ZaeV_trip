@@ -159,10 +159,9 @@ public class BookmarkActivity extends AppCompatActivity {
                     QuerySnapshot query = task.getResult();
                     for(QueryDocumentSnapshot document : query){
                         Restaurant restaurant = new Restaurant("","","","","","","","","");
-                        restaurant.setContentID(String.valueOf(document.getData().get("serialNumber")));
-                        restaurant.setAddr1(String.valueOf(document.getData().get("address")));
-                        restaurant.setTitle(String.valueOf(document.getData().get("name")));
-                        restaurant.setFirstImage(String.valueOf(document.getData().get("image")));
+                        restaurant.setId(String.valueOf(document.getData().get("serialNumber")));
+                        restaurant.setLocation(String.valueOf(document.getData().get("address")));
+                        restaurant.setName(String.valueOf(document.getData().get("name")));
                         restaurant.setMapX(String.valueOf(document.getData().get("position_x")));
                         restaurant.setMapY(String.valueOf(document.getData().get("position_y")));
                         restaurant.setNumber(String.valueOf(document.getData().get("tel")));
