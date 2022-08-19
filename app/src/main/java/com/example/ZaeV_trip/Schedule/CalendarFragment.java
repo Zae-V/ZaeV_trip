@@ -84,8 +84,6 @@ public class CalendarFragment extends Fragment{
                         String dateString1 = simpleDateFormat.format(date1);
                         String dateString2 = simpleDateFormat.format(date2);
 
-                        endDateTextView.setText(dateString1 + "\n" + dateString2);
-
 
                         long calculate = date1.getTime() - date2.getTime();
                         int Ddays = (int) (calculate / (24*60*60*1000));
