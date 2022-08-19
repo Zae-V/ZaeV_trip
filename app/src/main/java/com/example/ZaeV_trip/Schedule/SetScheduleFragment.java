@@ -11,6 +11,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,8 +19,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -29,25 +32,45 @@ import java.util.Map;
 
 public class SetScheduleFragment extends Fragment {
 
-    EditText title;
+    TextView title;
     Integer Dday;
     Date startDate;
     Date endDate;
     RecyclerView recyclerView;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+    String docId;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_set_schedule, container, false);
 
+        Button Btn = v.findViewById(R.id.selectFab);
+
+        Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),TravelActivity.class);
+                startActivity(intent);
+            }
+        });
+
         TravelActivity travelActivity = (TravelActivity) getActivity();
         travelActivity.fab.setVisibility(View.GONE);
         travelActivity.bottomNavigationView.setVisibility(View.GONE);
 
         Intent intent = this.getActivity().getIntent();
-        Dday = Math.abs(intent.getIntExtra("Dday",0));
-        startDate = (Date) intent.getSerializableExtra("startDate");
-        endDate = (Date) intent.getSerializableExtra("endDate");
+
+        if(intent != null){
+            Dday = Math.abs(intent.getIntExtra("Dday",0));
+            startDate = (Date) intent.getSerializableExtra("startDate");
+            endDate = (Date) intent.getSerializableExtra("endDate");
+            saveScheduleInDB(startDate, endDate);
+
+        }
 
 
         ImageView editTitleImageView = v.findViewById(R.id.editTitleImageView);
@@ -93,12 +116,14 @@ public class SetScheduleFragment extends Fragment {
         Button cancelBtn = dialog.findViewById(R.id.cancelBtn);
         EditText setTitle = dialog.findViewById(R.id.set_title);
 
+        setTitle.setText(title.getText());
+
         okBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 title.setText(setTitle.getText());
                 dialog.hide();
-                saveScheduleInDB(startDate, endDate, String.valueOf(setTitle.getText()));
+                updateScheduleDB(String.valueOf(setTitle.getText()));
 
             }
         });
@@ -112,16 +137,24 @@ public class SetScheduleFragment extends Fragment {
     }
 
 
-    public void saveScheduleInDB(Date startDate, Date endDate, String name){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
+    public void saveScheduleInDB(Date startDate, Date endDate){
         Map<String, Object> schedule = new HashMap<>();
-        schedule.put("name", name);
         schedule.put("startDate", startDate);
         schedule.put("endDate", endDate);
+        schedule.put("name","제목없음");
 
-        db.collection("Schedule").document(uid).collection("schedule").document().set(schedule);
+        DocumentReference doc = db.collection("Schedule").document(uid).collection("schedule").document();
+        docId = doc.getId();
+        doc.set(schedule);
+
+
+    }
+
+    public void updateScheduleDB(String name){
+        if(docId != null){
+            db.collection("Schedule").document(uid).collection("schedule").document(docId).update("name",name);
+        }
+
     }
 
 }

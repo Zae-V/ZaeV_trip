@@ -27,17 +27,17 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="25dp">
 
-                <EditText
+                <TextView
                     android:id="@+id/travel_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="여행 제목을 정해주세요!"
+                    android:hint="여행 제목을 정해주세요!"
                     android:fontFamily="@font/notosans_bold"
                     android:layout_marginStart="30dp"
                     android:textSize="20dp"
-                    android:enabled="false"
-                    android:background="@null">
-                </EditText>
+                    android:background="@null"
+                    >
+                </TextView>
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -61,7 +61,7 @@
                     android:id="@+id/travelImageView"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:src="@drawable/vegan_burger">
+                    android:src="@drawable/default_bird_img">
                 </ImageView>
             </LinearLayout>
 
@@ -81,4 +81,23 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <android.widget.Button
+        android:id="@+id/selectFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="확인"
+        android:background="@drawable/rounded_btn_green"
+        android:gravity="center_horizontal|center_vertical"
+        android:fontFamily="@font/notosans_bold"
+        android:textSize="15dp"
+        android:textColor="#2E2E2E"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        app:fabSize="auto"
+        app:tint="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent "/>
 </androidx.constraintlayout.widget.ConstraintLayout>
