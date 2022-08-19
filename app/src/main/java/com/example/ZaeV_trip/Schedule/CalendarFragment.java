@@ -57,8 +57,6 @@ public class CalendarFragment extends Fragment{
         travelActivity.fab.setVisibility(View.GONE);
 
         searchDateBtn = v.findViewById(R.id.searchDate);
-        startDateTextView = v.findViewById(R.id.startDateTextView);
-        endDateTextView = v.findViewById(R.id.endDateTextView);
 
         searchDateBtn.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
@@ -66,9 +64,6 @@ public class CalendarFragment extends Fragment{
             public void onClick(View view) {
                 MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
                 builder.setTitleText("Date Picker");
-
-                //미리 날짜 선택
-                builder.setSelection(Pair.create(MaterialDatePicker.thisMonthInUtcMilliseconds(), MaterialDatePicker.todayInUtcMilliseconds()));
 
                 MaterialDatePicker materialDatePicker = builder.build();
 
