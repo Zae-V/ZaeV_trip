@@ -51,7 +51,7 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
         context = parent.getContext();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View view = inflater.inflate(R.layout.item_cafe, parent, false);
+        View view = inflater.inflate(R.layout.item_zero_waste, parent, false);
         com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter.ViewHolder viewHolder = new com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter.ViewHolder(context, view);
 
         return viewHolder;
