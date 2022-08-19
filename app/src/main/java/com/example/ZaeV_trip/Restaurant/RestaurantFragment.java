@@ -95,9 +95,6 @@ public class RestaurantFragment extends Fragment {
 
         bookmarkBtn = (ImageView) v.findViewById(R.id.restaurantBookmarkBtn);
 
-
-
-
         Boolean isVegan = false;
         Boolean isLacto = false;
         Boolean isOvo = false;
