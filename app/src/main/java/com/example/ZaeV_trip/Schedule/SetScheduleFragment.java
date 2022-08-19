@@ -19,13 +19,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ZaeV_trip.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SetScheduleFragment extends Fragment {
 
     EditText title;
     Integer Dday;
+    Date startDate;
+    Date endDate;
     RecyclerView recyclerView;
 
     @Nullable
@@ -39,6 +46,8 @@ public class SetScheduleFragment extends Fragment {
 
         Intent intent = this.getActivity().getIntent();
         Dday = Math.abs(intent.getIntExtra("Dday",0));
+        startDate = (Date) intent.getSerializableExtra("startDate");
+        endDate = (Date) intent.getSerializableExtra("endDate");
 
 
         ImageView editTitleImageView = v.findViewById(R.id.editTitleImageView);
@@ -58,14 +67,6 @@ public class SetScheduleFragment extends Fragment {
             }
         });
 
-//        Button addBtn = v.findViewById(R.id.addBtn);
-//        addBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                TravelActivity activity = (TravelActivity) getActivity();
-//                activity.changeFragment(2);
-//            }
-//        });
         ArrayList<Integer> Ddays = new ArrayList<Integer>();
 
         for(int i = 0 ; i <= Dday ; i ++){
@@ -97,6 +98,8 @@ public class SetScheduleFragment extends Fragment {
             public void onClick(View v){
                 title.setText(setTitle.getText());
                 dialog.hide();
+                saveScheduleInDB(startDate, endDate, String.valueOf(setTitle.getText()));
+
             }
         });
 
@@ -107,4 +110,18 @@ public class SetScheduleFragment extends Fragment {
             }
         });
     }
+
+
+    public void saveScheduleInDB(Date startDate, Date endDate, String name){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        Map<String, Object> schedule = new HashMap<>();
+        schedule.put("name", name);
+        schedule.put("startDate", startDate);
+        schedule.put("endDate", endDate);
+
+        db.collection("Schedule").document(uid).collection("schedule").document().set(schedule);
+    }
+
 }
