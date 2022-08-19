@@ -1,5 +1,6 @@
 package com.example.ZaeV_trip.Schedule;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,10 +21,20 @@ import com.example.ZaeV_trip.Profile.ProfileActivity;
 import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.util.ItemTouchHelperCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class TravelActivity extends AppCompatActivity {
 
@@ -32,6 +43,9 @@ public class TravelActivity extends AppCompatActivity {
     ArrayList<TravelItem> items = new ArrayList<>();
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +88,7 @@ public class TravelActivity extends AppCompatActivity {
         scheduleRecyclerView.setHasFixedSize(true);
         listAdapter = new TravelListAdapter(items);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        scheduleRecyclerView.setLayoutManager(mLayoutManager);
-        scheduleRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        scheduleRecyclerView.setAdapter(listAdapter);
+
 
         //ItemTouchHelper 생성
         ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(listAdapter);
@@ -85,14 +96,38 @@ public class TravelActivity extends AppCompatActivity {
         touchHelper.attachToRecyclerView(scheduleRecyclerView);
 
         //Adapter에 데이터 추가
-        TravelItem item1 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행1");
-        TravelItem item2 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행2");
-        TravelItem item3 = new TravelItem(R.drawable.profile_img,"2020.04.14 ~ 2020.05.15", "ㅇㅇ여행3");
+        db.collection("Schedule").document(uid).collection("schedule").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    QuerySnapshot query = task.getResult();
+                    for(QueryDocumentSnapshot document : query){
+                        TravelItem item = new TravelItem(R.drawable.default_bird_img,"","");
+                        item.setName(String.valueOf(document.getData().get("name")));
 
-        listAdapter.addItem(item1);
-        listAdapter.addItem(item2);
-        listAdapter.addItem(item3);
+                        Timestamp startStamp = (Timestamp) document.getData().get("startDate");
+                        Date startDate = startStamp.toDate();
+                        Calendar calendar1 = new GregorianCalendar();
+                        calendar1.setTime(startDate);
 
+                        Timestamp endStamp = (Timestamp) document.getData().get("endDate");
+                        Date endDate = endStamp.toDate();
+                        Calendar calendar2 = new GregorianCalendar();
+                        calendar2.setTime(endDate);
+
+                        item.setDate(calendar1.get(Calendar.YEAR) + "." + String.valueOf(calendar1.get(Calendar.MONTH)+1) + "." +calendar1.get(Calendar.DAY_OF_MONTH)
+                        + " ~ " + calendar2.get(Calendar.YEAR) + "." + String.valueOf(calendar2.get(Calendar.MONTH)+1) + "." +calendar2.get(Calendar.DAY_OF_MONTH)
+                        );
+
+                        listAdapter.addItem(item);
+                    }
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(TravelActivity.this);
+                    scheduleRecyclerView.setLayoutManager(mLayoutManager);
+                    scheduleRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                    scheduleRecyclerView.setAdapter(listAdapter);
+                }
+            }
+        });
 
         listAdapter.setOnItemClickListener(new OnTravelItemClickListener() {
             @Override
@@ -135,15 +170,6 @@ public class TravelActivity extends AppCompatActivity {
             }
             return false;
         });
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("TAG!", "onStop()");
-        // 작동안됨
-        bottomNavigationView.setVisibility(View.GONE);
-        fab.setVisibility(View.GONE);
     }
 
     @Override
