@@ -353,5 +353,23 @@ public class SignUtil {
                     }
                 });
     }
+
+    public static void findPassword(Context ctx, String email) {
+        if (email != "") {
+            mAuth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(ctx.getApplicationContext(),"비밀번호 재설정 이메일이 전송되었습니다.",Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(ctx.getApplicationContext(),"가입된 계정이 존재하지 않습니다.",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        } else {
+            Toast.makeText(ctx.getApplicationContext(),"",Toast.LENGTH_SHORT).show();
+        }
+    }
 }
 
