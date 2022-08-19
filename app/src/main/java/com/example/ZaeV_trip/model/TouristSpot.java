@@ -1,6 +1,8 @@
 package com.example.ZaeV_trip.model;
 
-public class TouristSpot {
+import java.io.Serializable;
+
+public class TouristSpot implements Serializable {
     private String contentID;
     private String addr1;
     private String addr2;
@@ -73,6 +75,8 @@ public class TouristSpot {
     public void setContentID(String contentID) {
         this.contentID = contentID;
     }
+
+    public TouristSpot() {}
 
     public TouristSpot(String contentID, String addr1, String addr2, String firstImage, String firstImage2, String mapX, String mapY, String title) {
         this.contentID = contentID;

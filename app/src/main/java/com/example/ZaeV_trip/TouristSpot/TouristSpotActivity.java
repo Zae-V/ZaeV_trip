@@ -26,6 +26,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -89,12 +90,14 @@ public class TouristSpotActivity extends AppCompatActivity {
                                 @Override
                                 public void onItemClick(View v, int i) {
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("name", filteredTouristSpot.get(i).getTitle());
-                                    bundle.putString("contentID", filteredTouristSpot.get(i).getContentID());
-                                    bundle.putString("location", filteredTouristSpot.get(i).getAddr1());
-                                    bundle.putString("x", filteredTouristSpot.get(i).getMapX());
-                                    bundle.putString("y", filteredTouristSpot.get(i).getMapY());
-                                    bundle.putString("firstImg", filteredTouristSpot.get(i).getFirstImage());
+//                                    bundle.putString("name", filteredTouristSpot.get(i).getTitle());
+//                                    bundle.putString("contentID", filteredTouristSpot.get(i).getContentID());
+//                                    bundle.putString("location", filteredTouristSpot.get(i).getAddr1());
+//                                    bundle.putString("x", filteredTouristSpot.get(i).getMapX());
+//                                    bundle.putString("y", filteredTouristSpot.get(i).getMapY());
+//                                    bundle.putString("firstImg", filteredTouristSpot.get(i).getFirstImage());
+
+                                    bundle.putSerializable("touristSpot", (Serializable) filteredTouristSpot.get(i));
 
                                     TouristSpotFragment touristSpotFragment = new TouristSpotFragment();
                                     touristSpotFragment.setArguments(bundle);
