@@ -67,9 +67,9 @@ public class TouristSpotAdapter extends RecyclerView.Adapter<TouristSpotAdapter.
 
         Glide.with(holder.itemView.getContext())
                 .load(filtered.get(position).getFirstImage())
-                .placeholder(R.drawable.default_profile_image)
-                .error(R.drawable.default_profile_image)
-                .fallback(R.drawable.default_profile_image)
+                .placeholder(R.drawable.default_bird_img)
+                .error(R.drawable.default_bird_img)
+                .fallback(R.drawable.default_bird_img)
                 .into(holder.imgView);
 
         holder.nameview.setText(filtered.get(position).getTitle());
