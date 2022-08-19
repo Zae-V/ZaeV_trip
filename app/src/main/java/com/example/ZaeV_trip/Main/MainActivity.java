@@ -22,12 +22,14 @@ import com.example.ZaeV_trip.Festival.FestivalFragment;
 import com.example.ZaeV_trip.Lodging.LodgingActivity;
 import com.example.ZaeV_trip.Main.Bike.BikeAdapter;
 import com.example.ZaeV_trip.Main.EventList.EventAdapter;
+import com.example.ZaeV_trip.Main.VeganRestaurant.VeganRestaurantAdapter;
 import com.example.ZaeV_trip.Plogging.PloggingActivity;
 import com.example.ZaeV_trip.Plogging.PloggingAdapter;
 import com.example.ZaeV_trip.Plogging.PloggingFragment;
 import com.example.ZaeV_trip.Profile.ProfileActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Restaurant.RestaurantActivity;
+import com.example.ZaeV_trip.Restaurant.RestaurantFragment;
 import com.example.ZaeV_trip.Reusable.ReusableActivity;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
 import com.example.ZaeV_trip.Search.SearchActivity;
@@ -37,6 +39,7 @@ import com.example.ZaeV_trip.ZeroWaste.ZeroWasteActivity;
 import com.example.ZaeV_trip.model.Festival;
 import com.example.ZaeV_trip.model.Plogging;
 import com.example.ZaeV_trip.model.Restaurant;
+import com.example.ZaeV_trip.model.VeganRestaurant;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.type.DateTime;
 
@@ -55,10 +58,14 @@ public class MainActivity extends AppCompatActivity {
 
     TextView current;
     String local;
+    
     ArrayList<Festival> eventLists = new ArrayList<>();
     ArrayList<Plogging> bikes = new ArrayList<>();
+    ArrayList<VeganRestaurant> veganRestaurantLists = new ArrayList<>();
+    
     RecyclerView bikeList;
     RecyclerView eventList;
+    RecyclerView veganRestaurantList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         current = findViewById(R.id.currentPosition);
         bikeList = (RecyclerView) findViewById(R.id.bike_course_list);
         eventList = (RecyclerView) findViewById(R.id.event_list);
+        veganRestaurantList = (RecyclerView) findViewById(R.id.veganRestaurant_list);
 
         local = "전체";
         Bundle extras = getIntent().getExtras();
@@ -136,12 +144,10 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         for(int i = 0; i< eventLists.size();i++){
                             if(local.equals("전체 지역") || local.equals("전체")){
-//                                filteredBike.add(bikes.get(i));
                                 filteredEvent.add(eventLists.get(i));
                             }
                             else{
                                 if(eventLists.get(i).getAddr1().split(" ").length > 1 && eventLists.get(i).getAddr1().split(" ")[1].equals(local)){
-//                                    filteredBike.add(bikes.get(i));
                                     filteredEvent.add(eventLists.get(i));
                                 }
                             }
@@ -180,6 +186,65 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                veganRestaurantLists = getXmlVeganRestaurantData();
+
+                runOnUiThread(new Runnable() {
+                    ArrayList<VeganRestaurant> filteredVeganRestaurant = new ArrayList<>();
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < veganRestaurantLists.size(); i++) {
+                            if (veganRestaurantLists.get(i).getCategory() != null
+                                    && (!veganRestaurantLists.get(i).getCategory().equals("카페")
+                                    && !veganRestaurantLists.get(i).getCategory().equals("베이커리")
+                                    && !veganRestaurantLists.get(i).getCategory().equals("까페"))
+                                    && (veganRestaurantLists.get(i).getAuthType().equals("14")
+                                    || veganRestaurantLists.get(i).getAuthType().equals("18"))) {
+                                if (local.equals("전체 지역") || local.equals("전체")) {
+                                    filteredVeganRestaurant.add(veganRestaurantLists.get(i));
+                                } else {
+                                    if (veganRestaurantLists.get(i).getLocation().contains(local)) {
+                                        filteredVeganRestaurant.add(veganRestaurantLists.get(i));
+                                    }
+                                }
+                            }
+                        }
+
+                        VeganRestaurantAdapter veganRestaurantAdapter = new VeganRestaurantAdapter(MainActivity.this, filteredVeganRestaurant);
+                        veganRestaurantList.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false));
+                        veganRestaurantList.setAdapter(veganRestaurantAdapter);
+
+                        veganRestaurantAdapter.setOnItemClickListener(new VeganRestaurantAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View v, int i) {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("name", filteredVeganRestaurant.get(i).getName());
+                                bundle.putString("id", filteredVeganRestaurant.get(i).getId());
+                                bundle.putString("location", filteredVeganRestaurant.get(i).getLocation());
+                                bundle.putString("x", filteredVeganRestaurant.get(i).getMapX());
+                                bundle.putString("y", filteredVeganRestaurant.get(i).getMapY());
+                                bundle.putString("number", filteredVeganRestaurant.get(i).getNumber());
+                                bundle.putString("menu", filteredVeganRestaurant.get(i).getMenu());
+
+                                RestaurantFragment restaurantFragment = new RestaurantFragment();
+                                restaurantFragment.setArguments(bundle);
+
+                                FragmentManager fragmentManager = getSupportFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.main_container, restaurantFragment);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
+
+                            }
+                        });
+                    }
+                });
+
+            }
+        }).start();
+        
         current.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -530,4 +595,97 @@ public class MainActivity extends AppCompatActivity {
         return eventLists;
     }
 
+    public ArrayList<VeganRestaurant> getXmlVeganRestaurantData(){
+        ArrayList<VeganRestaurant> veganRestaurants = new ArrayList<VeganRestaurant>();
+        String key= getString(R.string.vegan_key);
+        String address = "http://openapi.seoul.go.kr:8088/";
+        String listType = "CrtfcUpsoInfo";
+        String startIndex = "860";
+        String endIndex = "1060";
+
+
+        String queryUrl = address + key
+                + "/xml/" + listType
+                + "/" + startIndex
+                + "/" + endIndex + "/";
+        Log.d("테스트", queryUrl);
+
+        try{
+            URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+            InputStream is= url.openStream(); //url위치로 입력스트림 연결
+
+            XmlPullParserFactory factory= XmlPullParserFactory.newInstance();//xml파싱을 위한
+            XmlPullParser xpp= factory.newPullParser();
+            xpp.setInput( new InputStreamReader(is, "UTF-8") ); //inputstream 으로부터 xml 입력받기
+
+            String tag;
+
+            xpp.next();
+            VeganRestaurant veganRestaurant = null;
+            int eventType= xpp.getEventType();
+            while( eventType != XmlPullParser.END_DOCUMENT ){
+                switch( eventType ){
+                    case XmlPullParser.START_DOCUMENT:
+                        break;
+
+                    case XmlPullParser.START_TAG:
+                        tag= xpp.getName();//테그 이름 얻어오기
+                        if(tag.equals("row")){
+                            veganRestaurant = new VeganRestaurant("","","","","","","","","");
+                        }
+                        else if(tag.equals("CRTFC_UPSO_MGT_SNO")){
+                            veganRestaurant.setId(xpp.nextText());
+                        }
+                        else if(tag.equals("UPSO_NM")){
+                            veganRestaurant.setName(xpp.nextText());
+                        }
+                        else if(tag.equals("RDN_CODE_NM")){
+                            veganRestaurant.setLocation(xpp.nextText());
+                        }
+                        else if(tag.equals("BIZCND_CODE_NM")){
+                            veganRestaurant.setCategory(xpp.nextText());
+                        }
+                        else if(tag.equals("CRTFC_GBN")){
+                            veganRestaurant.setAuthType(xpp.nextText());
+                        }
+                        else if(tag.equals("Y_DNTS")){
+                            veganRestaurant.setMapY(xpp.nextText());
+                        }
+                        else if(tag.equals("X_CNTS")){
+                            veganRestaurant.setMapX(xpp.nextText());
+                        }
+                        else if(tag.equals("FOOD_MENU")){
+                            veganRestaurant.setMenu(xpp.nextText());
+                        }
+                        else if(tag.equals("TEL_NO")){
+                            veganRestaurant.setNumber(xpp.nextText());
+                        }
+
+
+                        break;
+
+                    case XmlPullParser.TEXT:
+                        break;
+
+                    case XmlPullParser.END_TAG:
+                        tag= xpp.getName(); //테그 이름 얻어오기
+
+                        if(tag.equals("row")) {
+                            veganRestaurants.add(veganRestaurant);
+                            Log.d("테스트",veganRestaurant.getName());
+                        };// 첫번째 검색결과종료..줄바꿈
+                        break;
+                }
+
+                eventType= xpp.next();
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return veganRestaurants;
+    }
+    
+    
 }
