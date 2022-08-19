@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -53,8 +51,7 @@ public class SetScheduleFragment extends Fragment {
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     String docId;
-    int SELECT_PICTURE = 200;
-
+    int FLAG = 0;
 
     @Override
     public void onResume() {
@@ -85,12 +82,12 @@ public class SetScheduleFragment extends Fragment {
 
         Intent intent = this.getActivity().getIntent();
 
-        if(intent != null){
+        if(intent != null && FLAG == 0){
             Dday = Math.abs(intent.getIntExtra("Dday",0));
             startDate = (Date) intent.getSerializableExtra("startDate");
             endDate = (Date) intent.getSerializableExtra("endDate");
             saveScheduleInDB(startDate, endDate);
-
+            FLAG = 1;
         }
 
 
@@ -163,6 +160,7 @@ public class SetScheduleFragment extends Fragment {
 
     public void saveScheduleInDB(Date startDate, Date endDate){
         Map<String, Object> schedule = new HashMap<>();
+        schedule.put("Time",new Date());
         schedule.put("startDate", startDate);
         schedule.put("endDate", endDate);
         schedule.put("name","제목없음");

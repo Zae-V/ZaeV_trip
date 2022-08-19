@@ -1,7 +1,6 @@
 package com.example.ZaeV_trip.Bookmark;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -13,7 +12,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.Cafe.CafeAdapter;
 import com.example.ZaeV_trip.Festival.FestivalAdapter;
 import com.example.ZaeV_trip.Lodging.LodgingAdapter;
@@ -24,7 +22,6 @@ import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Restaurant.RestaurantAdapter;
 import com.example.ZaeV_trip.Reusable.ReusableAdapter;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
-import com.example.ZaeV_trip.Search.SearchActivity;
 import com.example.ZaeV_trip.TouristSpot.TouristSpotAdapter;
 import com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter;
 import com.example.ZaeV_trip.model.Cafe;
@@ -35,23 +32,16 @@ import com.example.ZaeV_trip.model.Restaurant;
 import com.example.ZaeV_trip.model.Reusable;
 import com.example.ZaeV_trip.model.TouristSpot;
 import com.example.ZaeV_trip.model.ZeroWaste;
-import com.example.ZaeV_trip.util.ItemTouchHelperCallback;
-import com.example.ZaeV_trip.util.getXmlData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class BookmarkActivity extends AppCompatActivity {
 

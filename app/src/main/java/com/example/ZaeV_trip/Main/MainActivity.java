@@ -1,13 +1,11 @@
 package com.example.ZaeV_trip.Main;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +22,6 @@ import com.example.ZaeV_trip.Main.Bike.BikeAdapter;
 import com.example.ZaeV_trip.Main.EventList.EventAdapter;
 import com.example.ZaeV_trip.Main.VeganRestaurant.VeganRestaurantAdapter;
 import com.example.ZaeV_trip.Plogging.PloggingActivity;
-import com.example.ZaeV_trip.Plogging.PloggingAdapter;
 import com.example.ZaeV_trip.Plogging.PloggingFragment;
 import com.example.ZaeV_trip.Profile.ProfileActivity;
 import com.example.ZaeV_trip.R;
@@ -32,16 +29,13 @@ import com.example.ZaeV_trip.Restaurant.RestaurantActivity;
 import com.example.ZaeV_trip.Restaurant.RestaurantFragment;
 import com.example.ZaeV_trip.Reusable.ReusableActivity;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
-import com.example.ZaeV_trip.Search.SearchActivity;
 import com.example.ZaeV_trip.Search.SearchFragment;
 import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
 import com.example.ZaeV_trip.ZeroWaste.ZeroWasteActivity;
 import com.example.ZaeV_trip.model.Festival;
 import com.example.ZaeV_trip.model.Plogging;
-import com.example.ZaeV_trip.model.Restaurant;
 import com.example.ZaeV_trip.model.VeganRestaurant;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.type.DateTime;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;

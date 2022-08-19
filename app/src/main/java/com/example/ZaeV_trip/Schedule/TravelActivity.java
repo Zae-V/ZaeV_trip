@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -57,11 +55,6 @@ public class TravelActivity extends AppCompatActivity {
 
         //Set Home Selected
         bottomNavigationView.setSelectedItemId(R.id.travel);
-
-
-        TravelViewModel TravelViewModel =
-                new ViewModelProvider(this).get(TravelViewModel.class);
-
 
 
         // fab 버튼

@@ -1,6 +1,9 @@
 package com.example.ZaeV_trip.Schedule;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.Bookmark.BookmarkItem;
 import com.example.ZaeV_trip.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
@@ -22,11 +32,13 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
         {
     Context context;
     ArrayList<SelectItem> items = new ArrayList<>();
+    Integer day;
 //    OnTravelItemClickListener listener;
 
-    public SelectListAdapter(Context context, ArrayList<SelectItem> items){
+    public SelectListAdapter(Context context, ArrayList<SelectItem> items, Integer day){
         this.context = context;
         this.items = items;
+        this.day = day;
     }
 
     @NonNull
@@ -40,7 +52,7 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemViewHolder holder, @SuppressLint("RecyclerView") int position) {
         //ItemViewHolder 생성되고 넣어야할 코드들을 넣어준다.
         holder.onBind(items.get(position));
 
@@ -51,6 +63,19 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
                 .fallback(R.drawable.default_bird_img)
                 .into(holder.list_image);
 
+        holder.toggleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.toggleBtn.isSelected()) {
+                    holder.toggleBtn.setImageResource(R.drawable.checked_btn);
+                    updateDB(items.get(position));
+                }
+                else{
+                    holder.toggleBtn.setImageResource(R.drawable.fab_btn);
+                }
+                holder.toggleBtn.setSelected(!holder.toggleBtn.isSelected());
+            }
+        });
     }
 
     @Override
@@ -77,6 +102,7 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
 
         TextView list_name, list_location, list_hours;
         ImageView list_image;
+        ImageButton toggleBtn;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -85,19 +111,8 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
             list_hours = itemView.findViewById(R.id.list_hours);
             list_image = itemView.findViewById(R.id.list_image);
 
-            ImageButton toggleBtn = itemView.findViewById(R.id.plus_btn);
-            toggleBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (toggleBtn.isSelected()) {
-                        toggleBtn.setImageResource(R.drawable.checked_btn);
-                    }
-                    else{
-                        toggleBtn.setImageResource(R.drawable.fab_btn);
-                    }
-                    toggleBtn.setSelected(!toggleBtn.isSelected());
-                }
-            });
+            toggleBtn = itemView.findViewById(R.id.plus_btn);
+
 
 //            itemView.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -121,4 +136,19 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
 //    public TravelItem getItem(int position){
 //        return items.get(position);
 //    }
+
+    public void updateDB(SelectItem item){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        db.collection("Schedule").document(uid).collection("schedule").orderBy("Time", Query.Direction.DESCENDING).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(QueryDocumentSnapshot document : task.getResult()){
+                    String docId = document.getId();
+                    db.collection("Schedule").document(uid).collection("schedule").document(docId).collection(String.valueOf(day)).add(item);
+                }
+            }
+        });
+    }
 }

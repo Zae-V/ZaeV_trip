@@ -1,6 +1,7 @@
 package com.example.ZaeV_trip.Schedule;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,40 +14,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ZaeV_trip.Bookmark.BookmarkItem;
-
-import com.example.ZaeV_trip.Cafe.CafeActivity;
-import com.example.ZaeV_trip.Cafe.CafeAdapter;
-import com.example.ZaeV_trip.Cafe.CafeFragment;
-import com.example.ZaeV_trip.Festival.FestivalActivity;
-import com.example.ZaeV_trip.Festival.FestivalAdapter;
-import com.example.ZaeV_trip.Festival.FestivalFragment;
-import com.example.ZaeV_trip.Lodging.LodgingActivity;
-import com.example.ZaeV_trip.Lodging.LodgingAdapter;
-import com.example.ZaeV_trip.Lodging.LodgingFragment;
-import com.example.ZaeV_trip.Plogging.PloggingActivity;
-import com.example.ZaeV_trip.Plogging.PloggingAdapter;
-import com.example.ZaeV_trip.Plogging.PloggingFragment;
 import com.example.ZaeV_trip.R;
-import com.example.ZaeV_trip.Restaurant.RestaurantActivity;
-import com.example.ZaeV_trip.Restaurant.RestaurantAdapter;
-import com.example.ZaeV_trip.Restaurant.RestaurantFragment;
-import com.example.ZaeV_trip.Reusable.ReusableActivity;
-import com.example.ZaeV_trip.Reusable.ReusableAdapter;
-import com.example.ZaeV_trip.Reusable.ReusableFragment;
-import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
-import com.example.ZaeV_trip.TouristSpot.TouristSpotAdapter;
-import com.example.ZaeV_trip.TouristSpot.TouristSpotFragment;
-import com.example.ZaeV_trip.ZeroWaste.ZeroWasteActivity;
-import com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter;
-import com.example.ZaeV_trip.ZeroWaste.ZeroWasteFragment;
 import com.example.ZaeV_trip.model.Cafe;
 import com.example.ZaeV_trip.model.Festival;
 import com.example.ZaeV_trip.model.Lodging;
@@ -57,7 +28,6 @@ import com.example.ZaeV_trip.model.TouristSpot;
 import com.example.ZaeV_trip.model.ZeroWaste;
 import com.example.ZaeV_trip.util.getXmlData;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class AddScheduleFragment extends Fragment {
@@ -66,6 +36,7 @@ public class AddScheduleFragment extends Fragment {
     View v;
     String local;
     String selectedCategory ;
+    Integer day;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -73,6 +44,11 @@ public class AddScheduleFragment extends Fragment {
 
         TravelActivity travelActivity = (TravelActivity) getActivity();
         travelActivity.bottomNavigationView.setVisibility(View.GONE);
+
+
+        if(getArguments() != null){
+            day = getArguments().getInt("day");
+        }
 
         //recyclerview
         list = (RecyclerView) v.findViewById(R.id.addRecycler);
@@ -147,6 +123,7 @@ public class AddScheduleFragment extends Fragment {
         });
 
 
+
         return v;
     }
 
@@ -216,7 +193,7 @@ public class AddScheduleFragment extends Fragment {
                                 }
                             }
                         }
-                        SelectListAdapter adapter = new SelectListAdapter(getActivity(),filterdList);
+                        SelectListAdapter adapter = new SelectListAdapter(getActivity(),filterdList,day);
 //                        CafeAdapter cafeAdapter = new CafeAdapter(getActivity() ,filterdList);
                         list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
                         list.setAdapter(adapter);
@@ -250,7 +227,7 @@ public class AddScheduleFragment extends Fragment {
                                 }
                             }
                         }
-                        SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredList);
+                        SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredList,day);
                         list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                         list.setAdapter(adapter);
 
@@ -282,7 +259,7 @@ public class AddScheduleFragment extends Fragment {
                                     filteredReusable.add(new SelectItem(null, reusables.get(i).getName(), reusables.get(i).getLocation(), reusables.get(i).getReason()));
                                 }
                             }
-                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredReusable);
+                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredReusable,day);
                             list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
 
@@ -314,7 +291,7 @@ public class AddScheduleFragment extends Fragment {
                                     filteredTouristSpot.add(new SelectItem(touristSpots.get(i).getFirstImage(),touristSpots.get(i).getTitle(),touristSpots.get(i).getAddr1(),touristSpots.get(i).getAddr2()));
                                 }
                             }
-                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredTouristSpot);
+                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredTouristSpot,day);
                             list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
 
@@ -347,7 +324,7 @@ public class AddScheduleFragment extends Fragment {
                                     filteredRestaurant.add(new SelectItem(null, restaurants.get(i).getName(),restaurants.get(i).getLocation(),restaurants.get(i).getCategory()));
                                 }
                             }
-                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredRestaurant);
+                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredRestaurant,day);
                             list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
 
@@ -377,7 +354,7 @@ public class AddScheduleFragment extends Fragment {
                             else {
                                 filteredPlogging.add(new SelectItem(null, ploggings.get(i).getCrsKorNm(), ploggings.get(i).getSigun(), ploggings.get(i).getCrsLevel()));
                                 }
-                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredPlogging);
+                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredPlogging,day);
                             list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
 
@@ -409,7 +386,7 @@ public class AddScheduleFragment extends Fragment {
                                     filteredLodging.add(new SelectItem(lodgings.get(i).getFirstImage(),lodgings.get(i).getTitle(), lodgings.get(i).getAddr1(), lodgings.get(i).getAddr2()));
                                 }
                             }
-                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredLodging);
+                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredLodging,day);
                             list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
 
@@ -441,7 +418,7 @@ public class AddScheduleFragment extends Fragment {
                                     filteredZeroWaste.add(new SelectItem(null, zeroWastes.get(i).getName(),zeroWastes.get(i).getLocation(),zeroWastes.get(i).getReason()));
                                 }
                             }
-                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredZeroWaste);
+                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredZeroWaste,day);
                             list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
                          }
