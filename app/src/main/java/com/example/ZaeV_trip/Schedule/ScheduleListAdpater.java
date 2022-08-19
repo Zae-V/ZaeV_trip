@@ -14,9 +14,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -44,7 +54,7 @@ public class ScheduleListAdpater extends RecyclerView.Adapter<ScheduleListAdpate
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.day.setText("Day "+ number.get(position));
+        holder.day.setText("Day " + number.get(position));
         holder.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,6 +73,7 @@ public class ScheduleListAdpater extends RecyclerView.Adapter<ScheduleListAdpate
                 transaction.commit();
             }
         });
+
     }
 
     @Override
@@ -74,13 +85,16 @@ public class ScheduleListAdpater extends RecyclerView.Adapter<ScheduleListAdpate
 
         public TextView day;
         public Button addBtn;
+        public RecyclerView listview;
 
         public ViewHolder(Context context, @NonNull View itemView) {
             super(itemView);
 
             day = itemView.findViewById(R.id.dday);
             addBtn = itemView.findViewById(R.id.addBtn);
+            listview = itemView.findViewById(R.id.listView);
 
         }
     }
+
 }

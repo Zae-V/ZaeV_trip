@@ -72,6 +72,7 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
                 }
                 else{
                     holder.toggleBtn.setImageResource(R.drawable.fab_btn);
+                    deleteData(items.get(position));
                 }
                 holder.toggleBtn.setSelected(!holder.toggleBtn.isSelected());
             }
@@ -146,9 +147,25 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(QueryDocumentSnapshot document : task.getResult()){
                     String docId = document.getId();
-                    db.collection("Schedule").document(uid).collection("schedule").document(docId).collection(String.valueOf(day)).add(item);
+                    db.collection("Schedule").document(uid).collection("schedule").document(docId).collection(String.valueOf(day)).document(item.name).set(item);
                 }
             }
         });
     }
+
+    public void deleteData(SelectItem item){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        db.collection("Schedule").document(uid).collection("schedule").orderBy("Time", Query.Direction.DESCENDING).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(QueryDocumentSnapshot document : task.getResult()){
+                    String docId = document.getId();
+                    db.collection("Schedule").document(uid).collection("schedule").document(docId).collection(String.valueOf(day)).document(item.name).delete();
+                }
+            }
+        });
+    }
+
 }

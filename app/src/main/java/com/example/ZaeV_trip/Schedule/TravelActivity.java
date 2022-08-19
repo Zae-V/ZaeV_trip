@@ -132,6 +132,11 @@ public class TravelActivity extends AppCompatActivity {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 ScheduleFragment scheduleFragment = new ScheduleFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("position",position);
+                scheduleFragment.setArguments(bundle);
+
                 fragmentTransaction.replace(R.id.container_travel, scheduleFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
