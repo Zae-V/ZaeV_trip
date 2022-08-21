@@ -88,6 +88,14 @@ public class CafeActivity extends AppCompatActivity {
                             }
                         });
 
+                        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                            @Override
+                            public boolean onClose() {
+                                cafeAdapter.getFilter().filter(null);
+                                return false;
+                            }
+                        });
+
 
 
                         cafeAdapter.setOnItemClickListener(new CafeAdapter.OnItemClickListener() {

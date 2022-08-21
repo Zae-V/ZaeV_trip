@@ -16,6 +16,13 @@
         android:paddingVertical="10dp"
         />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        >
+    </androidx.recyclerview.widget.RecyclerView>
+
 
     <Button
         android:id="@+id/addBtn"
