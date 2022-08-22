@@ -13,11 +13,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.captaindroid.tvg.Tvg;
+import com.example.ZaeV_trip.Bookmark.BookmarkActivity;
 import com.example.ZaeV_trip.Intro.IntroActivity;
+import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.Schedule.TravelActivity;
 import com.example.ZaeV_trip.Sign.SignActivity;
 import com.example.ZaeV_trip.util.MySharedPreferences;
 import com.example.ZaeV_trip.util.SignUtil;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -49,6 +53,37 @@ public class ProfileActivity extends AppCompatActivity {
         emailTextView.setText(userEmail);
 
         CircleImageView userProfileImageView = findViewById(R.id.profileImageView);
+
+        //Initialize And Assign Variable
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        //Set Home Selected
+        bottomNavigationView.setSelectedItemId(R.id.profile);
+
+
+        //Perform ItemSelectedListener
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.profile:
+                    return true;
+
+                case R.id.bookmark:
+                    startActivity(new Intent(getApplicationContext(), BookmarkActivity.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+
+                case R.id.travel:
+                    startActivity(new Intent(getApplicationContext(), TravelActivity.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+
+                case R.id.home:
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+            }
+            return false;
+        });
 
         Glide.with(this)
                 .load(userProfileImage)
