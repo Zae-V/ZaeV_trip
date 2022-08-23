@@ -34,6 +34,7 @@ import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -164,11 +165,43 @@ public class SignUtil {
         });
     }
 
-    public static void withdrawal(Context ctx, String uid) {
+    public static void withdrawal(Context ctx, String email) {
         MySharedPreferences.clearUser(ctx.getApplicationContext()); // SharedPreferences 정보 삭제
-        mFirestore.collection("User").document(uid).delete(); // Firestore 정보 삭제
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser(); // Authentication 정보 삭제
+        String uid = firebaseUser.getUid();
+
+        String[] docs = {"cafe", "festival", "lodging", "plogging", "restaurant", "reusable", "touristSpot", "zeroWaste"};
+
+        mFirestore.collection("User").document(email).delete(); // Firestore 정보 삭제 - User
+
+        // Firestore 정보 삭제 - Schedule
+        mFirestore.collection("Schedule").document(uid).collection("schedule").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.getResult().size() > 0) {
+                    for (QueryDocumentSnapshot dc : task.getResult()) {
+                        dc.getReference().delete();
+                    }
+                }
+            }
+        });
+
+        // Firestore 정보 삭제 - BookmarkItem
+        for (String doc : docs) {
+            mFirestore.collection("BookmarkItem").document(uid).collection(doc).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.getResult().size() > 0) {
+                        for (QueryDocumentSnapshot dc : task.getResult()) {
+                            dc.getReference().delete();
+                        }
+                    }
+                }
+            });
+        }
+
+        // Firestore 정보 삭제 - Authentication
         firebaseUser.delete()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
