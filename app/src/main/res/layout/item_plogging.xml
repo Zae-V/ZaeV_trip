@@ -55,7 +55,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/text_solid_black"
                         android:textStyle="bold"
                         android:text="제비식당"
                         android:textSize="15sp" />
@@ -67,7 +67,7 @@
 
                     <TextView
                         android:id="@+id/plogging_address"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/text_solid_black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -82,7 +82,7 @@
                     <TextView
 
                         android:id="@+id/plogging_level"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/text_solid_black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"

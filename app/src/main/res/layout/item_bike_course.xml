@@ -33,7 +33,7 @@
                     android:lineSpacingExtra="-3dp"
                     android:maxLines="2"
                     android:text="둘레길"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_solid_black"
                     android:textSize="14dp" />
 
                 <TextView

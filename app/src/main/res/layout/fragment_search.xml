@@ -51,7 +51,7 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@color/text_solid_black"
             android:text="최근 검색지역"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -72,7 +72,7 @@
             android:text="현재 위치"
             android:textStyle="bold"
             android:elevation="4dp"
-            android:textColor="@color/black"
+            android:textColor="@color/text_solid_black"
             android:layout_gravity="right"
             android:background="@drawable/rectangle_gray"
             />

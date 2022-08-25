@@ -40,7 +40,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/text_solid_black"
                         android:textStyle="bold"
                         android:text="제비식당"
                         android:textSize="17sp" />
@@ -52,7 +52,7 @@
 
                     <TextView
                         android:id="@+id/list_location"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/text_solid_black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -67,7 +67,7 @@
                     <TextView
 
                         android:id="@+id/list_hours"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/text_solid_black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"

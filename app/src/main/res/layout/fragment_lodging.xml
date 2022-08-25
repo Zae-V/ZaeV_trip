@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="숙소 상세 정보"
-                android:textColor="@color/black"
+                android:textColor="@color/text_solid_black"
                 android:fontFamily="@font/notosans_bold"
                 android:textSize="20dp"
                 app:layout_constraintTop_toTopOf="parent"
@@ -60,7 +60,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_marginLeft="10dp"
-                                android:textColor="@android:color/black"
+                                android:textColor="@color/text_solid_black"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
                         </TableRow>
@@ -72,7 +72,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_marginLeft="10dp"
-                                android:textColor="@android:color/black"
+                                android:textColor="@color/text_solid_black"
                                 android:textSize="11sp" />
                         </TableRow>
 
@@ -83,7 +83,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_marginLeft="10dp"
-                                android:textColor="@android:color/black"
+                                android:textColor="@color/text_solid_black"
                                 android:textSize="10sp" />
                         </TableRow>
                     </TableLayout>
@@ -113,7 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="소개"
-                android:textColor="@color/black"
+                android:textColor="@color/text_solid_black"
                 android:fontFamily="@font/notosans_bold"
                 android:textSize="20dp"
                 app:layout_constraintTop_toBottomOf="@id/content_img2"
@@ -127,7 +127,7 @@
                 app:layout_constraintTop_toBottomOf="@id/summary_title_txt"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:textColor="@color/black"
+                android:textColor="@color/text_solid_black"
                 android:fontFamily="@font/notosans_regular"
                 android:textSize="15dp"/>
 
@@ -139,7 +139,7 @@
                 app:layout_constraintTop_toBottomOf="@id/overview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:textColor="@color/black"
+                android:textColor="@color/text_solid_black"
                 android:fontFamily="@font/notosans_regular"
                 android:textSize="15dp"/>
 

@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="찜하기"
-        android:textColor="@color/black"
+        android:textColor="@color/text_solid_black"
         android:textSize="20dp"
         app:layout_constraintStart_toEndOf="@id/restaurantBookmarkBtn"
         app:layout_constraintTop_toTopOf="parent"/>

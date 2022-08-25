@@ -54,7 +54,7 @@
                     android:gravity="center_vertical"
                     android:layout_gravity="center"
                     android:paddingLeft="20dp"
-                    android:textColor="#000000"
+                    android:textColor="@color/text_solid_black"
                     android:textStyle="bold"
                     android:textSize="20dp"/>
             </LinearLayout>
@@ -78,7 +78,7 @@
                         android:layout_height="50dp"
                         android:layout_weight="1"
                         android:text="이름"
-                        android:textColor="#000000"
+                        android:textColor="@color/text_solid_black"
                         android:gravity="center_vertical"
                         android:textSize="17dp"/>
 
@@ -103,7 +103,7 @@
                         android:layout_height="50dp"
                         android:layout_weight="1"
                         android:text="이메일"
-                        android:textColor="#000000"
+                        android:textColor="@color/text_solid_black"
                         android:gravity="center_vertical"
                         android:textSize="17dp"/>
 
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans_bold"
                 android:text="회원 정보 확인"
-                android:textColor="#000000"
+                android:textColor="@color/text_solid_black"
                 android:textSize="17dp"
                 android:layout_marginLeft="30dp" />
 
@@ -132,7 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="정보를 안전하게 보호하기 위해 카카오톡 인증 \n혹은 비밀번호 인증을 진행해주세요."
-                android:textColor="#000000"
+                android:textColor="@color/text_solid_black"
                 android:textSize="15dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"/>
@@ -157,7 +157,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" 비밀번호"
-                android:textColor="#000000"
+                android:textColor="@color/text_solid_black"
                 android:layout_marginTop="25dp"
                 android:textSize="15dp"
                 android:layout_marginLeft="30dp"

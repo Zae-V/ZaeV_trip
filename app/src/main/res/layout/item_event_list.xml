@@ -42,7 +42,7 @@
                     android:lineSpacingExtra="-3dp"
                     android:maxLines="2"
                     android:text="이벤트이름asdasdsadasdasdasdasdasddasdsada"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_solid_black"
                     android:textSize="13dp" />
 
                 <TextView
