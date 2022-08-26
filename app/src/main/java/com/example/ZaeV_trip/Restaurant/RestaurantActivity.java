@@ -104,6 +104,7 @@ public class RestaurantActivity extends AppCompatActivity {
                                 bundle.putString("y", filteredRestaurant.get(i).getMapY());
                                 bundle.putString("number", filteredRestaurant.get(i).getNumber());
                                 bundle.putString("menu", filteredRestaurant.get(i).getMenu());
+                                bundle.putString("category", filteredRestaurant.get(i).getCategory());
 
 
                                 RestaurantFragment restaurantFragment = new RestaurantFragment();

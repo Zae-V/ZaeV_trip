@@ -27,6 +27,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +38,11 @@ import java.util.Map;
 public class RestaurantFragment extends Fragment {
     FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+    TextView titleTextView;
+    TextView telTextView;
+    TextView detailLocationTextView;
+    TextView foodInfoTextView;
 
     ArrayList<Restaurant> vegans = new ArrayList<>();
     ArrayList<Restaurant> lactos = new ArrayList<>();
@@ -56,10 +65,6 @@ public class RestaurantFragment extends Fragment {
     ImageView bookmarkBtn;
 
 
-    ScrollWebView webView = null;
-    String kakaoId = "";
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +75,12 @@ public class RestaurantFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_restaurant, container, false);
+
+        titleTextView = v.findViewById(R.id.detail_txt);
+        telTextView = v.findViewById(R.id.tel);
+        detailLocationTextView = v.findViewById(R.id.detail_location);
+        foodInfoTextView = v.findViewById(R.id.food_info);
+
         veganList = (RecyclerView) v.findViewById(R.id.veganMenuList);
         lactoList = (RecyclerView) v.findViewById(R.id.lactoMenuList);
         ovoList = (RecyclerView) v.findViewById(R.id.ovoMenuList);
@@ -87,11 +98,6 @@ public class RestaurantFragment extends Fragment {
         ovoText.setVisibility(v.GONE);
         lactoOvoText.setVisibility(v.GONE);
         pescoText.setVisibility(v.GONE);
-
-        webView = (ScrollWebView) v.findViewById(R.id.webView);
-        webView.setWebChromeClient(new WebChromeClient());
-        webView.setWebViewClient(new WebViewClient()); // 새 창 띄우지 않기
-        webView.getSettings().setJavaScriptEnabled(true);
 
         bookmarkBtn = (ImageView) v.findViewById(R.id.restaurantBookmarkBtn);
 
@@ -111,12 +117,27 @@ public class RestaurantFragment extends Fragment {
         String number = getArguments().getString("number");
         String menu = getArguments().getString("menu");
 
-//        Log.d("테스트", "x좌표:"+ x + " y좌표:" + y);
-//        Log.d("테스트", "주소:" + location);
-//        Log.d("테스트", "주소 슬라이스:" + location.substring(0, 9));
+        titleTextView.setText(name);
+        telTextView.setText(number);
+        detailLocationTextView.setText(location);
+        foodInfoTextView.setText(category + "음식점");
 
-        // 카카오 REST API로 장소 아이디 받아오기
-        searchKeyword(name, location, x, y);
+        MapView mapView = new MapView(getActivity());
+
+        Float coor_x = Float.valueOf(x);
+        Float coor_y = Float.valueOf(y);
+
+        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(coor_y,coor_x),2,true);
+
+        MapPOIItem marker = new MapPOIItem();
+        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(coor_y,coor_x));
+        marker.setItemName(name);
+        marker.setTag(0);
+        marker.setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin);
+        mapView.addPOIItem(marker);
+
+        ViewGroup mapViewContainer = (ViewGroup) v.findViewById(R.id.mapView);
+        mapViewContainer.addView(mapView);
 
         Restaurant restaurant = null;
 
@@ -125,31 +146,26 @@ public class RestaurantFragment extends Fragment {
             restaurant = new Restaurant("","","","","","","","","");
             if (strArr[i].contains("비건")){
                 restaurant.setMenu(strArr[i]);
-//                Log.d("테스트", restaurant.getMenu());
                 vegans.add(restaurant);
                 isVegan = true;
             }
             else if(strArr[i].contains("락토") && !strArr[i].contains("오보")){
                 restaurant.setMenu(strArr[i]);
-//                Log.d("테스트", restaurant.getMenu());
                 lactos.add(restaurant);
                 isLacto = true;
             }
             else if(strArr[i].contains("오보") && !strArr[i].contains("락토")){
                 restaurant.setMenu(strArr[i]);
-//                Log.d("테스트", restaurant.getMenu());
                 ovos.add(restaurant);
                 isOvo = true;
             }
             else if (strArr[i].contains("락토오보")) {
                 restaurant.setMenu(strArr[i]);
-//                Log.d("테스트", restaurant.getMenu());
                 ovos.add(restaurant);
                 isLactoOvo = true;
             }
             else if(strArr[i].contains("페스코")){
                 restaurant.setMenu(strArr[i]);
-//                Log.d("테스트", restaurant.getMenu());
                 pescos.add(restaurant);
                 isPesco = true;
             }
@@ -217,38 +233,6 @@ public class RestaurantFragment extends Fragment {
         });
 
         return v;
-    }
-
-    public void searchKeyword(String name, String location, String x, String y){
-
-        int idx = name.indexOf("(");
-        int idx2 = location.indexOf("로");
-        if(name.contains("(")) {
-            name = name.substring(0, idx);
-        }
-        location = location.substring(0, idx2 + 1);
-        String query = name + location;
-        Log.d("테스트", query);
-
-        AddrSearchRepository.getINSTANCE(getActivity()).getAddressList(query, x, y, new AddrSearchRepository.AddressResponseListener() {
-            @Override
-            public void onSuccessResponse(Location locationData) {
-                // 제일 상단의 검색 결과 ID 가져오기
-                if(locationData.documentsList.size() != 0){
-                    kakaoId = locationData.documentsList.get(0).getId();
-                    Log.d("테스트", kakaoId);
-                    webView.loadUrl("https://place.map.kakao.com/" + kakaoId);
-                }
-                else{
-                    webView.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onFailResponse() {
-                Log.d("테스트", "실패");
-            }
-        });
     }
 
     private void writeBookmark(String name, String location, String x, String y, String id, String number, String menu){

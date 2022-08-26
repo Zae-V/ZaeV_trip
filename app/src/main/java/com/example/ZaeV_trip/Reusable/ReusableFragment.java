@@ -34,9 +34,12 @@ public class ReusableFragment extends Fragment {
     FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+    TextView titleTextView;
+    TextView locationTextView;
+    TextView reasonTextView;
+
     ImageView bookmarkBtn;
-    ScrollWebView webView = null;
-    String kakaoId = "";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +51,9 @@ public class ReusableFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_reusable, container, false);
 
-        webView = (ScrollWebView) v.findViewById(R.id.webView);
-        webView.setWebChromeClient(new WebChromeClient());
-        webView.setWebViewClient(new WebViewClient()); // 새 창 띄우지 않기
-        webView.getSettings().setJavaScriptEnabled(true);
+        titleTextView = v.findViewById(R.id.detail_txt);
+        locationTextView = v.findViewById(R.id.location);
+        reasonTextView = v.findViewById(R.id.reason);
 
         bookmarkBtn = (ImageView) v.findViewById(R.id.restaurantBookmarkBtn);
 
@@ -62,8 +64,26 @@ public class ReusableFragment extends Fragment {
         String y = getArguments().getString("y");
         String reason = getArguments().getString("reason");
 
-        // 카카오 REST API로 장소 아이디 받아오기
-        searchKeyword(name, location, x, y);
+        titleTextView.setText(name);
+        locationTextView.setText(location);
+        reasonTextView.setText(reason);
+
+        MapView mapView = new MapView(getActivity());
+
+        Float coor_x = Float.valueOf(x);
+        Float coor_y = Float.valueOf(y);
+
+        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(coor_y,coor_x),2,true);
+
+        MapPOIItem marker = new MapPOIItem();
+        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(coor_y,coor_x));
+        marker.setItemName(name);
+        marker.setTag(0);
+        marker.setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin);
+        mapView.addPOIItem(marker);
+
+        ViewGroup mapViewContainer = (ViewGroup) v.findViewById(R.id.mapView);
+        mapViewContainer.addView(mapView);
 
         mDatabase.collection("BookmarkItem").document(userId).collection("reusable").document(name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -98,38 +118,6 @@ public class ReusableFragment extends Fragment {
         });
 
         return v;
-    }
-
-    public void searchKeyword(String name, String location, String x, String y){
-
-        int idx = name.indexOf(" ");
-        int idx2 = location.indexOf("로");
-        if(name.contains(" ")) {
-            name = name.substring(0, idx + 1);
-        }
-        location = location.substring(0, idx2 + 1);
-        String query = name + location;
-        Log.d("테스트", query);
-
-        AddrSearchRepository.getINSTANCE(getActivity()).getAddressList(query, x, y, new AddrSearchRepository.AddressResponseListener() {
-            @Override
-            public void onSuccessResponse(Location locationData) {
-                // 제일 상단의 검색 결과 ID 가져오기
-                if(locationData.documentsList.size() != 0){
-                    kakaoId = locationData.documentsList.get(0).getId();
-                    Log.d("테스트", kakaoId);
-                    webView.loadUrl("https://place.map.kakao.com/" + kakaoId);
-                }
-                else{
-                    webView.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onFailResponse() {
-                Log.d("테스트", "실패");
-            }
-        });
     }
 
     private void writeBookmark(String name, String location, String x, String y, String reason){
