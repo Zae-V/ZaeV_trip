@@ -100,6 +100,8 @@ public class ScheduleFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-//        binding = null;
+        TravelActivity travelActivity = (TravelActivity) getActivity();
+        travelActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        travelActivity.fab.setVisibility(View.VISIBLE);
     }
 }
