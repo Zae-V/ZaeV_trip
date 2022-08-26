@@ -135,6 +135,7 @@ public class TravelActivity extends AppCompatActivity {
 
                 Bundle bundle = new Bundle();
                 bundle.putInt("position",position);
+                bundle.putString("name", item.getName());
                 scheduleFragment.setArguments(bundle);
 
                 fragmentTransaction.replace(R.id.container_travel, scheduleFragment);

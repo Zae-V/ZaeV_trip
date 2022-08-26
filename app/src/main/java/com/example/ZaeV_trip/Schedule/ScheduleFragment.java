@@ -66,16 +66,16 @@ public class ScheduleFragment extends Fragment {
         //Bundle
         Bundle bundle = getArguments();
         Integer position = 0;
+        String name = null;
         if(bundle!= null){
             position = bundle.getInt("position");
+            name = bundle.getString("name");
             Log.e("position", String.valueOf(position));
         }
 
-        //days 가져오기
-
-
         //Adapter에 데이터 추가
-        db.collection("Schedule").document(uid).collection("schedule").orderBy("Time", Query.Direction.ASCENDING).limit(position+1).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Query query = db.collection("Schedule").document(uid).collection("schedule").whereEqualTo("name",name);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(QueryDocumentSnapshot document : task.getResult()){
