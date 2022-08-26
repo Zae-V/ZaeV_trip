@@ -64,13 +64,12 @@ public class SignUtil {
                                 String userName = user.getKakaoAccount().getProfile().getNickname();
                                 String userEmail = user.getKakaoAccount().getEmail();
                                 String userPassword = user.getId() + user.getKakaoAccount().getEmail();
-                                ArrayList bookmarkList = new ArrayList();
                                 ArrayList currentPosition = new ArrayList();
                                 String profileImage = user.getKakaoAccount().getProfile().getProfileImageUrl();
                                 Boolean notification = false;
                                 String signType = "kakao";
 
-                                Users newUser = new Users(userName, userEmail, bookmarkList, currentPosition, profileImage, notification, signType);
+                                Users newUser = new Users(userName, userEmail, currentPosition, profileImage, notification, signType);
 
                                 // 이메일 중복 체크
                                 mFirestore.collection("User").document(userEmail)
@@ -245,7 +244,6 @@ public class SignUtil {
                         if (!Objects.requireNonNull(mAuth.getCurrentUser()).isEmailVerified()) {
                             SignInFragment.msg.setText("이메일 인증을 완료해주십시오.");
                         } else {
-                            ArrayList bookmarkList = new ArrayList();
                             ArrayList currentPosition = new ArrayList();
                             String profileImage = new String();
 
@@ -261,7 +259,7 @@ public class SignUtil {
                                                     String userName = (String) userInfo.get("userName");
                                                     String signType = "email";
 
-                                                    Users user = new Users(userName, email, bookmarkList, currentPosition, profileImage, false, signType);
+                                                    Users user = new Users(userName, email, currentPosition, profileImage, false, signType);
                                                     MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), user);
 
                                                     Intent intent = new Intent(ctx, MainActivity.class);
@@ -314,7 +312,6 @@ public class SignUtil {
     }
 
     public static void emailSignUp(Context ctx, String password, String pwCheck, String username, String email) {
-        ArrayList bookmarkList = new ArrayList();
         ArrayList currentPosition = new ArrayList();
         String profileImage = new String();
 
@@ -337,7 +334,7 @@ public class SignUtil {
                         });
 
                         String signType = "email";
-                        Users userInfo = new Users(username, email, bookmarkList, currentPosition, profileImage,false, signType);
+                        Users userInfo = new Users(username, email, currentPosition, profileImage,false, signType);
 
                         mFirestore.collection("User").document(userInfo.userEmail).set(userInfo);
                         MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), userInfo);
