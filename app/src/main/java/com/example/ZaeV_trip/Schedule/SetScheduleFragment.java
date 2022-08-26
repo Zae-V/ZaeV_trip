@@ -42,6 +42,7 @@ public class SetScheduleFragment extends Fragment {
     TextView title;
     ImageView editTitleImageView;
     ImageView travleImageView;
+    Button confirmBtn;
 
     Integer Dday;
     Date startDate;
@@ -52,6 +53,8 @@ public class SetScheduleFragment extends Fragment {
 
     String docId;
     int FLAG = 0;
+
+    String travelTitle;
 
     @Override
     public void onResume() {
@@ -81,15 +84,11 @@ public class SetScheduleFragment extends Fragment {
         travelActivity.bottomNavigationView.setVisibility(View.GONE);
 
         Intent intent = this.getActivity().getIntent();
-
-        if(intent != null && FLAG == 0){
+        if(intent != null && FLAG == 0) {
             Dday = Math.abs(intent.getIntExtra("Dday",0));
             startDate = (Date) intent.getSerializableExtra("startDate");
             endDate = (Date) intent.getSerializableExtra("endDate");
-            saveScheduleInDB(startDate, endDate);
-            FLAG = 1;
         }
-
 
         editTitleImageView = v.findViewById(R.id.editTitleImageView);
         title = v.findViewById(R.id.travel_title);
@@ -111,12 +110,29 @@ public class SetScheduleFragment extends Fragment {
             }
         });
 
+        confirmBtn = v.findViewById(R.id.selectFab);
+
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(intent != null && FLAG == 0){
+                    if(travelTitle != null){
+                        saveScheduleInDB(startDate, endDate);
+                        FLAG = 1;
+                        Intent intent1 = new Intent(getContext(), TravelActivity.class);
+                        startActivity(intent1);
+                    }else{
+                        showDialog();
+                    }
+                }
+            }
+        });
+
         ArrayList<Integer> Ddays = new ArrayList<Integer>();
 
         for(int i = 0 ; i <= Dday ; i ++){
             Ddays.add(i+1);
         }
-
 
         recyclerView = v.findViewById(R.id.scheduleList);
         ScheduleListAdpater adapter = new ScheduleListAdpater(getActivity(), Ddays);
@@ -144,8 +160,8 @@ public class SetScheduleFragment extends Fragment {
             public void onClick(View v){
                 title.setText(setTitle.getText());
                 dialog.hide();
-                updateName(String.valueOf(setTitle.getText()));
-
+//                updateName(String.valueOf(setTitle.getText()));
+                travelTitle = String.valueOf(setTitle.getText());
             }
         });
 
@@ -163,19 +179,11 @@ public class SetScheduleFragment extends Fragment {
         schedule.put("Time",new Date());
         schedule.put("startDate", startDate);
         schedule.put("endDate", endDate);
-        schedule.put("name","제목없음");
+        schedule.put("name", travelTitle);
 
         DocumentReference doc = db.collection("Schedule").document(uid).collection("schedule").document();
         docId = doc.getId();
         doc.set(schedule);
-
-
-    }
-
-    public void updateName(String name){
-        if(docId != null){
-            db.collection("Schedule").document(uid).collection("schedule").document(docId).update("name",name);
-        }
 
     }
 
