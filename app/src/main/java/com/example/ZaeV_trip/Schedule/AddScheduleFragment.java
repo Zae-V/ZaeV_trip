@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -70,8 +71,9 @@ public class AddScheduleFragment extends Fragment {
         selectFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TravelActivity activity = (TravelActivity) getActivity();
-                activity.changeFragment(3);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().remove(AddScheduleFragment.this).commit();
+                fragmentManager.popBackStack();
             }
         });
         // spinner

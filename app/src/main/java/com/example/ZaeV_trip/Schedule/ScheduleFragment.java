@@ -44,12 +44,10 @@ public class ScheduleFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        BookmarkViewModel bookmarkViewModel =
-//                new ViewModelProvider(this).get(BookmarkViewModel.class);
 
-        //final TextView textView = binding.bookmarkText;
-
-        //bookmarkViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        TravelActivity travelActivity = (TravelActivity) getActivity();
+        travelActivity.bottomNavigationView.setVisibility(View.GONE);
+        travelActivity.fab.setVisibility(View.GONE);
 
         View v =  inflater.inflate(R.layout.fragement_schedule, container, false);
 
