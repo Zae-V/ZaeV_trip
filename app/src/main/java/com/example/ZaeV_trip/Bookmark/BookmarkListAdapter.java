@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Search.CategoryAdapter;
 import com.example.ZaeV_trip.Search.RestaurantCategoryItem;
@@ -28,8 +29,10 @@ public class BookmarkListAdapter extends RecyclerView.Adapter<BookmarkListAdapte
 
     ArrayList<BookmarkItem> items = new ArrayList<>();
     ArrayList<RestaurantCategoryItem> restaurantsList = new ArrayList<>();
+    Context context;
 
-    public BookmarkListAdapter(ArrayList<BookmarkItem> items) {
+    public BookmarkListAdapter(Context context ,ArrayList<BookmarkItem> items) {
+        this.context = context;
         this.items = items;
     }
 
@@ -46,6 +49,13 @@ public class BookmarkListAdapter extends RecyclerView.Adapter<BookmarkListAdapte
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         //ItemViewHolder가 생성되고 넣어야할 코드들을 넣어준다.
         holder.onBind(items.get(position));
+
+        Glide.with(context)
+                .load(items.get(position).getImage())
+                .placeholder(R.drawable.default_bird_img)
+                .error(R.drawable.default_bird_img)
+                .fallback(R.drawable.default_bird_img)
+                .into(holder.list_image);
 
     }
 
@@ -150,7 +160,6 @@ public class BookmarkListAdapter extends RecyclerView.Adapter<BookmarkListAdapte
             list_name.setText(bookmarkItem.getName());
             list_location.setText(String.valueOf(bookmarkItem.getLocation()));
             list_hours.setText(String.valueOf(bookmarkItem.getHours()));
-            list_image.setImageResource(bookmarkItem.getImage());
         }
     }
 }
