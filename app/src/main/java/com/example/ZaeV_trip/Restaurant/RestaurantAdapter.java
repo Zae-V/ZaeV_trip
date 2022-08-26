@@ -5,20 +5,30 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.ZaeV_trip.Cafe.CafeAdapter;
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
+import com.example.ZaeV_trip.model.Cafe;
 import com.example.ZaeV_trip.model.Restaurant;
+import com.example.ZaeV_trip.model.TouristSpot;
+import com.example.ZaeV_trip.util.MySharedPreferences;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -26,10 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RestaurantAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
-    private final int VIEW_TYPE_ITEM = 0;
-    private final int VIEW_TYPE_LOADING = 1;
-
+public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> implements Filterable {
     RestaurantFilter filter = new RestaurantFilter();
     Context context;
     LayoutInflater inflater;
@@ -51,21 +58,18 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if(viewType == VIEW_TYPE_ITEM){
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cafe, parent, false);
-            return new ItemViewHolder(view);
-        }
-        else{
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent,false);
-            return new LoadingViewHolder(view);
-        }
+
+        View view = inflater.inflate(R.layout.item_cafe, parent, false);
+        ViewHolder viewHolder = new ViewHolder(context, view);
+
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
 //        Glide.with(holder.itemView.getContext())
 //                .load(restaurants.get(position).getFirstImage())
@@ -73,23 +77,30 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //                .error(R.drawable.default_profile_image)
 //                .fallback(R.drawable.default_profile_image)
 //                .into(holder.imgView);
-        if (holder instanceof ItemViewHolder){
-            populateItemRows((ItemViewHolder) holder, position);
-        }
-        else if(holder instanceof LoadingViewHolder){
-            showLoadingView((LoadingViewHolder) holder, position);
-        }
+        holder.nameview.setText(filtered.get(position).getName());
+        holder.locview.setText(filtered.get(position).getLocation());
+        holder.catview.setText(filtered.get(position).getCategory());
 
+        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        holder.bookmarkbtn.setActivated(true);
+                    } else {
+                        holder.bookmarkbtn.setActivated(false);
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return filtered.size();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return filtered.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
     @Override
@@ -140,7 +151,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.mListener = listener;
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView nameview;
         public TextView locview;
@@ -148,8 +159,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public ImageView imgView;
         public ImageView bookmarkbtn;
 
-
-        public ItemViewHolder(@NonNull View itemView) {
+        public ViewHolder(Context context, @NonNull View itemView) {
             super(itemView);
 
             nameview = itemView.findViewById(R.id.list_name);
@@ -189,41 +199,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 }
             });
         }
-
-    }
-    public class LoadingViewHolder extends RecyclerView.ViewHolder {
-        ProgressBar progressBar;
-
-        public LoadingViewHolder(@NonNull View itemView) {
-            super(itemView);
-            progressBar = itemView.findViewById(R.id.progressBar);
-        }
-    }
-
-    public void showLoadingView(LoadingViewHolder viewHolder, int position){
-        //Progress bar
-    }
-
-    public void populateItemRows(ItemViewHolder holder, int position){
-        holder.nameview.setText(filtered.get(position).getName());
-        holder.locview.setText(filtered.get(position).getLocation());
-        holder.catview.setText(filtered.get(position).getCategory());
-
-        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        holder.bookmarkbtn.setActivated(true);
-                    } else {
-                        holder.bookmarkbtn.setActivated(false);
-                    }
-                } else {
-                    Log.d("TAG", "get failed with ", task.getException());
-                }
-            }
-        });
     }
 
     private void writeBookmark(int position){

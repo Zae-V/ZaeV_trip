@@ -453,19 +453,19 @@ public class getXmlData {
 
     }
 
-    public static ArrayList<Restaurant> getRestaurantData(Context cnt, String startIdx, String endIdx){
+    public static ArrayList<Restaurant> getRestaurantData(Context cnt){
         ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
         String key= cnt.getString(R.string.vegan_key);
         String address = "http://openapi.seoul.go.kr:8088/";
         String listType = "CrtfcUpsoInfo";
-        String startIndex = "1";
-        String endIndex = "1000";
+        String startIndex = "860";
+        String endIndex = "1859";
 
 
         String queryUrl = address + key
                 + "/xml/" + listType
-                + "/" + startIdx
-                + "/" + endIdx + "/";
+                + "/" + startIndex
+                + "/" + endIndex + "/";
         Log.d("테스트", queryUrl);
 
         try{

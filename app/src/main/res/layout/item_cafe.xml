@@ -28,7 +28,7 @@
                     android:layout_height="80dp"
                     android:padding="0dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/vegan_burger" />
+                    app:srcCompat="@drawable/default_bird_img" />
 
                 <ImageView
                     android:layout_width="wrap_content"
