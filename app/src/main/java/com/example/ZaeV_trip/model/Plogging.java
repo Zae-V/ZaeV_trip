@@ -13,10 +13,11 @@ public class Plogging implements Serializable {
     private String travelerinfo; // 여행자 정보
     private String sigun; // 행정구역
     private String brdDiv; // 걷기&자전거 구분 (DNWW:걷기길, DNBW:자전거길)
+    private String gpxpath;
 
     public Plogging() {};
 
-    public Plogging(String crsKorNm, String crsDstnc, String crsTotlRqrmHour, String crsLevel, String crsContents, String crsSummary, String crsTourInfo, String travelerinfo, String sigun, String brdDiv) {
+    public Plogging(String crsKorNm, String crsDstnc, String crsTotlRqrmHour, String crsLevel, String crsContents, String crsSummary, String crsTourInfo, String travelerinfo, String sigun, String brdDiv, String gpxpath) {
         this.crsKorNm = crsKorNm;
         this.crsDstnc = crsDstnc;
         this.crsTotlRqrmHour = crsTotlRqrmHour;
@@ -27,6 +28,7 @@ public class Plogging implements Serializable {
         this.travelerinfo = travelerinfo;
         this.sigun = sigun;
         this.brdDiv = brdDiv;
+        this.gpxpath = gpxpath;
     }
 
     public String getCrsKorNm() {
@@ -108,4 +110,8 @@ public class Plogging implements Serializable {
     public void setBrdDiv(String brdDiv) {
         this.brdDiv = brdDiv;
     }
+
+    public String getGpxpath() {return gpxpath; }
+
+    public void setGpxpath(String gpxpath) { this.gpxpath = gpxpath; }
 }
