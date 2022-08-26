@@ -175,6 +175,7 @@ public class BookmarkActivity extends AppCompatActivity {
                         TouristSpot touristSpot = new TouristSpot("","","","","","","","");
                         touristSpot.setContentID(String.valueOf(document.getData().get("serialNumber")));
                         touristSpot.setAddr1(String.valueOf(document.getData().get("address")));
+                        touristSpot.setAddr2(String.valueOf(document.getData().get("address2")));
                         touristSpot.setTitle(String.valueOf(document.getData().get("name")));
                         touristSpot.setFirstImage(String.valueOf(document.getData().get("image")));
                         touristSpot.setMapX(String.valueOf(document.getData().get("position_x")));

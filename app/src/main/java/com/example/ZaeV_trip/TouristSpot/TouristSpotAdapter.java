@@ -203,6 +203,7 @@ public class TouristSpotAdapter extends RecyclerView.Adapter<TouristSpotAdapter.
         info.put("name", filtered.get(position).getTitle());
         info.put("type", "관광명소");
         info.put("address", filtered.get(position).getAddr1());
+        info.put("address2", filtered.get(position).getAddr2());
         info.put("position_x", filtered.get(position).getMapX());
         info.put("position_y", filtered.get(position).getMapY());
         info.put("serialNumber", filtered.get(position).getContentID());
