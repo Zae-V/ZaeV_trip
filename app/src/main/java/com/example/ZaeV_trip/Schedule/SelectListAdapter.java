@@ -33,7 +33,6 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
     Context context;
     ArrayList<SelectItem> items = new ArrayList<>();
     Integer day;
-//    OnTravelItemClickListener listener;
 
     public SelectListAdapter(Context context, ArrayList<SelectItem> items, Integer day){
         this.context = context;
@@ -84,15 +83,6 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
         return items.size();
     }
 
-//    public void setOnItemClickListener(OnTravelItemClickListener listener){
-//        this.listener = listener;
-//    }
-//
-//    public void onItemClick(ItemViewHolder holder, View view, int position) {
-//        if(listener != null){
-//            listener.onItemClick(holder, view, position);
-//        }
-//    }
 
     public void addItem(SelectItem selectItem){
         items.add(selectItem);
@@ -113,17 +103,6 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
             list_image = itemView.findViewById(R.id.list_image);
 
             toggleBtn = itemView.findViewById(R.id.plus_btn);
-
-
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    int position = getAdapterPosition();
-//                    if(listener != null){
-//                        listener.onItemClick(ItemViewHolder.this, view, position);
-//                    }
-//                }
-//            });
         }
 
         public void onBind(SelectItem selectItem) {
@@ -134,9 +113,6 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.It
         }
 
     }
-//    public TravelItem getItem(int position){
-//        return items.get(position);
-//    }
 
     public void updateDB(SelectItem item){
         FirebaseFirestore db = FirebaseFirestore.getInstance();

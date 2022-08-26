@@ -88,6 +88,8 @@ public class SetScheduleFragment extends Fragment {
             Dday = Math.abs(intent.getIntExtra("Dday",0));
             startDate = (Date) intent.getSerializableExtra("startDate");
             endDate = (Date) intent.getSerializableExtra("endDate");
+            saveScheduleInDB(startDate, endDate);
+            FLAG = 1;
         }
 
         editTitleImageView = v.findViewById(R.id.editTitleImageView);
@@ -115,15 +117,12 @@ public class SetScheduleFragment extends Fragment {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(intent != null && FLAG == 0){
-                    if(travelTitle != null){
-                        saveScheduleInDB(startDate, endDate);
-                        FLAG = 1;
-                        Intent intent1 = new Intent(getContext(), TravelActivity.class);
-                        startActivity(intent1);
-                    }else{
-                        showDialog();
-                    }
+                if(travelTitle != null){
+                    updateName();
+                    Intent intent1 = new Intent(getContext(), TravelActivity.class);
+                    startActivity(intent1);
+                }else{
+                    showDialog();
                 }
             }
         });
@@ -179,12 +178,20 @@ public class SetScheduleFragment extends Fragment {
         schedule.put("Time",new Date());
         schedule.put("startDate", startDate);
         schedule.put("endDate", endDate);
-        schedule.put("name", travelTitle);
+
+        long days = ((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) % 365;
+        schedule.put("days", days);
 
         DocumentReference doc = db.collection("Schedule").document(uid).collection("schedule").document();
         docId = doc.getId();
         doc.set(schedule);
 
+    }
+
+    public void updateName(){
+        if(docId != null){
+            db.collection("Schedule").document(uid).collection("schedule").document(docId).update("name",travelTitle);
+        }
     }
 
     public void updateImg(String uri){

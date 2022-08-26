@@ -73,23 +73,30 @@ public class ScheduleFragment extends Fragment {
             Log.e("position", String.valueOf(position));
         }
 
+        //days 가져오기
+
+
         //Adapter에 데이터 추가
-        Integer finalPosition = position;
-        db.collection("Schedule").document(uid).collection("schedule").orderBy("Time", Query.Direction.ASCENDING).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Schedule").document(uid).collection("schedule").orderBy("Time", Query.Direction.ASCENDING).limit(position+1).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(QueryDocumentSnapshot document : task.getResult()){
                     String docId = document.getId();
-                    db.collection("Schedule").document(uid).collection("schedule").document(docId).collection(String.valueOf(finalPosition)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            for(QueryDocumentSnapshot document : task.getResult()){
-                                items.add(new BookmarkItem(String.valueOf(document.getData().get("img")),String.valueOf(document.getData().get("name")),String.valueOf(document.getData().get("location")),String.valueOf(document.getData().get("info"))));
+                    long days = document.getLong("days");
+                    for(int i = 1; i <= days+1 ; i ++){
+                        db.collection("Schedule").document(uid).collection("schedule").document(docId).collection(String.valueOf(i)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                for(QueryDocumentSnapshot document : task.getResult()){
+                                    items.add(new BookmarkItem(String.valueOf(document.getData().get("img")),String.valueOf(document.getData().get("name")),String.valueOf(document.getData().get("location")),String.valueOf(document.getData().get("info"))));
+                                }
+                                listAdapter = new BookmarkListAdapter(getActivity(),items);
+                                bookmarkRecyclerView.setAdapter(listAdapter);
                             }
-                            listAdapter = new BookmarkListAdapter(getActivity(),items);
-                            bookmarkRecyclerView.setAdapter(listAdapter);
-                        }
-                    });
+
+                        });
+
+                    }
                 }
             }
         });
