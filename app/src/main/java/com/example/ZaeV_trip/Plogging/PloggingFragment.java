@@ -1,7 +1,11 @@
 package com.example.ZaeV_trip.Plogging;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,9 +39,13 @@ public class PloggingFragment extends Fragment {
         TextView plogging_dist = v.findViewById(R.id.plogging_dist);
         TextView plogging_content = v.findViewById(R.id.plogging_content);
         TextView plogging_detail = v.findViewById(R.id.plogging_detail);
+        TextView plogging_detail_txt = v.findViewById(R.id.plogging_detail_txt);
         TextView plogging_point = v.findViewById(R.id.plogging_point);
+        TextView plogging_point_txt = v.findViewById(R.id.plogging_point_txt);
         TextView plogging_traveler_info = v.findViewById(R.id.plogging_traveler_info);
+        TextView plogging_traveler_info_txt = v.findViewById(R.id.plogging_traveler_info_txt);
         TextView plogging_gpx = v.findViewById(R.id.plogging_gpx);
+        TextView plogging_gpx_txt = v.findViewById(R.id.plogging_gpx_txt);
 
         String crsKorNm = plogging.getCrsKorNm();
         String crsLevel = plogging.getCrsLevel();
@@ -56,19 +64,48 @@ public class PloggingFragment extends Fragment {
         }
 
         if (!crsLevel.equals("")) {
-            plogging_level.setText("난이도: " + crsLevel);
+            int level = Integer.parseInt(crsLevel);
+            String lev="";
+            String word = "";
+            String color = "";
+            int term = 2;
+            switch (level){
+                case 1:
+                    lev = "난이도: 쉬움";
+                    word = "쉬움";
+                    color = "#418EE8";
+                    break;
+                case 2:
+                    lev = "난이도: 보통";
+                    word = "보통";
+                    color = "#FF9C41";
+                    break;
+                case 3:
+                    lev = "난이도: 어려움";
+                    word = "어려움";
+                    color = "#F255A0";
+                    term = 3;
+                    break;
+            }
+            SpannableString spannableString = new SpannableString(lev);
+            int loc = lev.indexOf(word);
+            spannableString.setSpan(new ForegroundColorSpan(Color.parseColor(color)),
+                    loc, loc + term, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            plogging_level.setText(spannableString);
+
         } else {
             plogging_level.setVisibility(View.GONE);
         }
 
         if (!crsTotlRqrmHour.equals("")) {
-            plogging_hour.setText("소요 시간(분): " + crsTotlRqrmHour);
+            plogging_hour.setText("소요 시간: " + crsTotlRqrmHour + "분");
         } else {
             plogging_hour.setVisibility(View.GONE);
         }
 
         if (!crsDstnc.equals("")) {
-            plogging_dist.setText("코스 길이 (단위:km): " + crsDstnc);
+            plogging_dist.setText("코스 길이: " + crsDstnc + "km");
         } else {
             plogging_dist.setVisibility(View.GONE);
         }
@@ -80,27 +117,31 @@ public class PloggingFragment extends Fragment {
         }
 
         if (!crsContent.equals("")) {
-            plogging_detail.setText("코스 개요" + "\n" +  Html.fromHtml(crsContent));
+            plogging_detail.setText(Html.fromHtml(crsContent));
         } else {
             plogging_detail.setVisibility(View.GONE);
+            plogging_detail_txt.setVisibility(View.GONE);
         }
 
         if (!crsTourInfo.equals("")) {
-            plogging_point.setText("관광 포인트" + "\n" +  Html.fromHtml(crsTourInfo));
+            plogging_point.setText(Html.fromHtml(crsTourInfo));
         } else {
             plogging_point.setVisibility(View.GONE);
+            plogging_point_txt.setVisibility(View.GONE);
         }
 
         if (!travelerinfo.equals("")) {
-            plogging_traveler_info.setText("여행자 정보" + "\n" +  Html.fromHtml(travelerinfo));
+            plogging_traveler_info.setText(Html.fromHtml(travelerinfo));
         } else {
             plogging_traveler_info.setVisibility(View.GONE);
+            plogging_traveler_info_txt.setVisibility(View.GONE);
         }
 
         if (!gpx_path.equals("")) {
-            plogging_gpx.setText("gpx 정보" + "\n" +  Html.fromHtml(gpx_path));
+            plogging_gpx.setText(Html.fromHtml(gpx_path));
         } else {
             plogging_gpx.setVisibility(View.GONE);
+            plogging_gpx_txt.setVisibility(View.GONE);
         }
 
         return v;
