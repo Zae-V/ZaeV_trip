@@ -396,6 +396,7 @@ public class getXmlData {
                                     "",
                                     "",
                                     "",
+                                    "",
                                     ""
                             );
                         }
@@ -428,6 +429,9 @@ public class getXmlData {
                         }
                         else if(tag.equals("brdDiv")){
                             plogging.setBrdDiv(xpp.nextText());
+                        }
+                        else if(tag.equals("gpxpath")){
+                            plogging.setGpxpath(xpp.nextText());
                         }
                         break;
 

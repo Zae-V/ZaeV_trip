@@ -17,77 +17,64 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/detail_txt"
-                android:layout_width="match_parent"
+                android:id="@+id/plogging_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="플로깅 상세 정보"
+                android:layout_marginTop="25dp"
                 android:textColor="@color/text_solid_black"
                 android:fontFamily="@font/notosans_bold"
+                android:background="@drawable/textlines2"
                 android:textSize="20dp"
+                android:textAlignment="center"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/ploggingCardView"
-                android:layout_width="match_parent"
-                android:layout_height="119dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="15dp"
-                app:cardUseCompatPadding="true"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/detail_txt">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TableLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:stretchColumns="1">
-
-                        <TableRow>
-                            <TextView
-                                android:id="@+id/plogging_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left"
-                                android:layout_marginLeft="10dp"
-                                android:textColor="@color/text_solid_black"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-                        </TableRow>
-
-                        <TableRow>
-                            <TextView
-                                android:id="@+id/plogging_summary"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left"
-                                android:layout_marginLeft="10dp"
-                                android:textColor="@color/text_solid_black"
-                                android:textSize="11sp" />
-                        </TableRow>
-                    </TableLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
             <TextView
-                android:id="@+id/summary_title_txt"
+                android:id="@+id/plogging_level"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="소개"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text_solid_black"
+                android:textSize="15dp"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@id/plogging_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/plogging_hour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text_solid_black"
+                android:textSize="15dp"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@id/plogging_level"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/plogging_dist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text_solid_black"
+                android:textSize="15dp"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@id/plogging_hour"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/basic_info_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="기본 정보"
                 android:textColor="@color/text_solid_black"
                 android:fontFamily="@font/notosans_bold"
                 android:textSize="20dp"
-                app:layout_constraintTop_toBottomOf="@id/ploggingCardView"
+                app:layout_constraintTop_toBottomOf="@id/plogging_dist"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -95,63 +82,118 @@
                 android:id="@+id/plogging_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/summary_title_txt"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/text_solid_black"
-                android:fontFamily="@font/notosans_regular"
-                android:textSize="15dp"/>
-
-            <TextView
-                android:id="@+id/plogging_tour_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/plogging_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:textColor="@color/text_solid_black"
-                android:fontFamily="@font/notosans_regular"
-                android:textSize="15dp"/>
-
-            <TextView
-                android:id="@+id/plogging_tour_info2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/plogging_tour_info"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:textColor="@color/text_solid_black"
-                android:fontFamily="@font/notosans_regular"
-                android:textSize="15dp"/>
-
-            <TextView
-                android:id="@+id/plogging_travel_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/plogging_tour_info2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:textColor="@color/text_solid_black"
-                android:fontFamily="@font/notosans_regular"
-                android:textSize="15dp"/>
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/mapView"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginTop="25dp"
-                app:layout_constraintTop_toBottomOf="@id/plogging_travel_info"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <View
-                android:id="@+id/blankView"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                app:layout_constraintTop_toBottomOf="@id/mapView"
+                android:textSize="15dp"
+                app:layout_constraintTop_toBottomOf="@id/basic_info_txt"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/detail_info_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="상세 정보"
+                android:textColor="@color/text_solid_black"
+                android:fontFamily="@font/notosans_bold"
+                android:layout_marginTop="10dp"
+                android:textSize="20dp"
+                app:layout_constraintTop_toBottomOf="@id/plogging_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/plogging_detail_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/detail_info_txt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/text_solid_black"
+                android:fontFamily="@font/notosans_bold"
+                android:textSize="15dp"
+                android:text="코스 개요"/>
+
+            <TextView
+                android:id="@+id/plogging_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/plogging_detail_txt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/text_solid_black"
+                android:fontFamily="@font/notosans_regular"
+                android:textSize="15dp"/>
+
+
+            <TextView
+                android:id="@+id/plogging_point_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/plogging_detail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/text_solid_black"
+                android:fontFamily="@font/notosans_bold"
+                android:textSize="15dp"
+                android:text="관광 포인트"/>
+
+            <TextView
+                android:id="@+id/plogging_point"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/plogging_point_txt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/text_solid_black"
+                android:fontFamily="@font/notosans_regular"
+                android:textSize="15dp"/>
+
+            <TextView
+                android:id="@+id/plogging_traveler_info_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/plogging_point"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/text_solid_black"
+                android:fontFamily="@font/notosans_bold"
+                android:textSize="15dp"
+                android:text="여행자 정보"/>
+
+            <TextView
+                android:id="@+id/plogging_traveler_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/plogging_traveler_info_txt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/text_solid_black"
+                android:fontFamily="@font/notosans_regular"
+                android:textSize="15dp"/>
+
+            <TextView
+                android:id="@+id/plogging_gpx_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/plogging_traveler_info"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/text_solid_black"
+                android:fontFamily="@font/notosans_bold"
+                android:textSize="15dp"
+                android:text="gpx 정보"/>
+
+            <TextView
+                android:id="@+id/plogging_gpx"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/plogging_gpx_txt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/text_solid_black"
+                android:fontFamily="@font/notosans_regular"
+                android:textSize="15dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
