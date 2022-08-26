@@ -84,15 +84,12 @@ public class ScheduleFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             for(QueryDocumentSnapshot document : task.getResult()){
-                                Log.e("name", String.valueOf(document.getData().get("name")));
-                                items.add(new BookmarkItem(0,String.valueOf(document.getData().get("name")),String.valueOf(document.getData().get("location")),String.valueOf(document.getData().get("info"))));
+                                items.add(new BookmarkItem(String.valueOf(document.getData().get("img")),String.valueOf(document.getData().get("name")),String.valueOf(document.getData().get("location")),String.valueOf(document.getData().get("info"))));
                             }
-                            listAdapter = new BookmarkListAdapter(items);
+                            listAdapter = new BookmarkListAdapter(getActivity(),items);
                             bookmarkRecyclerView.setAdapter(listAdapter);
                         }
                     });
-
-//                    bookmarkRecyclerView.setAdapter(listAdapter);
                 }
             }
         });

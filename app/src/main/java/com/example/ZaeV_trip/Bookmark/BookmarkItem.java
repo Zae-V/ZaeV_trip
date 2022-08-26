@@ -1,7 +1,7 @@
 package com.example.ZaeV_trip.Bookmark;
 
 public class BookmarkItem {
-    int image;
+    String image;
     String name;
     String location;
     String hours;
@@ -10,18 +10,18 @@ public class BookmarkItem {
 
     }
 
-    public BookmarkItem(int image, String name, String location, String hours){
+    public BookmarkItem(String image, String name, String location, String hours){
         this.image = image;
         this.name = name;
         this.location = location;
         this.hours = hours;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
