@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.Bookmark.BookmarkItem;
 import com.example.ZaeV_trip.Bookmark.BookmarkListAdapter;
 import com.example.ZaeV_trip.R;
@@ -32,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ScheduleFragment extends Fragment {
     RecyclerView bookmarkRecyclerView;
@@ -67,11 +71,27 @@ public class ScheduleFragment extends Fragment {
         Bundle bundle = getArguments();
         Integer position = 0;
         String name = null;
+        String date = null;
+
         if(bundle!= null){
             position = bundle.getInt("position");
             name = bundle.getString("name");
-            Log.e("position", String.valueOf(position));
+            date = bundle.getString("date");
         }
+
+        //xml
+        TextView travelName = v.findViewById(R.id.travel_name);
+        travelName.setText(name);
+        TextView travelDate = v.findViewById(R.id.travel_date);
+        travelDate.setText(date);
+
+        CircleImageView travelImg = v.findViewById(R.id.travel_img);
+        Glide.with(this)
+                .load(R.drawable.default_profile_image)
+                .placeholder(R.drawable.default_profile_image)
+                .error(R.drawable.default_profile_image)
+                .fallback(R.drawable.default_profile_image)
+                .into(travelImg);
 
         //Adapter에 데이터 추가
         Query query = db.collection("Schedule").document(uid).collection("schedule").whereEqualTo("name",name);

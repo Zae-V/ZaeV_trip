@@ -126,8 +126,8 @@ public class TravelActivity extends AppCompatActivity {
             @Override
             public void onItemClick(TravelListAdapter.ItemViewHolder holder, View view, int position) {
                 TravelItem item = listAdapter.getItem(position);
-                Toast.makeText(getApplicationContext(),"아이템 선택 " + item.getName(),
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),"아이템 선택 " + item.getName(),
+//                        Toast.LENGTH_SHORT).show();
                 // 액티비티-> schedule fragment 전환
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -136,6 +136,7 @@ public class TravelActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putInt("position",position);
                 bundle.putString("name", item.getName());
+                bundle.putString("date", item.getDate());
                 scheduleFragment.setArguments(bundle);
 
                 fragmentTransaction.replace(R.id.container_travel, scheduleFragment);
