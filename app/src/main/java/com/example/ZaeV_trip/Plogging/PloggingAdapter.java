@@ -226,6 +226,8 @@ public class PloggingAdapter extends RecyclerView.Adapter<PloggingAdapter.ViewHo
         mDatabase = FirebaseFirestore.getInstance();
         Map<String, Object> info = new HashMap<>();
         info.put("name", filtered.get(position).getCrsKorNm());
+        info.put("sigun", filtered.get(position).getSigun());
+        info.put("level", filtered.get(position).getCrsLevel());
         info.put("info", filtered.get(position).getCrsContents());
         info.put("type", "플로깅");
 

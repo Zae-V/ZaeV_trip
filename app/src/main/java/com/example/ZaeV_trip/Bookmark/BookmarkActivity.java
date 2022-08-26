@@ -268,6 +268,8 @@ public class BookmarkActivity extends AppCompatActivity {
                     for(QueryDocumentSnapshot document : query){
                         Plogging plogging = new Plogging();
                         plogging.setCrsKorNm(String.valueOf(document.getData().get("name")));
+                        plogging.setCrsLevel(String.valueOf(document.getData().get("level")));
+                        plogging.setSigun(String.valueOf(document.getData().get("sigun")));
                         bookmarkedItems7.add(plogging);
                     }
 
