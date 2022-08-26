@@ -1,6 +1,10 @@
 package com.example.ZaeV_trip.Plogging;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,7 +68,38 @@ public class PloggingAdapter extends RecyclerView.Adapter<PloggingAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.nameview.setText(filtered.get(position).getCrsKorNm());
         holder.locview.setText(filtered.get(position).getSigun());
-        holder.catview.setText(filtered.get(position).getCrsLevel());
+        int level = Integer.parseInt(filtered.get(position).getCrsLevel());
+        String lev="";
+        String word = "";
+        String color = "";
+        int term = 2;
+        switch (level){
+            case 1:
+                lev = "난이도 쉬움";
+                word = "쉬움";
+                color = "#418EE8";
+                break;
+            case 2:
+                lev = "난이도 보통";
+                word = "보통";
+                color = "#FF9C41";
+                break;
+            case 3:
+                lev = "난이도 어려움";
+                word = "어려움";
+                color = "#F255A0";
+                term = 3;
+                break;
+        }
+        // 글자색 바꾸기
+        SpannableString spannableString = new SpannableString(lev);
+
+        int loc = lev.indexOf(word);
+
+        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor(color)),
+                loc, loc + term, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        holder.catview.setText(spannableString);
 
         mDatabase.collection("BookmarkItem").document(userId).collection("plogging").document(filtered.get(position).getCrsKorNm()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
