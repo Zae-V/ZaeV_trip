@@ -28,6 +28,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -91,13 +92,15 @@ public class LodgingActivity extends AppCompatActivity {
                                 @Override
                                 public void onItemClick(View v, int i) {
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("name", filteredLodging.get(i).getTitle());
-                                    bundle.putString("contentID", filteredLodging.get(i).getContentID());
-                                    bundle.putString("location", filteredLodging.get(i).getAddr1());
-                                    bundle.putString("x", filteredLodging.get(i).getMapX());
-                                    bundle.putString("y", filteredLodging.get(i).getMapY());
-                                    bundle.putString("firstImg", filteredLodging.get(i).getFirstImage());
+//                                    bundle.putString("name", filteredLodging.get(i).getTitle());
+//                                    bundle.putString("contentID", filteredLodging.get(i).getContentID());
+//                                    bundle.putString("location", filteredLodging.get(i).getAddr1());
+//                                    bundle.putString("x", filteredLodging.get(i).getMapX());
+//                                    bundle.putString("y", filteredLodging.get(i).getMapY());
+//                                    bundle.putString("firstImg", filteredLodging.get(i).getFirstImage());
 
+                                    bundle.putSerializable("lodging", (Serializable) filteredLodging.get(i));
+                                    
                                     LodgingFragment lodgingFragment = new LodgingFragment();
                                     lodgingFragment.setArguments(bundle);
 

@@ -293,6 +293,7 @@ public class getXmlData {
                                     "",
                                     "",
                                     "",
+                                    "",
                                     ""
                             );
                         }
@@ -319,6 +320,9 @@ public class getXmlData {
                         }
                         else if(tag.equals("contentid")){
                             lodging.setContentID(xpp.nextText());
+                        }
+                        else if(tag.equals("tel")){
+                            lodging.setTel(xpp.nextText());
                         }
                         break;
 

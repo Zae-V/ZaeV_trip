@@ -1,6 +1,8 @@
 package com.example.ZaeV_trip.model;
 
-public class Lodging {
+import java.io.Serializable;
+
+public class Lodging implements Serializable {
     private String contentID;
     private String addr1;
     private String addr2;
@@ -9,8 +11,9 @@ public class Lodging {
     private String mapX;
     private String mapY;
     private String title;
+    private String tel;
 
-    public Lodging(String contentID, String addr1, String addr2, String firstImage, String firstImage2, String mapX, String mapY, String title) {
+    public Lodging(String contentID, String addr1, String addr2, String firstImage, String firstImage2, String mapX, String mapY, String title, String tel) {
         this.contentID = contentID;
         this.addr1 = addr1;
         this.addr2 = addr2;
@@ -19,6 +22,7 @@ public class Lodging {
         this.mapX = mapX;
         this.mapY = mapY;
         this.title = title;
+        this.tel = tel;
     }
 
     public String getAddr1() {
@@ -35,6 +39,14 @@ public class Lodging {
 
     public void setAddr2(String addr2) {
         this.addr2 = addr2;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 
     public String getFirstImage() {
