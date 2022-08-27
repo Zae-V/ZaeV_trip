@@ -222,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
                                 bundle.putString("y", filteredVeganRestaurant.get(i).getMapY());
                                 bundle.putString("number", filteredVeganRestaurant.get(i).getNumber());
                                 bundle.putString("menu", filteredVeganRestaurant.get(i).getMenu());
+                                bundle.putString("category", filteredVeganRestaurant.get(i).getCategory());
 
                                 RestaurantFragment restaurantFragment = new RestaurantFragment();
                                 restaurantFragment.setArguments(bundle);
