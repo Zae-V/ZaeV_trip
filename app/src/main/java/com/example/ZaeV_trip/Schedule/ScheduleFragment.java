@@ -45,6 +45,7 @@ public class ScheduleFragment extends Fragment {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    String docId;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -72,11 +73,13 @@ public class ScheduleFragment extends Fragment {
         Integer position = 0;
         String name = null;
         String date = null;
+        String img = null;
 
         if(bundle!= null){
             position = bundle.getInt("position");
             name = bundle.getString("name");
             date = bundle.getString("date");
+            img = bundle.getString("img");
         }
 
         //xml
@@ -85,13 +88,7 @@ public class ScheduleFragment extends Fragment {
         TextView travelDate = v.findViewById(R.id.travel_date);
         travelDate.setText(date);
 
-        CircleImageView travelImg = v.findViewById(R.id.travel_img);
-        Glide.with(this)
-                .load(R.drawable.default_profile_image)
-                .placeholder(R.drawable.default_profile_image)
-                .error(R.drawable.default_profile_image)
-                .fallback(R.drawable.default_profile_image)
-                .into(travelImg);
+
 
         //Adapter에 데이터 추가
         Query query = db.collection("Schedule").document(uid).collection("schedule").whereEqualTo("name",name);
@@ -99,7 +96,7 @@ public class ScheduleFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(QueryDocumentSnapshot document : task.getResult()){
-                    String docId = document.getId();
+                    docId = document.getId();
                     long days = document.getLong("days");
                     for(int i = 1; i <= days+1 ; i ++){
                         db.collection("Schedule").document(uid).collection("schedule").document(docId).collection(String.valueOf(i)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -118,6 +115,14 @@ public class ScheduleFragment extends Fragment {
                 }
             }
         });
+
+        CircleImageView travelImg = v.findViewById(R.id.travel_img);
+        Glide.with(this)
+                .load(img)
+                .placeholder(R.drawable.default_bird_img)
+                .error(R.drawable.default_bird_img)
+                .fallback(R.drawable.default_bird_img)
+                .into(travelImg);
 
         return v;
     }

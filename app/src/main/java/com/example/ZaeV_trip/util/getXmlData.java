@@ -824,7 +824,7 @@ public class getXmlData {
 
                 }
                 // adapter에 적용
-                zeroWastes.add(zeroWaste);
+                //zeroWastes.add(zeroWaste);
 
             } catch (JSONException e) {
                 e.printStackTrace();

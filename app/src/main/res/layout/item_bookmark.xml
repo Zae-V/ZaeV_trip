@@ -43,7 +43,7 @@
                         android:textColor="@color/text_solid_black"
                         android:textStyle="bold"
                         android:text="제비식당"
-                        android:textSize="17sp" />
+                        android:textSize="17dp" />
 
                 </TableRow>
 
@@ -58,7 +58,7 @@
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
                         android:text="서울시 강서구 개화동"
-                        android:textSize="13sp" />
+                        android:textSize="13dp" />
 
                 </TableRow>
 
@@ -73,7 +73,7 @@
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
                         android:text="AM 9:00 ~ PM 10:00"
-                        android:textSize="10sp" />
+                        android:textSize="10dp" />
 
                 </TableRow>
 

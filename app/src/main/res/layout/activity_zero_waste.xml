@@ -34,7 +34,7 @@
             android:imeOptions="actionSearch"
             android:inputType="text"
             app:queryHint="검색어를 입력하세요"
-            app:layout_constraintBottom_toTopOf="@+id/zeroWasteImageView"
+            app:layout_constraintBottom_toTopOf="@id/zeroWasteImageView"
             app:searchIcon="@drawable/ic_search" />
 
         <ImageView
@@ -43,8 +43,8 @@
             android:layout_height="20dp"
             android:layout_marginTop="25dp"
             android:src="@drawable/shop_img"
-            app:layout_constraintTop_toBottomOf="@+id/zeroWasteSearchBar"
-            app:layout_constraintStart_toStartOf="@+id/zeroWasteSearchBar"
+            app:layout_constraintTop_toBottomOf="@id/zeroWasteSearchBar"
+            app:layout_constraintStart_toStartOf="@id/zeroWasteSearchBar"
             />
         <TextView
             android:id="@+id/zeroWasteText"
@@ -53,13 +53,12 @@
             android:text="제로웨이스트샵"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="25dp"
-            android:textSize="20sp"
+            android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/zeroWasteSearchBar"
             app:layout_constraintStart_toStartOf="@id/zeroWasteImageView"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/zeroWasteList"
@@ -72,6 +71,7 @@
         android:verticalSpacing="10dp"
         app:layout_constraintTop_toBottomOf="@id/topZeroWasteLayout"
         app:layout_constraintStart_toStartOf="parent"
-        />
+        android:paddingBottom="50dp"
+        android:layout_marginBottom="50dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
