@@ -39,7 +39,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="27dp"
                 app:layout_constraintBottom_toTopOf="@id/blank"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:paddingBottom="100dp"/>
 
             <View
                 android:id="@+id/blank"
