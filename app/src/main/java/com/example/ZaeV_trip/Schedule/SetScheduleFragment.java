@@ -4,8 +4,11 @@ import static android.app.Activity.RESULT_OK;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -27,10 +31,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,8 +61,11 @@ public class SetScheduleFragment extends Fragment {
     RecyclerView recyclerView;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReference();
+    StorageReference riversRef;
     String docId;
+    String fileName;
     int FLAG = 0;
 
     String travelTitle;
@@ -74,7 +88,7 @@ public class SetScheduleFragment extends Fragment {
         Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),TravelActivity.class);
+                Intent intent = new Intent(getActivity(), TravelActivity.class);
                 startActivity(intent);
             }
         });
@@ -84,8 +98,8 @@ public class SetScheduleFragment extends Fragment {
         travelActivity.bottomNavigationView.setVisibility(View.GONE);
 
         Intent intent = this.getActivity().getIntent();
-        if(intent != null && FLAG == 0) {
-            Dday = Math.abs(intent.getIntExtra("Dday",0));
+        if (intent != null && FLAG == 0) {
+            Dday = Math.abs(intent.getIntExtra("Dday", 0));
             startDate = (Date) intent.getSerializableExtra("startDate");
             endDate = (Date) intent.getSerializableExtra("endDate");
             saveScheduleInDB(startDate, endDate);
@@ -117,11 +131,12 @@ public class SetScheduleFragment extends Fragment {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(travelTitle != null){
+                if (travelTitle != null) {
                     updateName();
+                    updateImg();
                     Intent intent1 = new Intent(getContext(), TravelActivity.class);
                     startActivity(intent1);
-                }else{
+                } else {
                     showDialog();
                 }
             }
@@ -129,8 +144,8 @@ public class SetScheduleFragment extends Fragment {
 
         ArrayList<Integer> Ddays = new ArrayList<Integer>();
 
-        for(int i = 0 ; i <= Dday ; i ++){
-            Ddays.add(i+1);
+        for (int i = 0; i <= Dday; i++) {
+            Ddays.add(i + 1);
         }
 
         recyclerView = v.findViewById(R.id.scheduleList);
@@ -141,7 +156,7 @@ public class SetScheduleFragment extends Fragment {
         return v;
     }
 
-    public void showDialog(){
+    public void showDialog() {
         Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_travel_title);
@@ -154,9 +169,9 @@ public class SetScheduleFragment extends Fragment {
 
         setTitle.setText(title.getText());
 
-        okBtn.setOnClickListener(new View.OnClickListener(){
+        okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 title.setText(setTitle.getText());
                 dialog.hide();
 //                updateName(String.valueOf(setTitle.getText()));
@@ -173,9 +188,9 @@ public class SetScheduleFragment extends Fragment {
     }
 
 
-    public void saveScheduleInDB(Date startDate, Date endDate){
+    public void saveScheduleInDB(Date startDate, Date endDate) {
         Map<String, Object> schedule = new HashMap<>();
-        schedule.put("Time",new Date());
+        schedule.put("Time", new Date());
         schedule.put("startDate", startDate);
         schedule.put("endDate", endDate);
 
@@ -188,33 +203,62 @@ public class SetScheduleFragment extends Fragment {
 
     }
 
-    public void updateName(){
-        if(docId != null){
-            db.collection("Schedule").document(uid).collection("schedule").document(docId).update("name",travelTitle);
+    public void updateName() {
+        if (docId != null) {
+            db.collection("Schedule").document(uid).collection("schedule").document(docId).update("name", travelTitle);
         }
     }
 
-    public void updateImg(String uri){
-        if(docId != null){
-            db.collection("Schedule").document(uid).collection("schedule").document(docId).update("img",uri);
+    public void updateImg() {
+        if (docId != null) {
+            Log.d("테스트", "updateImg 함수");
+            // 파이어베이스 스토리지에서 이미지 가져오기
+            StorageReference photoRef = storageRef.child(fileName);
+            photoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    db.collection("Schedule").document(uid).collection("schedule").document(docId).update("img", uri);
+                }
+            });
         }
 
     }
 
     ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>()
-            {
+            new ActivityResultCallback<ActivityResult>() {
                 @Override
-                public void onActivityResult(ActivityResult result)
-                {
-                    if (result.getResultCode() == RESULT_OK)
-                    {
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK) {
                         Intent intent = result.getData();
                         Uri uri = intent.getData();
+                        storageRef = storage.getReference();
+
+                        // 스토리지에 uid + 날짜로 겹치지 않도록 저장
+                        Date today = new Date();
+                        SimpleDateFormat date = new SimpleDateFormat("yyyy.MM.dd");
+                        SimpleDateFormat time = new SimpleDateFormat("hh:mm:ss a");
+                        fileName = uid +"_"+ date.format(today) + "_" +time.format(today);
+                        riversRef = storageRef.child(fileName);
+                        UploadTask uploadTask = riversRef.putFile(uri);
+
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getActivity(), "사진 업로드 실패", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Toast.makeText(getActivity(), "사진 업로드 성공", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
 //                        updateImg(uri.toString());
                         Glide.with(getActivity())
                                 .load(uri)
                                 .into(travleImageView);
+
                     }
                 }
             });
