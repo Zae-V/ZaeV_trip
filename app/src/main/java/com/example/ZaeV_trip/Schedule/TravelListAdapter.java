@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.util.ItemTouchHelperListener;
 
@@ -20,7 +21,7 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.It
     ArrayList<TravelItem> items = new ArrayList<>();
     OnTravelItemClickListener listener;
 
-    public TravelListAdapter(ArrayList<TravelItem> items){
+    public TravelListAdapter(ArrayList<TravelItem> items) {
         this.items = items;
     }
 
@@ -37,6 +38,12 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.It
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         //ItemViewHolder가 생성되고 넣어야할 코드들을 넣어준다.
         holder.onBind(items.get(position));
+        Glide.with(holder.itemView.getContext())
+                .load(items.get(position).getImage())
+                .placeholder(R.drawable.default_bird_img)
+                .error(R.drawable.default_bird_img)
+                .fallback(R.drawable.default_bird_img)
+                .into(holder.list_image);
     }
 
     @Override
@@ -44,20 +51,19 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.It
         return items.size();
     }
 
-    public void setOnItemClickListener(OnTravelItemClickListener listener){
+    public void setOnItemClickListener(OnTravelItemClickListener listener) {
         this.listener = listener;
     }
 
     public void onItemClick(ItemViewHolder holder, View view, int position) {
-        if(listener != null){
+        if (listener != null) {
             listener.onItemClick(holder, view, position);
         }
     }
 
-    public void addItem(TravelItem travelItem){
+    public void addItem(TravelItem travelItem) {
         items.add(travelItem);
     }
-
 
 
     @Override
@@ -70,7 +76,7 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.It
         items.add(to_position, travelItem);
 
         //Adapter에 데이터 이동알림
-        notifyItemMoved(from_position,to_position);
+        notifyItemMoved(from_position, to_position);
         return true;
     }
 
@@ -79,7 +85,6 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.It
         items.remove(position);
         notifyItemRemoved(position);
     }
-
 
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -97,7 +102,7 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.It
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
-                    if(listener != null){
+                    if (listener != null) {
                         listener.onItemClick(ItemViewHolder.this, view, position);
                     }
                 }
@@ -107,11 +112,12 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.It
         public void onBind(TravelItem travelItem) {
             list_name.setText(travelItem.getName());
             list_date.setText(travelItem.getDate());
-            list_image.setImageResource(travelItem.getImage());
+//            list_image.setImageResource(travelItem.getImage());
         }
 
     }
-    public TravelItem getItem(int position){
+
+    public TravelItem getItem(int position) {
         return items.get(position);
     }
 }
