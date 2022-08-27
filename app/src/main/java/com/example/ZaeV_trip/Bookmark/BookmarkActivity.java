@@ -197,7 +197,7 @@ public class BookmarkActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     QuerySnapshot query = task.getResult();
                     for(QueryDocumentSnapshot document : query){
-                        Lodging lodging = new Lodging("","","","","","","","");
+                        Lodging lodging = new Lodging("","","","","","","","","");
                         lodging.setContentID(String.valueOf(document.getData().get("serialNumber")));
                         lodging.setAddr1(String.valueOf(document.getData().get("address")));
                         lodging.setTitle(String.valueOf(document.getData().get("name")));

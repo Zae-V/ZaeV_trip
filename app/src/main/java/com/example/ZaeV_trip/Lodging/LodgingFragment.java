@@ -9,12 +9,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Lodging;
 import com.example.ZaeV_trip.model.LodgingDetail;
+import com.example.ZaeV_trip.model.Lodging;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -27,9 +34,27 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LodgingFragment extends Fragment {
-    LodgingDetail lodging;
+    FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
+    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    
+    LodgingDetail lodgingDetail;
+
+    TextView titleTextView;
+    TextView locationTextView;
+    TextView telTextView;
+    TextView detailLocationTextView;
+    TextView restDateTextView;
+    TextView overviewTextView;
+    TextView homepageTextView;
+    ImageView content_img;
+    ImageView content_img2;
+
+    ImageView bookmarkBtn;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,81 +63,165 @@ public class LodgingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+// Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_lodging, container, false);
 
         //Bundle
-        String name = getArguments().getString("name");
-        String contentID = getArguments().getString("contentID");
-        String location = getArguments().getString("location");
+        Lodging lodging = (Lodging) getArguments().getSerializable("lodging");
+        String name = lodging.getTitle();
+        String id = lodging.getContentID();
+        String x = lodging.getMapX();
+        String y = lodging.getMapY();
+        String detail_location = lodging.getAddr1();
+        String location = lodging.getAddr2();
+        String telephone = lodging.getTel();
+        
+        bookmarkBtn = (ImageView) v.findViewById(R.id.restaurantBookmarkBtn);
+        titleTextView = v.findViewById(R.id.detail_txt);
+        locationTextView = v.findViewById(R.id.location);
+        telTextView = v.findViewById(R.id.tel);
 
-        TextView list_name = v.findViewById(R.id.list_name);
-        TextView list_location = v.findViewById(R.id.list_location);
-        TextView overview = v.findViewById(R.id.overview);
-        TextView homepage = v.findViewById(R.id.homepage);
-        ImageView content_img = v.findViewById(R.id.content_img);
-        ImageView content_img2 = v.findViewById(R.id.content_img2);
+        detailLocationTextView = v.findViewById(R.id.detail_location);
+        restDateTextView = v.findViewById(R.id.restDate);
+        overviewTextView = v.findViewById(R.id.overview);
+        homepageTextView = v.findViewById(R.id.homepage);
+        content_img = v.findViewById(R.id.content_img);
+        content_img2 = v.findViewById(R.id.content_img2);
 
-        list_name.setText(name);
-        list_location.setText(location);
+        titleTextView.setText(name);
+
+        if (!location.equals("")) {
+            locationTextView.setText(location);
+        } else {
+            setVisibility(1);
+        }
+
+        if (!location.equals("")) {
+            telTextView.setText(telephone);
+        } else {
+            setVisibility(2);
+        }
+
+        if (!detail_location.equals("")) {
+            detailLocationTextView.setText(detail_location);
+        } else {
+            setVisibility(3);
+        }
+
+        MapView mapView = new MapView(getActivity());
+
+        Float coor_x = Float.valueOf(lodging.getMapX());
+        Float coor_y = Float.valueOf(lodging.getMapY());
+
+        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(coor_y,coor_x),2,true);
+
+        MapPOIItem marker = new MapPOIItem();
+        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(coor_y,coor_x));
+        marker.setItemName(name);
+        marker.setTag(0);
+        marker.setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin);
+        mapView.addPOIItem(marker);
+
+        ViewGroup mapViewContainer = (ViewGroup) v.findViewById(R.id.mapView);
+        mapViewContainer.addView(mapView);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                lodging = getXmlData(contentID);
+                lodgingDetail = getXmlData(id);
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (!lodging.getOverview().equals("")) {
-                            overview.setText(Html.fromHtml(lodging.getOverview()));
+                        if (!lodgingDetail.getOverview().equals("")) {
+                            overviewTextView.setText(Html.fromHtml(lodgingDetail.getOverview()));
+                        } else {
+                            setVisibility(5);
                         }
 
-                        if (!lodging.getOverview().equals("")) {
-                            homepage.setText(Html.fromHtml(lodging.getHomepage()));
+                        if (!lodgingDetail.getOverview().equals("")) {
+                            homepageTextView.setText(Html.fromHtml(lodgingDetail.getHomepage()));
+                        } else {
+                            setVisibility(6);
                         }
 
-                        if (!lodging.getFirstImage().equals("")) {
+                        if (!lodgingDetail.getFirstImage().equals("")) {
                             Glide.with(v)
-                                    .load(lodging.getFirstImage())
+                                    .load(lodgingDetail.getFirstImage())
                                     .placeholder(R.drawable.default_profile_image)
                                     .error(R.drawable.default_profile_image)
                                     .fallback(R.drawable.default_profile_image)
                                     .into(content_img);
+                        } else {
+                            setVisibility(7);
                         }
 
-                        if (!lodging.getFirstImage2().equals("")) {
+                        if (!lodgingDetail.getFirstImage2().equals("")) {
                             Glide.with(v)
-                                    .load(lodging.getFirstImage2())
+                                    .load(lodgingDetail.getFirstImage2())
                                     .placeholder(R.drawable.default_profile_image)
                                     .error(R.drawable.default_profile_image)
                                     .fallback(R.drawable.default_profile_image)
                                     .into(content_img2);
+                        } else {
+                            setVisibility(8);
                         }
-
-                        MapView mapView = new MapView(getActivity());
-
-                        Float coor_x = Float.valueOf(lodging.getMapX());
-                        Float coor_y = Float.valueOf(lodging.getMapY());
-
-                        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(coor_y,coor_x),2,true);
-
-                        MapPOIItem marker = new MapPOIItem();
-                        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(coor_y,coor_x));
-                        marker.setItemName(name);
-                        marker.setTag(0);
-                        marker.setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin);
-                        mapView.addPOIItem(marker);
-
-                        ViewGroup mapViewContainer = (ViewGroup) v.findViewById(R.id.mapView);
-                        mapViewContainer.addView(mapView);
 
                     }
                 });
             }
         }).start();
 
+        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        bookmarkBtn.setActivated(true);
+                    } else {
+                        bookmarkBtn.setActivated(false);
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
+
+        bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bookmarkBtn.setActivated(!bookmarkBtn.isActivated());
+
+                if (!bookmarkBtn.isActivated()){
+                    // 취소 동작
+                    deleteBookmark(id);
+                }
+                else if(bookmarkBtn.isActivated()){
+                    // 선택 동작
+                    writeBookmark(name, location, x, y, id, telephone);
+                }
+
+            }
+        });
+
         return v;
+    }
+
+    private void writeBookmark(String name, String location, String x, String y, String id, String number){
+        Map<String, Object> info = new HashMap<>();
+        info.put("name", name);
+        info.put("type", "식당");
+        info.put("address", location);
+        info.put("position_x", x);
+        info.put("position_y", y);
+        info.put("serialNumber", id);
+        info.put("tel", number);
+
+        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(id).set(info);
+    }
+    private void deleteBookmark(String id){
+        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(id).delete();
     }
 
     public LodgingDetail getXmlData(String contentId){
@@ -212,5 +321,36 @@ public class LodgingFragment extends Fragment {
         }
 
         return lodging;
+    }
+
+    public void setVisibility(Integer idx) {
+        switch (idx) {
+            case 1:
+                locationTextView.setVisibility(View.GONE);
+                break;
+            case 2:
+                telTextView.setVisibility(View.GONE);
+                break;
+            case 3:
+                detailLocationTextView.setVisibility(View.GONE);
+                break;
+            case 4:
+                restDateTextView.setVisibility(View.GONE);
+                break;
+            case 5:
+                overviewTextView.setVisibility(View.GONE);
+                break;
+            case 6:
+                homepageTextView.setVisibility(View.GONE);
+                break;
+            case 7:
+                content_img.setVisibility(View.GONE);
+                break;
+            case 8:
+                content_img2.setVisibility(View.GONE);
+                break;
+            default:
+                Log.d("WithdrawalActivity", "default");
+        }
     }
 }
