@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/text_solid_black"
             android:text="최근 검색지역"
-            android:textSize="20sp"
+            android:textSize="20dp"
             android:textStyle="bold"
             />
 

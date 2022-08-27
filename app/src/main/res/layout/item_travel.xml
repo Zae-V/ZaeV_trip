@@ -42,7 +42,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="2022.07.06 ~ 2022.07.08"
                         android:textColor="@color/text_solid_black"
-                        android:textSize="17sp"
+                        android:textSize="17dp"
                         android:textStyle="bold" />
 
                 </TableRow>
@@ -58,7 +58,7 @@
                         android:layout_marginStart="10dp"
                         android:text="ㅇㅇ 여행"
                         android:textColor="@color/text_solid_black"
-                        android:textSize="13sp" />
+                        android:textSize="13dp" />
 
                 </TableRow>
             </TableLayout>

@@ -49,7 +49,7 @@
                         android:layout_height="wrap_content"
                         android:text=" 이름"
                         android:textColor="@color/text_solid_black"
-                        android:textSize="13sp" />
+                        android:textSize="13dp" />
 
                     <EditText
                         android:id="@+id/editUsernameEnter"
@@ -74,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:text=" 이메일"
                         android:textColor="@color/text_solid_black"
-                        android:textSize="13sp" />
+                        android:textSize="13dp" />
 
                     <EditText
                         android:id="@+id/editEmailEnter"
@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:text=" 비밀번호"
                         android:textColor="@color/text_solid_black"
-                        android:textSize="13sp" />
+                        android:textSize="13dp" />
 
                     <EditText
                         android:id="@+id/editPWEnter"
@@ -124,7 +124,7 @@
                         android:layout_height="wrap_content"
                         android:text=" 비밀번호 확인"
                         android:textColor="@color/text_solid_black"
-                        android:textSize="13sp" />
+                        android:textSize="13dp" />
 
                     <EditText
                         android:id="@+id/editPWCheck"

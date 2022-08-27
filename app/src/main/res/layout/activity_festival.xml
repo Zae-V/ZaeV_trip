@@ -61,7 +61,7 @@
             android:text="축제"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="25dp"
-            android:textSize="20sp"
+            android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@+id/searchBar"
             app:layout_constraintStart_toStartOf="@id/cafeImageView"
@@ -82,7 +82,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
         app:layout_constraintTop_toBottomOf="@+id/topCafeLayout"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingBottom="50dp"/>
 
     <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
