@@ -16,7 +16,7 @@
         android:fontFamily="@font/notosans_bold"
         android:text="여행 목록 📒 "
         android:textColor="@color/text_solid_black"
-        android:textSize="20sp"
+        android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/travelScroll"/>

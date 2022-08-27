@@ -45,7 +45,7 @@
                         android:text="제비식당"
                         android:maxLines="1"
                         android:ellipsize="end"
-                        android:textSize="17sp" />
+                        android:textSize="17dp" />
                 </TableRow>
 
                 <TableRow>
@@ -60,7 +60,7 @@
                         android:text="서울시 강서구 개화동"
                         android:maxLines="1"
                         android:ellipsize="end"
-                        android:textSize="13sp" />
+                        android:textSize="13dp" />
 
                 </TableRow>
 
@@ -76,7 +76,7 @@
                         android:text="AM 9:00 ~ PM 10:00"
                         android:maxLines="1"
                         android:ellipsize="end"
-                        android:textSize="10sp" />
+                        android:textSize="10dp" />
                 </TableRow>
             </TableLayout>
 

@@ -58,7 +58,7 @@
                         android:textColor="@color/text_solid_black"
                         android:textStyle="bold"
                         android:text="제비 제로웨이스트샵"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
                 </TableRow>
 
@@ -73,7 +73,7 @@
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
                         android:text="서울시 강서구 개화동"
-                        android:textSize="10sp" />
+                        android:textSize="10dp" />
 
                 </TableRow>
 
@@ -88,7 +88,7 @@
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
                         android:text="베이커리"
-                        android:textSize="10sp" />
+                        android:textSize="10dp" />
 
                 </TableRow>
 
