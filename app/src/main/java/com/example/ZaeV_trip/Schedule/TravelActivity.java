@@ -95,7 +95,7 @@ public class TravelActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     QuerySnapshot query = task.getResult();
                     for(QueryDocumentSnapshot document : query){
-                        TravelItem item = new TravelItem(R.drawable.default_bird_img,"","");
+                        TravelItem item = new TravelItem("","","");
                         item.setName(String.valueOf(document.getData().get("name")));
 
                         Timestamp startStamp = (Timestamp) document.getData().get("startDate");
@@ -111,6 +111,8 @@ public class TravelActivity extends AppCompatActivity {
                         item.setDate(calendar1.get(Calendar.YEAR) + "." + String.valueOf(calendar1.get(Calendar.MONTH)+1) + "." +calendar1.get(Calendar.DAY_OF_MONTH)
                         + " ~ " + calendar2.get(Calendar.YEAR) + "." + String.valueOf(calendar2.get(Calendar.MONTH)+1) + "." +calendar2.get(Calendar.DAY_OF_MONTH)
                         );
+
+                        item.setImage(String.valueOf(document.getData().get("img")));
 
                         listAdapter.addItem(item);
                     }
@@ -137,6 +139,7 @@ public class TravelActivity extends AppCompatActivity {
                 bundle.putInt("position",position);
                 bundle.putString("name", item.getName());
                 bundle.putString("date", item.getDate());
+                bundle.putString("img", item.getImage());
                 scheduleFragment.setArguments(bundle);
 
                 fragmentTransaction.replace(R.id.container_travel, scheduleFragment);

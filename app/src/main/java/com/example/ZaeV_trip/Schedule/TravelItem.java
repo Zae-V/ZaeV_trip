@@ -1,21 +1,23 @@
 package com.example.ZaeV_trip.Schedule;
 
+import android.net.Uri;
+
 public class TravelItem {
-    int image;
+    String image;
     String name;
     String date;
 
-    public TravelItem(int image, String date, String name){
+    public TravelItem(String image, String date, String name){
         this.image = image;
         this.date = date;
         this.name = name;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
