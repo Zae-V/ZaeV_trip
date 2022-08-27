@@ -766,17 +766,6 @@ public class getXmlData {
             URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
             Log.d("테스트Url", queryUrl);
 
-            ZeroWaste zeroWaste = zeroWaste = new ZeroWaste(
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "");
 
             InputStream is = url.openStream();
             InputStreamReader isr = new InputStreamReader(is);
@@ -806,6 +795,18 @@ public class getXmlData {
                 for (int i = 0; i < body.length(); i++) {
                     // body를 각 JSONObject 형태로 객체를 생성한다.
                     JSONObject temp = body.getJSONObject(i);
+
+                    ZeroWaste zeroWaste = new ZeroWaste(
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "");
 
                     // zeroWaste의 json 값들을 넣는다.
                     Log.d("테스트API",temp.getString("COT_IMG_MAIN_URL"));
