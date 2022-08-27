@@ -10,16 +10,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Plogging;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PloggingFragment extends Fragment {
+    FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
+    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +59,7 @@ public class PloggingFragment extends Fragment {
         TextView plogging_traveler_info_txt = v.findViewById(R.id.plogging_traveler_info_txt);
         TextView plogging_gpx = v.findViewById(R.id.plogging_gpx);
         TextView plogging_gpx_txt = v.findViewById(R.id.plogging_gpx_txt);
+        ImageView bookmarkBtn = (ImageView) v.findViewById(R.id.bookmarkBtn);
 
         String crsKorNm = plogging.getCrsKorNm();
         String crsLevel = plogging.getCrsLevel();
@@ -56,6 +70,7 @@ public class PloggingFragment extends Fragment {
         String crsTourInfo = plogging.getCrsTourInfo();
         String travelerinfo = plogging.getTravelerinfo();
         String gpx_path = plogging.getGpxpath();
+        String sigun = plogging.getSigun();
 
         if (!crsKorNm.equals("")) {
             plogging_name.setText(crsKorNm);
@@ -144,6 +159,53 @@ public class PloggingFragment extends Fragment {
             plogging_gpx_txt.setVisibility(View.GONE);
         }
 
+        mDatabase.collection("BookmarkItem").document(userId).collection("plogging").document(crsKorNm).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        bookmarkBtn.setActivated(true);
+                    } else {
+                        bookmarkBtn.setActivated(false);
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
+
+        bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bookmarkBtn.setActivated(!bookmarkBtn.isActivated());
+                if (!bookmarkBtn.isActivated()){
+                    // 취소 동작
+                    deleteBookmark(crsKorNm);
+                }
+                else if(bookmarkBtn.isActivated()){
+                    // 선택 동작
+                    writeBookmark(crsKorNm, sigun, crsLevel, crsContent);
+                }
+
+            }
+        });
+
         return v;
+    }
+
+    private void writeBookmark(String crsKorNm, String sigun, String crsLevel, String crsContent){
+        Map<String, Object> info = new HashMap<>();
+        info.put("name", crsKorNm);
+        info.put("sigun", sigun);
+        info.put("level", crsLevel);
+        info.put("info", crsContent);
+        info.put("type", "플로깅");
+
+        mDatabase.collection("BookmarkItem").document(userId).collection("plogging").document(crsKorNm).set(info);
+    }
+
+    private void deleteBookmark(String crsKorNm){
+        mDatabase.collection("BookmarkItem").document(userId).collection("plogging").document(crsKorNm).delete();
     }
 }

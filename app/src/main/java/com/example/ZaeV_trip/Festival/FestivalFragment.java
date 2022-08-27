@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -21,6 +22,11 @@ import com.example.ZaeV_trip.model.TouristSpot;
 import com.example.ZaeV_trip.model.TouristSpotDetail;
 import com.example.ZaeV_trip.model.TouristSpotDetail2;
 import com.example.ZaeV_trip.util.CharacterWrapTextView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -33,8 +39,13 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FestivalFragment extends Fragment {
+    FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
+    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
     FestivalDetail festivalDetail;
     FestivalDetail2 festivalDetail2;
 
@@ -70,6 +81,7 @@ public class FestivalFragment extends Fragment {
         TextView festival_booking = v.findViewById(R.id.festival_booking);
         ImageView content_img = v.findViewById(R.id.content_img);
         CharacterWrapTextView overview = v.findViewById(R.id.overview);
+        ImageView bookmarkBtn = (ImageView) v.findViewById(R.id.bookmarkBtn);
 
         festival_detail_txt.setText(name);
         festival_location.setText(location);
@@ -144,7 +156,58 @@ public class FestivalFragment extends Fragment {
             }
         }).start();
 
+        mDatabase.collection("BookmarkItem").document(userId).collection("festival").document(festival.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        bookmarkBtn.setActivated(true);
+                    } else {
+                        bookmarkBtn.setActivated(false);
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
+
+        bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bookmarkBtn.setActivated(!bookmarkBtn.isActivated());
+                if (!bookmarkBtn.isActivated()){
+                    // 취소 동작
+                    deleteBookmark(festival);
+                }
+                else if(bookmarkBtn.isActivated()){
+                    // 선택 동작
+                    writeBookmark(festival);
+                }
+
+            }
+        });
+
         return v;
+    }
+
+    private void writeBookmark(Festival festival){
+        Map<String, Object> info = new HashMap<>();
+        info.put("name", festival.getTitle());
+        info.put("img", festival.getFirstImage());
+        info.put("address", festival.getAddr1());
+        info.put("position_x", festival.getMapX());
+        info.put("position_y", festival.getMapY());
+        info.put("serialNumber", festival.getId());
+        info.put("start_date", festival.getStartDate());
+        info.put("end_date", festival.getEndDate());
+        info.put("tel", festival.getTel());
+
+        mDatabase.collection("BookmarkItem").document(userId).collection("festival").document(festival.getId()).set(info);
+    }
+
+    private void deleteBookmark(Festival festival){
+        mDatabase.collection("BookmarkItem").document(userId).collection("festival").document(festival.getId()).delete();
     }
 
     public FestivalDetail getXmlData(String contentId){

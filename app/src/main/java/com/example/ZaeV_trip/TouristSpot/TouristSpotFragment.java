@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +18,11 @@ import com.example.ZaeV_trip.model.Plogging;
 import com.example.ZaeV_trip.model.TouristSpot;
 import com.example.ZaeV_trip.model.TouristSpotDetail;
 import com.example.ZaeV_trip.model.TouristSpotDetail2;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -30,8 +36,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TouristSpotFragment extends Fragment {
+    FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
+    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
     TouristSpotDetail touristSpotDetail;
     TouristSpotDetail2 touristSpotDetail2;
 
@@ -44,6 +55,7 @@ public class TouristSpotFragment extends Fragment {
     TextView homepageTextView;
     ImageView content_img;
     ImageView content_img2;
+    ImageView bookmarkBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +85,7 @@ public class TouristSpotFragment extends Fragment {
         homepageTextView = v.findViewById(R.id.homepage);
         content_img = v.findViewById(R.id.content_img);
         content_img2 = v.findViewById(R.id.content_img2);
+        bookmarkBtn = (ImageView) v.findViewById(R.id.bookmarkBtn);
 
         titleTextView.setText(name);
 
@@ -164,7 +177,57 @@ public class TouristSpotFragment extends Fragment {
             }
         }).start();
 
+        mDatabase.collection("BookmarkItem").document(userId).collection("touristSpot").document(contentID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        bookmarkBtn.setActivated(true);
+                    } else {
+                        bookmarkBtn.setActivated(false);
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
+
+        bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bookmarkBtn.setActivated(!bookmarkBtn.isActivated());
+                if (!bookmarkBtn.isActivated()){
+                    // 취소 동작
+                    deleteBookmark(contentID);
+                }
+                else if(bookmarkBtn.isActivated()){
+                    // 선택 동작
+                    writeBookmark(name, detail_location, location, touristSpot.getMapX(), touristSpot.getMapY(), contentID, touristSpot.getFirstImage());
+                }
+
+            }
+        });
+
         return v;
+    }
+
+    private void writeBookmark(String title, String addr1, String addr2, String x, String y, String contentID, String image){
+        Map<String, Object> info = new HashMap<>();
+        info.put("name", title);
+        info.put("type", "관광명소");
+        info.put("address", addr1);
+        info.put("address2", addr2);
+        info.put("position_x", x);
+        info.put("position_y", y);
+        info.put("serialNumber", contentID);
+        info.put("image", image);
+
+        mDatabase.collection("BookmarkItem").document(userId).collection("touristSpot").document(contentID).set(info);
+    }
+
+    private void deleteBookmark(String contentID){
+        mDatabase.collection("BookmarkItem").document(userId).collection("touristSpot").document(contentID).delete();
     }
 
     public TouristSpotDetail getXmlData(String contentId){
