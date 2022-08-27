@@ -17,16 +17,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="108dp"
+                android:layout_height="80dp">
 
                 <ImageView
                     android:id="@+id/list_image"
                     android:layout_width="108dp"
                     android:layout_height="80dp"
-                    android:scaleType="centerCrop"
                     android:padding="0dp"
+                    android:scaleType="centerCrop"
                     app:srcCompat="@drawable/vegan_burger" />
 
                 <ImageView
@@ -39,7 +40,6 @@
                     />
 
             </RelativeLayout>
-
             <TableLayout
                 android:gravity="center"
                 android:stretchColumns="1"
@@ -57,7 +57,7 @@
                         android:layout_marginLeft="10dp"
                         android:textColor="@color/text_solid_black"
                         android:textStyle="bold"
-                        android:text="제비숙소"
+                        android:text="제비 숙소"
                         android:textSize="15sp" />
 
                 </TableRow>
@@ -81,13 +81,13 @@
 
                     <TextView
 
-                        android:id="@+id/list_date"
+                        android:id="@+id/list_category"
                         android:textColor="@color/text_solid_black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
-                        android:text="베이커리"
+                        android:text="키워드"
                         android:textSize="10sp" />
 
                 </TableRow>
