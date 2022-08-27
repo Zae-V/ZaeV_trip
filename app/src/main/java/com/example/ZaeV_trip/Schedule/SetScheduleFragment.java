@@ -66,6 +66,7 @@ public class SetScheduleFragment extends Fragment {
     StorageReference riversRef;
     String docId;
     String fileName;
+    Uri uri;
     int FLAG = 0;
 
     String travelTitle;
@@ -213,13 +214,15 @@ public class SetScheduleFragment extends Fragment {
         if (docId != null) {
             Log.d("테스트", "updateImg 함수");
             // 파이어베이스 스토리지에서 이미지 가져오기
-            StorageReference photoRef = storageRef.child(fileName);
-            photoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    db.collection("Schedule").document(uid).collection("schedule").document(docId).update("img", uri);
-                }
-            });
+            if(uri != null) {
+                StorageReference photoRef = storageRef.child(fileName);
+                photoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        db.collection("Schedule").document(uid).collection("schedule").document(docId).update("img", uri);
+                    }
+                });
+            }
         }
 
     }
@@ -230,7 +233,7 @@ public class SetScheduleFragment extends Fragment {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == RESULT_OK) {
                         Intent intent = result.getData();
-                        Uri uri = intent.getData();
+                        uri = intent.getData();
                         storageRef = storage.getReference();
 
                         // 스토리지에 uid + 날짜로 겹치지 않도록 저장
