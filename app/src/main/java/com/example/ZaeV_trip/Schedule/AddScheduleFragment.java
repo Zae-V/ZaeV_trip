@@ -402,7 +402,7 @@ public class AddScheduleFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ArrayList<ZeroWaste> zeroWastes = getXmlData.getZeroWasteData(getActivity());
+                ArrayList<ZeroWaste> zeroWastes = getXmlData.getZeroWasteData(getActivity(),"4");
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -411,11 +411,11 @@ public class AddScheduleFragment extends Fragment {
 
                         for(int i = 0; i< zeroWastes.size(); i++) {
                             if (local.equals("전체 지역") || local.equals("전체")) {
-                                filteredZeroWaste.add(new SelectItem(null, zeroWastes.get(i).getName(),zeroWastes.get(i).getLocation(),zeroWastes.get(i).getReason()));
+                                filteredZeroWaste.add(new SelectItem(null, zeroWastes.get(i).getName(),zeroWastes.get(i).getAddr1(),zeroWastes.get(i).getKeyword()));
                             }
                             else {
-                                if (zeroWastes.get(i).getLocation().contains(local)) {
-                                    filteredZeroWaste.add(new SelectItem(null, zeroWastes.get(i).getName(),zeroWastes.get(i).getLocation(),zeroWastes.get(i).getReason()));
+                                if (zeroWastes.get(i).getAddr1().contains(local)) {
+                                    filteredZeroWaste.add(new SelectItem(null, zeroWastes.get(i).getName(),zeroWastes.get(i).getAddr1(),zeroWastes.get(i).getKeyword()));
                                 }
                             }
                             SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredZeroWaste,day);

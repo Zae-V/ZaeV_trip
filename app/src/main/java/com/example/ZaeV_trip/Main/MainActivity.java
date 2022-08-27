@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        Log.d("테스트", local);
+        //Log.d("테스트", local);
 
         new Thread(new Runnable() {
             @Override
@@ -602,7 +602,7 @@ public class MainActivity extends AppCompatActivity {
                 + "/xml/" + listType
                 + "/" + startIndex
                 + "/" + endIndex + "/";
-        Log.d("테스트", queryUrl);
+        //Log.d("테스트", queryUrl);
 
         try{
             URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
@@ -666,7 +666,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if(tag.equals("row")) {
                             veganRestaurants.add(veganRestaurant);
-                            Log.d("테스트",veganRestaurant.getName());
+                            //Log.d("테스트",veganRestaurant.getName());
                         };// 첫번째 검색결과종료..줄바꿈
                         break;
                 }

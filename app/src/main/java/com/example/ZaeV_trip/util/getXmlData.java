@@ -14,12 +14,17 @@ import com.example.ZaeV_trip.model.Reusable;
 import com.example.ZaeV_trip.model.TouristSpot;
 import com.example.ZaeV_trip.model.ZeroWaste;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -712,62 +717,116 @@ public class getXmlData {
         return touristSpots;
     }
 
-    public static ArrayList<ZeroWaste> getZeroWasteData(Context cnt){
+    public static ArrayList<ZeroWaste> getZeroWasteData(Context cnt, String subcate_id){
         ArrayList<ZeroWaste> zeroWastes = new ArrayList<ZeroWaste>();
+        String BaseURL = "https://map.seoul.go.kr/smgis/apps/theme.do";
+        String cmd = "getContentsList";
+        String key = cnt.getString(R.string.zerowaste_key);
+        String page_no = "1";
+        String page_size = "10";
+        String search_name = "";
+        String search_type = "1";            //0:거리. 1:이름
+        String coord_x = "126.9752884";                //default:"0"
+        String coord_y = "37.5649732";                //default:"0"
+        String distance = "3000";            //default:"2000"
+        String theme_id = "11103395";        //여러 테마는 콤마로 구분; 11103395 : [착한소비] 제로웨이스트상점
+        String content_id = "";
+        //String subcate_id = "";               //1 : 카페, 2 : 식당, 3 : 리필샵, 4 : 친환경생필품점, 5 : 기타
+        //String value_01 = "";                   //value_01 : 상세 첫 번째 컬럼 값 검색; 검색어 입력 (중간어 검색이 됨)
+
+        String result = ""; //파싱한 데이터를 저장할 변수
+
+        String queryUrl = BaseURL + "?"
+                + "cmd=" + cmd
+                + "&page_no=" + page_no
+                + "&page_size=" + page_size
+                + "&key=" + key
+                + "&coord_x=" + coord_x
+                + "&coord_y=" + coord_y
+                + "&distance=" + distance
+                + "&search_type=" + search_type
+                + "&search_name=" + search_name
+                + "&theme_id=" + theme_id
+                + "&subcate_id=" + theme_id + "," + subcate_id;
+        //+ "&=value_01" + value_01;
 
         try {
-            InputStream is = cnt.getResources().getAssets().open("noplasticstore.bom.xls");
-            Workbook wb = Workbook.getWorkbook(is);
-            ZeroWaste zeroWaste = null;
-            if (wb != null) {
-                Sheet sheet = wb.getSheet(0);   // 시트 불러오기
-                if (sheet != null) {
-                    Log.i("test", "불러오기");
-                    int colTotal = sheet.getColumns();    // 전체 컬럼
-                    int rowIndexStart = 1;                  // row 인덱스 시작
-                    Log.i("test", "전체 칼럼: " + colTotal);
-                    int rowTotal = sheet.getColumn(colTotal - 2).length;
-                    Log.i("test", "전체 로우: " + rowTotal);
+            URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+            Log.d("테스트Url", queryUrl);
 
-                    StringBuilder sb;
-                    for (int row = rowIndexStart; row < rowTotal; row++) {
-                        sb = new StringBuilder();
-                        zeroWaste = new ZeroWaste(
-                                "",
-                                "",
-                                "",
-                                "",
-                                ""
-                        );
-                        for (int col = 0; col < colTotal; col++) {
-                            String contents = sheet.getCell(col, row).getContents();
-                            if (col == 0) {
-                                zeroWaste.setName(contents);
-                            } else if (col == 1) {
-                                zeroWaste.setLocation(contents);
-                            } else if (col == 2) {
-                                zeroWaste.setMapY(contents);
-                            } else if (col == 3) {
-                                zeroWaste.setMapX(contents);
-                            } else if (col == 4) {
-                                zeroWaste.setReason(contents);
-                            }
-                            sb.append("col" + col + " : " + contents + " , ");
+            ZeroWaste zeroWaste = zeroWaste = new ZeroWaste(
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "");
 
-                        }
-                        zeroWastes.add(zeroWaste);
-//                        Log.i("test", sb.toString());
-                    }
+            InputStream is = url.openStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader reader = new BufferedReader(isr);
 
-                }
+            StringBuffer buffer = new StringBuffer();
+            String line = reader.readLine();
+
+            while (line != null) {
+                buffer.append(line + "\n");
+                line = reader.readLine();
             }
 
-        }
-        catch (BiffException e) {
+            String jsonData = buffer.toString();
+
+            // jsonData를 먼저 JSONObject 형태로 바꾼다.
+            JSONObject obj = new JSONObject(jsonData);
+
+            // obj의 "head"의 JSONObject를 추출
+            JSONObject head = (JSONObject)obj.get("head");
+
+            // obj의 "body"의 JSONObject를 추출
+            JSONArray body = (JSONArray)obj.get("body");
+
+            try {
+                // body의 length만큼 for문 반복
+                for (int i = 0; i < body.length(); i++) {
+                    // body를 각 JSONObject 형태로 객체를 생성한다.
+                    JSONObject temp = body.getJSONObject(i);
+
+                    // zeroWaste의 json 값들을 넣는다.
+                    Log.d("테스트API",temp.getString("COT_IMG_MAIN_URL"));
+                    zeroWaste.setMapX(temp.getString("COT_COORD_X"));
+                    zeroWaste.setMapY(temp.getString("COT_COORD_Y"));
+                    zeroWaste.setName(temp.getString("COT_CONTS_NAME"));
+                    zeroWaste.setTelephone(temp.getString("COT_TEL_NO"));
+                    zeroWaste.setContentID(temp.getString("COT_CONTS_ID"));
+                    zeroWaste.setThemeSubID(temp.getString("COT_THEME_SUB_ID"));
+                    zeroWaste.setImage("https://map.seoul.go.kr" + temp.getString("COT_IMG_MAIN_URL"));
+                    zeroWaste.setAddr1(temp.getString("COT_ADDR_FULL_NEW"));
+                    zeroWaste.setAddr2(temp.getString("COT_ADDR_FULL_OLD"));
+                    zeroWaste.setKeyword(temp.getString("COT_KW"));
+
+                    zeroWastes.add(zeroWaste);
+
+                }
+                // adapter에 적용
+                zeroWastes.add(zeroWaste);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
         return zeroWastes;
     }
+
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.ZeroWaste;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,15 +61,17 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
     @Override
     public void onBindViewHolder(@NonNull com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter.ViewHolder holder, int position) {
 
-//        Glide.with(holder.itemView.getContext())
-//                .load(zeroWastes.get(position).getFirstImage())
-//                .placeholder(R.drawable.default_profile_image)
-//                .error(R.drawable.default_profile_image)
-//                .fallback(R.drawable.default_profile_image)
-//                .into(holder.imgView);
+        String imageUrl = filtered.get(position).getImage();
+        Glide.with(holder.itemView.getContext())
+                .load(imageUrl)
+                .placeholder(R.drawable.default_bird_img)
+                .error(R.drawable.default_bird_img)
+                .fallback(R.drawable.default_bird_img)
+                .into(holder.imgView);
+
         holder.nameview.setText(filtered.get(position).getName());
-        holder.locview.setText(filtered.get(position).getLocation());
-        holder.catview.setText(filtered.get(position).getReason());
+        holder.locview.setText(filtered.get(position).getAddr1());
+        holder.keywordview.setText(filtered.get(position).getKeyword());
 
         mDatabase.collection("BookmarkItem").document(userId).collection("zeroWaste").document(filtered.get(position).getName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -85,6 +88,10 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
                 }
             }
         });
+    }
+
+    public void clear() {
+        zeroWastes.clear();
     }
 
     @Override
@@ -144,7 +151,7 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
 
         public TextView nameview;
         public TextView locview;
-        public TextView catview;
+        public TextView keywordview;
         public ImageView imgView;
         public ImageView bookmarkbtn;
 
@@ -153,7 +160,7 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
 
             nameview = itemView.findViewById(R.id.list_name);
             locview = itemView.findViewById(R.id.list_location);
-            catview = itemView.findViewById(R.id.list_category);
+            keywordview = itemView.findViewById(R.id.list_category);
 
             bookmarkbtn = itemView.findViewById(R.id.bookmarkBtn);
             imgView = itemView.findViewById(R.id.list_image);
@@ -193,11 +200,11 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
     private void writeBookmark(int position){
         Map<String, Object> info = new HashMap<>();
         info.put("name", filtered.get(position).getName());
-        info.put("type", "다회용기");
-        info.put("address", filtered.get(position).getLocation());
+        info.put("type", "친환경생필품점");
+        info.put("address", filtered.get(position).getAddr1());
         info.put("position_x", filtered.get(position).getMapX());
         info.put("position_y", filtered.get(position).getMapY());
-        info.put("reason", filtered.get(position).getReason());
+        info.put("keyword", filtered.get(position).getKeyword());
 
         mDatabase.collection("BookmarkItem").document(userId).collection("zeroWaste").document(filtered.get(position).getName()).set(info);
     }
