@@ -1,6 +1,8 @@
 package com.example.ZaeV_trip.model;
 
-public class ZeroWaste {
+import java.io.Serializable;
+
+public class ZeroWaste implements Serializable {
     private String name;
     private String Addr1;
     private String Addr2;
