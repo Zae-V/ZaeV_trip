@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.model.Festival;
+import com.example.ZaeV_trip.model.TouristSpot;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -32,13 +34,14 @@ public class FestivalFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_festival, container, false);
 
         //Bundle
-        String name = getArguments().getString("name");
-        String location = getArguments().getString("location");
-        String startDate = getArguments().getString("startDate");
-        String endDate = getArguments().getString("endDate");
-        String x = getArguments().getString("x");
-        String y = getArguments().getString("y");
-        String img = getArguments().getString("img");
+        Festival festival = (Festival) getArguments().getSerializable("festival");
+        String name = festival.getTitle();
+        String location = festival.getAddr1();
+        String startDate = festival.getStartDate();
+        String endDate = festival.getEndDate();
+        String x = festival.getMapX();
+        String y = festival.getMapY();
+        String img = festival.getFirstImage();
 
 
         //xml

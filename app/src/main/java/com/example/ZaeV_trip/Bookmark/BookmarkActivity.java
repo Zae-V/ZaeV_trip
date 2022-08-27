@@ -122,7 +122,7 @@ public class BookmarkActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     QuerySnapshot query = task.getResult();
                     for(QueryDocumentSnapshot document : query){
-                        Festival festival = new Festival("","","","","","","","");
+                        Festival festival = new Festival("","","","","","","","", "");
                         festival.setId(String.valueOf(document.getData().get("serialNumber")));
                         festival.setAddr1(String.valueOf(document.getData().get("address")));
                         festival.setTitle(String.valueOf(document.getData().get("name")));
@@ -131,6 +131,7 @@ public class BookmarkActivity extends AppCompatActivity {
                         festival.setMapY(String.valueOf(document.getData().get("position_y")));
                         festival.setStartDate(String.valueOf(document.getData().get("start_date")));
                         festival.setEndDate(String.valueOf(document.getData().get("end_date")));
+                        festival.setTel(String.valueOf(document.getData().get("tel")));
                         bookmarkedItems1.add(festival);
                     }
 

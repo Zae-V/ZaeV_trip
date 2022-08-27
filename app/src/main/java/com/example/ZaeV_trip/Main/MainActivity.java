@@ -540,6 +540,7 @@ public class MainActivity extends AppCompatActivity {
                                     "",
                                     "",
                                     "",
+                                    "",
                                     ""
                             );
                         }
@@ -566,6 +567,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else if(tag.equals("eventstartdate")){
                             festival.setStartDate(xpp.nextText());
+                        }
+                        else if(tag.equals("tel")){
+                            festival.setTel(xpp.nextText());
                         }
                         break;
 

@@ -23,6 +23,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -61,20 +62,20 @@ public class FestivalActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ArrayList<Festival> filteredList = new ArrayList<Festival>();
+                        ArrayList<Festival> filteredFestival = new ArrayList<Festival>();
 
                         for(int i = 0; i< festivals.size(); i++) {
                             if(local.equals("전체 지역") || local.equals("전체")){
 //                                adapter.addItem(festivals.get(i));
-                                filteredList.add(festivals.get(i));
+                                filteredFestival.add(festivals.get(i));
                             }else{
                                 if(festivals.get(i).getAddr1().split(" ").length > 1 && festivals.get(i).getAddr1().split(" ")[1].equals(local)){
 //                                    adapter.addItem(festivals.get(i));
-                                    filteredList.add(festivals.get(i));
+                                    filteredFestival.add(festivals.get(i));
                                 }
                             }
                         }
-                        FestivalAdapter adapter = new FestivalAdapter(FestivalActivity.this, filteredList);
+                        FestivalAdapter adapter = new FestivalAdapter(FestivalActivity.this, filteredFestival);
                         festivalList.setLayoutManager(new LinearLayoutManager(FestivalActivity.this, RecyclerView.VERTICAL, false));
                         festivalList.setAdapter(adapter);
 
@@ -98,13 +99,15 @@ public class FestivalActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(View view, int i) {
                                 Bundle bundle = new Bundle();
-                                bundle.putString("name", festivals.get(i).getTitle());
-                                bundle.putString("location", festivals.get(i).getAddr1());
-                                bundle.putString("startDate", festivals.get(i).getStartDate());
-                                bundle.putString("endDate",festivals.get(i).getEndDate());
-                                bundle.putString("img",festivals.get(i).getFirstImage());
-                                bundle.putString("x", festivals.get(i).getMapX());
-                                bundle.putString("y",festivals.get(i).getMapY());
+//                                bundle.putString("name", festivals.get(i).getTitle());
+//                                bundle.putString("location", festivals.get(i).getAddr1());
+//                                bundle.putString("startDate", festivals.get(i).getStartDate());
+//                                bundle.putString("endDate",festivals.get(i).getEndDate());
+//                                bundle.putString("img",festivals.get(i).getFirstImage());
+//                                bundle.putString("x", festivals.get(i).getMapX());
+//                                bundle.putString("y",festivals.get(i).getMapY());
+
+                                bundle.putSerializable("festival", (Serializable) filteredFestival.get(i));
 
                                 FestivalFragment festivalFragment = new FestivalFragment();
                                 festivalFragment.setArguments(bundle);

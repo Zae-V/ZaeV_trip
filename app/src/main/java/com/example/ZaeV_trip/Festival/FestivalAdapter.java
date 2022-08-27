@@ -205,6 +205,7 @@ public class FestivalAdapter extends RecyclerView.Adapter<FestivalAdapter.ViewHo
             info.put("serialNumber", filtered.get(position).getId());
             info.put("start_date", filtered.get(position).getStartDate());
             info.put("end_date", filtered.get(position).getEndDate());
+            info.put("tel", filtered.get(position).getTel());
 
             mDatabase.collection("BookmarkItem").document(userId).collection("festival").document(filtered.get(position).getId()).set(info);
         }
