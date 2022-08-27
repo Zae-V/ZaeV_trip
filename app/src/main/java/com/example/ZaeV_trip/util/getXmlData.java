@@ -187,6 +187,7 @@ public class getXmlData {
                                     "",
                                     "",
                                     "",
+                                    "",
                                     ""
                             );
                         }
@@ -213,6 +214,9 @@ public class getXmlData {
                         }
                         else if(tag.equals("eventstartdate")){
                             festival.setStartDate(xpp.nextText());
+                        }
+                        else if(tag.equals("tel")){
+                            festival.setTel(xpp.nextText());
                         }
                         break;
 
