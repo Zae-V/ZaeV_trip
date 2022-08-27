@@ -1,8 +1,11 @@
 package com.example.ZaeV_trip.ZeroWaste;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -11,20 +14,25 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.ZeroWaste;
 import com.example.ZaeV_trip.util.getXmlData;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.read.biff.BiffException;
-
 public class ZeroWasteActivity extends AppCompatActivity {
+
     ArrayList<ZeroWaste> zeroWastes = new ArrayList<>();
     String local;
     SearchView searchView;
@@ -46,7 +54,7 @@ public class ZeroWasteActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                zeroWastes = getXmlData.getZeroWasteData(ZeroWasteActivity.this);
+                zeroWastes = getXmlData.getZeroWasteData(ZeroWasteActivity.this, "4");
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -54,17 +62,20 @@ public class ZeroWasteActivity extends AppCompatActivity {
                         ArrayList<ZeroWaste> filteredZeroWaste = new ArrayList<ZeroWaste>();
 
                         for(int i = 0; i< zeroWastes.size(); i++) {
-                            if (local.equals("전체 지역") || local.equals("전체")) {
-                                filteredZeroWaste.add(zeroWastes.get(i));
-                            }
-                            else {
-                                if (zeroWastes.get(i).getLocation().contains(local)) {
-                                    filteredZeroWaste.add(zeroWastes.get(i));
-                                }
-                            }
-                            ZeroWasteAdapter adapter = new com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter(ZeroWasteActivity.this, filteredZeroWaste);
+//                            if (local.equals("전체 지역") || local.equals("전체")) {
+//                                filteredZeroWaste.add(zeroWastes.get(i));
+//                            }
+//                            else {
+//                                if (zeroWastes.get(i).getAddr1().contains(local)) {
+//                                    filteredZeroWaste.add(zeroWastes.get(i));
+//                                }
+//                            }
+                            filteredZeroWaste.add(zeroWastes.get(i));
+
+                            ZeroWasteAdapter adapter = new ZeroWasteAdapter(ZeroWasteActivity.this, filteredZeroWaste);
                             list.setLayoutManager(new LinearLayoutManager(ZeroWasteActivity.this, RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
+
                             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                 @Override
                                 public boolean onQueryTextSubmit(String s) {
@@ -77,27 +88,32 @@ public class ZeroWasteActivity extends AppCompatActivity {
                                     return false;
                                 }
                             });
-                            adapter.setOnItemClickListener(new com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter.OnItemClickListener() {
+
+                            adapter.setOnItemClickListener(new ZeroWasteAdapter.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View v, int i) {
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("name", filteredZeroWaste.get(i).getName());
-                                    bundle.putString("location", filteredZeroWaste.get(i).getLocation());
-                                    bundle.putString("x", filteredZeroWaste.get(i).getMapX());
-                                    bundle.putString("y", filteredZeroWaste.get(i).getMapY());
-                                    bundle.putString("reason",filteredZeroWaste.get(i).getReason());
+//                                    bundle.putString("name", filteredZeroWaste.get(i).getTitle());
+//                                    bundle.putString("contentID", filteredZeroWaste.get(i).getContentID());
+//                                    bundle.putString("location", filteredZeroWaste.get(i).getAddr1());
+//                                    bundle.putString("x", filteredZeroWaste.get(i).getMapX());
+//                                    bundle.putString("y", filteredZeroWaste.get(i).getMapY());
+//                                    bundle.putString("firstImg", filteredZeroWaste.get(i).getFirstImage());
 
-                                    ZeroWasteFragment zeroWasteFragment = new com.example.ZaeV_trip.ZeroWaste.ZeroWasteFragment();
+                                    bundle.putSerializable("zeroWaste", (Serializable) filteredZeroWaste.get(i));
+
+                                    ZeroWasteFragment zeroWasteFragment = new ZeroWasteFragment();
                                     zeroWasteFragment.setArguments(bundle);
 
                                     FragmentManager fragmentManager = getSupportFragmentManager();
                                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                    fragmentTransaction.replace(R.id.container_zeroWaste, zeroWasteFragment);
+                                    fragmentTransaction.replace(R.id.container_zero_waste, zeroWasteFragment);
                                     fragmentTransaction.addToBackStack(null);
                                     fragmentTransaction.commit();
 
                                 }
                             });
+
                         }
                     }
                 });
@@ -105,6 +121,5 @@ public class ZeroWasteActivity extends AppCompatActivity {
         }).start();
 
     }
-
 
 }

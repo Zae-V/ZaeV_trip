@@ -244,12 +244,12 @@ public class BookmarkActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     QuerySnapshot query = task.getResult();
                     for(QueryDocumentSnapshot document : query){
-                        ZeroWaste zeroWaste = new ZeroWaste("","","","","");
+                        ZeroWaste zeroWaste = new ZeroWaste("","","","","","","","","","");
                         zeroWaste.setName(String.valueOf(document.getData().get("name")));
                         zeroWaste.setMapX(String.valueOf(document.getData().get("position_x")));
                         zeroWaste.setMapY(String.valueOf(document.getData().get("position_y")));
-                        zeroWaste.setLocation(String.valueOf(document.getData().get("address")));
-                        zeroWaste.setReason(String.valueOf(document.getData().get("reason")));
+                        zeroWaste.setAddr1(String.valueOf(document.getData().get("address")));
+                        zeroWaste.setKeyword(String.valueOf(document.getData().get("keyword")));
                         bookmarkedItems6.add(zeroWaste);
                     }
 
