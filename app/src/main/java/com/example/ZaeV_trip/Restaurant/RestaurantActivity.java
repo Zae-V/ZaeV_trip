@@ -84,6 +84,14 @@ public class RestaurantActivity extends AppCompatActivity {
                                 return false;
                             }
                         });
+                        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                            @Override
+                            public boolean onClose() {
+                                adapter.getFilter().filter("");
+                                return true;
+                            }
+                        });
+
 
                         // 서치아이콘이 아닌 서치바 클릭시 검색 가능하게 하기
                         searchView.setOnClickListener(new View.OnClickListener(){
