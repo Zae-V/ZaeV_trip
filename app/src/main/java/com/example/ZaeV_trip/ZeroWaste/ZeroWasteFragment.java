@@ -148,7 +148,7 @@ public class ZeroWasteFragment extends Fragment {
             }
         }).start();
 
-        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        mDatabase.collection("BookmarkItem").document(userId).collection("zeroWaste").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -194,11 +194,11 @@ public class ZeroWasteFragment extends Fragment {
         info.put("serialNumber", id);
         info.put("tel", number);
 
-        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(id).set(info);
+        mDatabase.collection("BookmarkItem").document(userId).collection("zeroWaste").document(id).set(info);
     }
     
     private void deleteBookmark(String id){
-        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(id).delete();
+        mDatabase.collection("BookmarkItem").document(userId).collection("zeroWaste").document(id).delete();
     }
     
     public void setVisibility(Integer idx) {
