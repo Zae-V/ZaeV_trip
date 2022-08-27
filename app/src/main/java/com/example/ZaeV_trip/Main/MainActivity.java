@@ -155,13 +155,14 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(View v, int i) {
                                 Bundle bundle = new Bundle();
-                                bundle.putString("name", filteredEvent.get(i).getTitle());
-                                bundle.putString("location", filteredEvent.get(i).getAddr1());
-                                bundle.putString("startDate", filteredEvent.get(i).getStartDate());
-                                bundle.putString("endDate",filteredEvent.get(i).getEndDate());
-                                bundle.putString("img",filteredEvent.get(i).getFirstImage());
-                                bundle.putString("x", filteredEvent.get(i).getMapX());
-                                bundle.putString("y",filteredEvent.get(i).getMapY());
+//                                bundle.putString("name", filteredEvent.get(i).getTitle());
+//                                bundle.putString("location", filteredEvent.get(i).getAddr1());
+//                                bundle.putString("startDate", filteredEvent.get(i).getStartDate());
+//                                bundle.putString("endDate",filteredEvent.get(i).getEndDate());
+//                                bundle.putString("img",filteredEvent.get(i).getFirstImage());
+//                                bundle.putString("x", filteredEvent.get(i).getMapX());
+//                                bundle.putString("y",filteredEvent.get(i).getMapY());
+                                bundle.putSerializable("festival", (Serializable) filteredEvent.get(i));
 
                                 FestivalFragment festivalFragment = new FestivalFragment();
                                 festivalFragment.setArguments(bundle);
