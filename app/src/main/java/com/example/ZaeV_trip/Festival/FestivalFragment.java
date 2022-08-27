@@ -2,6 +2,7 @@ package com.example.ZaeV_trip.Festival;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +15,28 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Festival;
+import com.example.ZaeV_trip.model.FestivalDetail;
+import com.example.ZaeV_trip.model.FestivalDetail2;
 import com.example.ZaeV_trip.model.TouristSpot;
+import com.example.ZaeV_trip.model.TouristSpotDetail;
+import com.example.ZaeV_trip.model.TouristSpotDetail2;
+import com.example.ZaeV_trip.util.CharacterWrapTextView;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
+import org.w3c.dom.Text;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+
 public class FestivalFragment extends Fragment {
+    FestivalDetail festivalDetail;
+    FestivalDetail2 festivalDetail2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,38 +58,23 @@ public class FestivalFragment extends Fragment {
         String x = festival.getMapX();
         String y = festival.getMapY();
         String img = festival.getFirstImage();
+        String tel = festival.getTel();
+        String contentID = festival.getId();
 
+        TextView festival_detail_txt = v.findViewById(R.id.festival_detail_txt);
+        TextView festival_location = v.findViewById(R.id.festival_location);
+        TextView festival_tel = v.findViewById(R.id.festival_tel);
+        TextView festival_detail_location = v.findViewById(R.id.festival_detail_location);
+        TextView festival_time = v.findViewById(R.id.festival_time);
+        TextView festival_homepage = v.findViewById(R.id.festival_homepage);
+        TextView festival_booking = v.findViewById(R.id.festival_booking);
+        ImageView content_img = v.findViewById(R.id.content_img);
+        CharacterWrapTextView overview = v.findViewById(R.id.overview);
 
-        //xml
-        TextView list_name = v.findViewById(R.id.list_name);
-        TextView list_location = v.findViewById(R.id.list_location);
-        TextView list_category = v.findViewById(R.id.list_date);
+        festival_detail_txt.setText(name);
+        festival_location.setText(location);
+        festival_tel.setText(Html.fromHtml(tel));
 
-        ImageView image = v.findViewById(R.id.list_image);
-        ImageView poster = v.findViewById(R.id.content_img);
-
-
-        list_name.setText(name);
-        list_location.setText(location);
-        list_category.setText(startDate + "~" + endDate);
-
-
-        Glide.with(v)
-                .load(img)
-                .placeholder(R.drawable.default_profile_image)
-                .error(R.drawable.default_profile_image)
-                .fallback(R.drawable.default_profile_image)
-                .into(image);
-
-        Glide.with(v)
-                .load(img)
-                .placeholder(R.drawable.default_profile_image)
-                .error(R.drawable.default_profile_image)
-                .fallback(R.drawable.default_profile_image)
-                .into(poster);
-
-
-        //Map View
         MapView mapView = new MapView(getActivity());
 
         Float coor_x = Float.valueOf(x);
@@ -91,8 +92,206 @@ public class FestivalFragment extends Fragment {
         ViewGroup mapViewContainer = (ViewGroup) v.findViewById(R.id.mapView);
         mapViewContainer.addView(mapView);
 
+        if (!img.equals("")) {
+            Glide.with(v)
+                    .load(img)
+                    .placeholder(R.drawable.default_bird_img)
+                    .error(R.drawable.default_bird_img)
+                    .fallback(R.drawable.default_bird_img)
+                    .into(content_img);
+        }
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                festivalDetail = getXmlData(contentID);
+                festivalDetail2 = getXmlData2(contentID);
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!festivalDetail.getOverview().equals("")) {
+                            overview.setText(Html.fromHtml(festivalDetail.getOverview()));
+                        } else {
+                            overview.setVisibility(View.GONE);
+                        }
+
+                        if (!festivalDetail2.getEventPlace().equals("")) {
+                            festival_detail_location.setText(Html.fromHtml("<b>위치: </b>" + festivalDetail2.getEventPlace()));
+                        } else {
+                            festival_detail_location.setVisibility(View.GONE);
+                        }
+
+                        if (!festivalDetail2.getEventHomepage().equals("")) {
+                            festival_homepage.setText(Html.fromHtml("<b>홈페이지: </b>" + festivalDetail2.getEventHomepage()));
+                        } else {
+                            festival_homepage.setVisibility(View.GONE);
+                        }
+
+                        if (!festivalDetail2.getPlaytime().equals("")) {
+                            festival_time.setText(Html.fromHtml("<b>운영 시간: </b>" + festivalDetail2.getPlaytime()));
+                        } else {
+                            festival_time.setVisibility(View.GONE);
+                        }
+
+                        if (!festivalDetail2.getBookingPlace().equals("")) {
+                            festival_booking.setText(Html.fromHtml("<b>예약: </b>" + festivalDetail2.getBookingPlace()));
+                        } else {
+                            festival_booking.setVisibility(View.GONE);
+                        }
+                    }
+                });
+            }
+        }).start();
 
         return v;
+    }
+
+    public FestivalDetail getXmlData(String contentId){
+        FestivalDetail festivalDetail = new FestivalDetail(
+                ""
+        );
+
+        String query="%EC%A0%84%EB%A0%A5%EB%A1%9C";
+        String key = getString(R.string.portal_key);
+        String address = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/";
+        String listType = "detailInfo";
+        String pageNo = "1";
+        String numOfRows = "10";
+        String mobileApp = "ZaeVTour";
+        String mobileOS = "ETC";
+        String contentTypeId = "15";
+
+        String queryUrl = address + listType + "?"
+                + "serviceKey=" + key
+                + "&numOfRows=" + numOfRows
+                + "&pageNo=" + pageNo
+                + "&MobileOS=" + mobileOS
+                + "&MobileApp=" + mobileApp
+                + "&contentId=" + contentId
+                + "&contentTypeId=" + contentTypeId;
+
+        try{
+            URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+            Log.d("festivalEDSSS", String.valueOf(url));
+            InputStream is= url.openStream(); //url위치로 입력스트림 연결
+
+            XmlPullParserFactory factory= XmlPullParserFactory.newInstance();//xml파싱을 위한
+            XmlPullParser xpp= factory.newPullParser();
+            xpp.setInput( new InputStreamReader(is, "UTF-8") ); //inputstream 으로부터 xml 입력받기
+
+            String tag;
+
+            xpp.next();
+
+            int eventType= xpp.getEventType();
+            while( eventType != XmlPullParser.END_DOCUMENT ){
+                switch( eventType ){
+                    case XmlPullParser.START_DOCUMENT:
+                        break;
+
+                    case XmlPullParser.START_TAG:
+                        tag= xpp.getName();//테그 이름 얻어오기
+
+                        if(tag.equals("infotext")){
+                            String text = xpp.nextText();
+                            Log.d("festivalEDSSS", text);
+                            festivalDetail.setOverview(text);
+                            return festivalDetail;
+                        }
+                        break;
+
+                    case XmlPullParser.TEXT:
+                        break;
+
+                    case XmlPullParser.END_TAG:
+                        break;
+
+                }
+                eventType= xpp.next();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return festivalDetail;
+    }
+
+    public FestivalDetail2 getXmlData2(String contentId){
+        FestivalDetail2 festivalDetail2 = new FestivalDetail2(
+                "",
+                "",
+                "",
+                ""
+        );
+
+        String query="%EC%A0%84%EB%A0%A5%EB%A1%9C";
+        String key = getString(R.string.portal_key);
+        String address = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/";
+        String listType = "detailIntro";
+        String pageNo = "1";
+        String numOfRows = "10";
+        String mobileApp = "ZaeVTour";
+        String mobileOS = "ETC";
+        String contentTypeId = "15";
+
+        String queryUrl = address + listType + "?"
+                + "serviceKey=" + key
+                + "&numOfRows=" + numOfRows
+                + "&pageNo=" + pageNo
+                + "&MobileOS=" + mobileOS
+                + "&MobileApp=" + mobileApp
+                + "&contentId=" + contentId
+                + "&contentTypeId=" + contentTypeId;
+
+        try{
+            URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+            InputStream is= url.openStream(); //url위치로 입력스트림 연결
+
+            XmlPullParserFactory factory= XmlPullParserFactory.newInstance();//xml파싱을 위한
+            XmlPullParser xpp= factory.newPullParser();
+            xpp.setInput( new InputStreamReader(is, "UTF-8") ); //inputstream 으로부터 xml 입력받기
+
+            String tag;
+
+            xpp.next();
+
+            int eventType= xpp.getEventType();
+            while( eventType != XmlPullParser.END_DOCUMENT ){
+                switch( eventType ){
+                    case XmlPullParser.START_DOCUMENT:
+                        break;
+
+                    case XmlPullParser.START_TAG:
+                        tag= xpp.getName();//테그 이름 얻어오기
+
+                        if(tag.equals("playtime")){
+                            festivalDetail2.setPlaytime(xpp.nextText());
+                        }
+                        else if(tag.equals("eventplace")){
+                            festivalDetail2.setEventPlace(xpp.nextText());
+                        }
+                        else if(tag.equals("eventhomepage")){
+                            festivalDetail2.setEventHomepage(xpp.nextText());
+                        }
+                        else if(tag.equals("bookingplace")){
+                            festivalDetail2.setBookingPlace(xpp.nextText());
+                        }
+                        break;
+
+                    case XmlPullParser.TEXT:
+                        break;
+
+                    case XmlPullParser.END_TAG:
+                        break;
+
+                }
+                eventType= xpp.next();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return festivalDetail2;
     }
 }
