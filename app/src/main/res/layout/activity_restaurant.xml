@@ -6,8 +6,7 @@
     android:id="@+id/container_restaurant"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topTouristSpotLayout"
@@ -16,8 +15,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="15dp"
-        android:paddingTop="15dp"
-        android:clipToPadding="false">
+        android:paddingTop="25dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="10dp">
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/restaurantSearchBar"
@@ -73,6 +73,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:paddingBottom="50dp"
+        android:paddingHorizontal="10dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
