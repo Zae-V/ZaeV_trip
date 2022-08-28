@@ -65,7 +65,14 @@ public class ReusableAdapter extends RecyclerView.Adapter<ReusableAdapter.ViewHo
 
         holder.nameview.setText(filtered.get(position).getName());
         holder.locview.setText(filtered.get(position).getLocation());
-        holder.catview.setText(filtered.get(position).getReason());
+        String reasons = filtered.get(position).getReason();
+        if(reasons.contains("/")) {
+            int idx = reasons.indexOf("/");
+            reasons = reasons.substring(0,idx) + " 등";
+        }
+
+        holder.catview.setText(reasons);
+
 
         mDatabase.collection("BookmarkItem").document(userId).collection("reusable").document(filtered.get(position).getName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -142,7 +149,6 @@ public class ReusableAdapter extends RecyclerView.Adapter<ReusableAdapter.ViewHo
         public TextView nameview;
         public TextView locview;
         public TextView catview;
-        public ImageView imgView;
         public ImageView bookmarkbtn;
 
         public ViewHolder(Context context, @NonNull View itemView) {
