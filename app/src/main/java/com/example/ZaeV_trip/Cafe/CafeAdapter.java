@@ -156,10 +156,9 @@ public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.ViewHolder> im
         public ViewHolder(Context context, @NonNull View itemView) {
             super(itemView);
 
-            nameview = itemView.findViewById(R.id.list_name);
-            locview = itemView.findViewById(R.id.list_location);
-            catview = itemView.findViewById(R.id.list_category);
-
+            nameview = itemView.findViewById(R.id.plogging_name);
+            locview = itemView.findViewById(R.id.plogging_address);
+            catview = itemView.findViewById(R.id.plogging_level);
             bookmarkbtn = itemView.findViewById(R.id.bookmarkBtn);
 
             bookmarkbtn.setOnClickListener(new View.OnClickListener() {

@@ -1,6 +1,10 @@
 package com.example.ZaeV_trip.Restaurant;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,12 +75,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-//        Glide.with(holder.itemView.getContext())
-//                .load(restaurants.get(position).getFirstImage())
-//                .placeholder(R.drawable.default_profile_image)
-//                .error(R.drawable.default_profile_image)
-//                .fallback(R.drawable.default_profile_image)
-//                .into(holder.imgView);
         holder.nameview.setText(filtered.get(position).getName());
         holder.locview.setText(filtered.get(position).getLocation());
         holder.catview.setText(filtered.get(position).getCategory());
@@ -162,13 +160,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         public ViewHolder(Context context, @NonNull View itemView) {
             super(itemView);
 
-            nameview = itemView.findViewById(R.id.list_name);
-            locview = itemView.findViewById(R.id.list_location);
-            catview = itemView.findViewById(R.id.list_category);
-
+            nameview = itemView.findViewById(R.id.plogging_name);
+            locview = itemView.findViewById(R.id.plogging_address);
+            catview = itemView.findViewById(R.id.plogging_level);
             bookmarkbtn = itemView.findViewById(R.id.bookmarkBtn);
-            imgView = itemView.findViewById(R.id.list_image);
-
 
             bookmarkbtn.setOnClickListener(new View.OnClickListener() {
                 @Override

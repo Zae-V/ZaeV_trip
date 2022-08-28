@@ -63,12 +63,6 @@ public class ReusableAdapter extends RecyclerView.Adapter<ReusableAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-//        Glide.with(holder.itemView.getContext())
-//                .load(reusables.get(position).getFirstImage())
-//                .placeholder(R.drawable.default_profile_image)
-//                .error(R.drawable.default_profile_image)
-//                .fallback(R.drawable.default_profile_image)
-//                .into(holder.imgView);
         holder.nameview.setText(filtered.get(position).getName());
         holder.locview.setText(filtered.get(position).getLocation());
         holder.catview.setText(filtered.get(position).getReason());
@@ -154,12 +148,10 @@ public class ReusableAdapter extends RecyclerView.Adapter<ReusableAdapter.ViewHo
         public ViewHolder(Context context, @NonNull View itemView) {
             super(itemView);
 
-            nameview = itemView.findViewById(R.id.list_name);
-            locview = itemView.findViewById(R.id.list_location);
-            catview = itemView.findViewById(R.id.list_category);
-
+            nameview = itemView.findViewById(R.id.plogging_name);
+            locview = itemView.findViewById(R.id.plogging_address);
+            catview = itemView.findViewById(R.id.plogging_level);
             bookmarkbtn = itemView.findViewById(R.id.bookmarkBtn);
-            imgView = itemView.findViewById(R.id.list_image);
 
 
             bookmarkbtn.setOnClickListener(new View.OnClickListener() {

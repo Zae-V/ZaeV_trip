@@ -41,7 +41,7 @@
                     android:fontFamily="@font/notosans_bold"
                     android:lineSpacingExtra="-3dp"
                     android:maxLines="2"
-                    android:text="이벤트이름asdasdsadasdasdasdasdasddasdsada"
+                    android:text="이벤트이름asdasdsadasdasdasdasdasddasdszzzada"
                     android:textColor="@color/text_solid_black"
                     android:textSize="13dp" />
 
