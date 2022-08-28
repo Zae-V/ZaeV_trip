@@ -27,14 +27,13 @@
                 android:src="@drawable/star_selector" />
 
             <TableLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginEnd="35dp"
                 android:gravity="center"
+                android:layout_marginEnd="20dp"
                 android:stretchColumns="1">
 
                 <TableRow>
@@ -65,8 +64,7 @@
 
                 </TableRow>
                 <TableRow>
-
-                    <TextView
+                    <com.example.ZaeV_trip.util.CharacterWrapTextView
                         android:id="@+id/plogging_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -74,19 +72,22 @@
                         android:layout_marginLeft="10dp"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:paddingRight="12dp"
-                        android:text="서울시 강서구 개화동"
+                        android:paddingRight="20dp"
+                        android:text="서울시 강서구 개화동zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
                         android:textColor="#72000000"
                         android:textSize="12dp" />
                 </TableRow>
                 <TableRow>
-                    <TextView
+                    <com.example.ZaeV_trip.util.CharacterWrapTextView
                         android:id="@+id/plogging_level"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
-                        android:text="베이커리"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingRight="20dp"
+                        android:text="베이커리zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
                         android:textColor="@color/btn_gradient_end"
                         android:textSize="12dp" />
                 </TableRow>
