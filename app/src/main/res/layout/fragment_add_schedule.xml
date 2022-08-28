@@ -79,6 +79,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/addRecycler"
                 android:layout_width="match_parent"
@@ -86,11 +87,11 @@
                 android:layout_marginStart="27dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="27dp"
-                app:layout_constraintBottom_toTopOf="@id/blank"
+                app:layout_constraintBottom_toTopOf="@id/blankView"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <View
-                android:id="@+id/blank"
+                android:id="@+id/blankView"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 app:layout_constraintTop_toBottomOf="@+id/addRecycler"
