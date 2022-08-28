@@ -300,21 +300,29 @@ public class BookmarkActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.profile:
-                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                    overridePendingTransition(0, 0);
-                    return true;
-                case R.id.bookmark:
+                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    BookmarkActivity.this.finish();
 
                     return true;
+                case R.id.bookmark:
+                    return true;
+
                 case R.id.travel:
-                    startActivity(new Intent(getApplicationContext(), TravelActivity.class));
-                    overridePendingTransition(0, 0);
+                    Intent intent1 = new Intent(getApplicationContext(), TravelActivity.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent1);
+                    BookmarkActivity.this.finish();
+
                     return true;
 
                 case R.id.home:
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    overridePendingTransition(0, 0);
-                    return true;
+                    Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent2);
+                    BookmarkActivity.this.finish();
+
             }
             return false;
         });
