@@ -1,6 +1,11 @@
 package com.example.ZaeV_trip.model;
 
-public class Restaurant {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Restaurant implements Parcelable, Serializable {
     String id;
     String name;
     String location;
@@ -10,6 +15,30 @@ public class Restaurant {
     String number;
     String menu;
     String authType;
+
+    protected Restaurant(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        location = in.readString();
+        category = in.readString();
+        mapX = in.readString();
+        mapY = in.readString();
+        number = in.readString();
+        menu = in.readString();
+        authType = in.readString();
+    }
+
+    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
+        @Override
+        public Restaurant createFromParcel(Parcel in) {
+            return new Restaurant(in);
+        }
+
+        @Override
+        public Restaurant[] newArray(int size) {
+            return new Restaurant[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -93,5 +122,23 @@ public class Restaurant {
         this.number = number;
         this.menu = menu;
         this.authType = authType;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeString(location);
+        parcel.writeString(category);
+        parcel.writeString(mapX);
+        parcel.writeString(mapY);
+        parcel.writeString(number);
+        parcel.writeString(menu);
+        parcel.writeString(authType);
     }
 }

@@ -115,7 +115,6 @@ public class BikeAdapter extends RecyclerView.Adapter<BikeAdapter.ViewHolder> {
         public TextView nameview;
         public TextView locview;
         public TextView catview;
-        public ImageView imgView;
 
         public ViewHolder(Context context, @NonNull View itemView) {
             super(itemView);

@@ -1,8 +1,11 @@
 package com.example.ZaeV_trip.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
-public class Plogging implements Serializable {
+public class Plogging implements Parcelable, Serializable {
     private String crsKorNm; // 코스명
     private String crsDstnc; // 코스 길이 (단위:km)
     private String crsTotlRqrmHour; // 총 소요시간 (단위:분)
@@ -30,6 +33,32 @@ public class Plogging implements Serializable {
         this.brdDiv = brdDiv;
         this.gpxpath = gpxpath;
     }
+
+    protected Plogging(Parcel in) {
+        crsKorNm = in.readString();
+        crsDstnc = in.readString();
+        crsTotlRqrmHour = in.readString();
+        crsLevel = in.readString();
+        crsContents = in.readString();
+        crsSummary = in.readString();
+        crsTourInfo = in.readString();
+        travelerinfo = in.readString();
+        sigun = in.readString();
+        brdDiv = in.readString();
+        gpxpath = in.readString();
+    }
+
+    public static final Creator<Plogging> CREATOR = new Creator<Plogging>() {
+        @Override
+        public Plogging createFromParcel(Parcel in) {
+            return new Plogging(in);
+        }
+
+        @Override
+        public Plogging[] newArray(int size) {
+            return new Plogging[size];
+        }
+    };
 
     public String getCrsKorNm() {
         return crsKorNm;
@@ -114,4 +143,24 @@ public class Plogging implements Serializable {
     public String getGpxpath() {return gpxpath; }
 
     public void setGpxpath(String gpxpath) { this.gpxpath = gpxpath; }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(crsKorNm);
+        parcel.writeString(crsDstnc);
+        parcel.writeString(crsTotlRqrmHour);
+        parcel.writeString(crsLevel);
+        parcel.writeString(crsContents);
+        parcel.writeString(crsSummary);
+        parcel.writeString(crsTourInfo);
+        parcel.writeString(travelerinfo);
+        parcel.writeString(sigun);
+        parcel.writeString(brdDiv);
+        parcel.writeString(gpxpath);
+    }
 }

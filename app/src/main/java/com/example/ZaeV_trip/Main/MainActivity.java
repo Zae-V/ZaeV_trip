@@ -26,6 +26,7 @@ import com.example.ZaeV_trip.Plogging.PloggingFragment;
 import com.example.ZaeV_trip.Profile.ProfileActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Restaurant.RestaurantActivity;
+import com.example.ZaeV_trip.Restaurant.RestaurantAdapter;
 import com.example.ZaeV_trip.Restaurant.RestaurantFragment;
 import com.example.ZaeV_trip.Reusable.ReusableActivity;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
@@ -34,6 +35,7 @@ import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
 import com.example.ZaeV_trip.ZeroWaste.ZeroWasteActivity;
 import com.example.ZaeV_trip.model.Festival;
 import com.example.ZaeV_trip.model.Plogging;
+import com.example.ZaeV_trip.model.Restaurant;
 import com.example.ZaeV_trip.model.VeganRestaurant;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -47,16 +49,17 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView current;
     String local;
-    
+
     ArrayList<Festival> eventLists = new ArrayList<>();
     ArrayList<Plogging> bikes = new ArrayList<>();
-    ArrayList<VeganRestaurant> veganRestaurantLists = new ArrayList<>();
-    
+    ArrayList<Restaurant> restaurants = new ArrayList<>();
+
     RecyclerView bikeList;
     RecyclerView eventList;
     RecyclerView veganRestaurantList;
@@ -72,10 +75,22 @@ public class MainActivity extends AppCompatActivity {
         veganRestaurantList = (RecyclerView) findViewById(R.id.veganRestaurant_list);
 
         local = "전체";
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            local = extras.getString("current");
-            current.setText(local);
+        if (Objects.equals(getIntent().getStringExtra("req"), "search")) {
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                local = extras.getString("current");
+                current.setText(local);
+            }
+        }
+
+        if (Objects.equals(getIntent().getStringExtra("req"), "splashData")) {
+            Bundle bundle = getIntent().getExtras();
+
+            eventLists = bundle.getParcelableArrayList("festival");
+            bikes = bundle.getParcelableArrayList("bike");
+            restaurants = bundle.getParcelableArrayList("restaurant");
+
+            Log.d("테스트", String.valueOf(eventLists));
         }
 
 
@@ -84,18 +99,21 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                bikes = getXmlBikeData();
+                if(!Objects.equals(getIntent().getStringExtra("req"), "splashData")){
+                    bikes = getXmlBikeData();
+                }
+
 
                 runOnUiThread(new Runnable() {
                     ArrayList<Plogging> filteredBike = new ArrayList<Plogging>();
+
                     @Override
                     public void run() {
-                        for(int i = 0; i< bikes.size();i++){
-                            if(local.equals("전체 지역") || local.equals("전체")){
+                        for (int i = 0; i < bikes.size(); i++) {
+                            if (local.equals("전체 지역") || local.equals("전체")) {
                                 filteredBike.add(bikes.get(i));
-                            }
-                            else{
-                                if(bikes.get(i).getSigun().contains(local)){
+                            } else {
+                                if (bikes.get(i).getSigun().contains(local)) {
                                     filteredBike.add(bikes.get(i));
                                 }
                             }
@@ -130,18 +148,21 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                eventLists = getXmlEventData();
+
+                if(!Objects.equals(getIntent().getStringExtra("req"), "splashData")){
+                    eventLists = getXmlEventData();
+                }
 
                 runOnUiThread(new Runnable() {
-                    ArrayList<Festival> filteredEvent = new ArrayList<>();
+                    ArrayList<Festival> filteredEvent = new ArrayList<Festival>();
+
                     @Override
                     public void run() {
-                        for(int i = 0; i< eventLists.size();i++){
-                            if(local.equals("전체 지역") || local.equals("전체")){
+                        for (int i = 0; i < eventLists.size(); i++) {
+                            if (local.equals("전체 지역") || local.equals("전체")) {
                                 filteredEvent.add(eventLists.get(i));
-                            }
-                            else{
-                                if(eventLists.get(i).getAddr1().split(" ").length > 1 && eventLists.get(i).getAddr1().split(" ")[1].equals(local)){
+                            } else {
+                                if (eventLists.get(i).getAddr1().contains(local)) {
                                     filteredEvent.add(eventLists.get(i));
                                 }
                             }
@@ -184,45 +205,49 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                veganRestaurantLists = getXmlVeganRestaurantData();
+                if(!Objects.equals(getIntent().getStringExtra("req"), "splashData")){
+                    restaurants = getRestaurantData();
+                }
+
 
                 runOnUiThread(new Runnable() {
-                    ArrayList<VeganRestaurant> filteredVeganRestaurant = new ArrayList<>();
+                    ArrayList<Restaurant> filteredRestaurant = new ArrayList<Restaurant>();
+
                     @Override
                     public void run() {
-                        for (int i = 0; i < veganRestaurantLists.size(); i++) {
-                            if (veganRestaurantLists.get(i).getCategory() != null
-                                    && (!veganRestaurantLists.get(i).getCategory().equals("카페")
-                                    && !veganRestaurantLists.get(i).getCategory().equals("베이커리")
-                                    && !veganRestaurantLists.get(i).getCategory().equals("까페"))
-                                    && (veganRestaurantLists.get(i).getAuthType().equals("14")
-                                    || veganRestaurantLists.get(i).getAuthType().equals("18"))) {
+                        for (int i = 0; i < restaurants.size(); i++) {
+                            if (restaurants.get(i).getCategory() != null
+                                    && (!restaurants.get(i).getCategory().equals("카페")
+                                    && !restaurants.get(i).getCategory().equals("베이커리")
+                                    && !restaurants.get(i).getCategory().equals("까페"))
+                                    && (restaurants.get(i).getAuthType().equals("14")
+                                    || restaurants.get(i).getAuthType().equals("18"))) {
                                 if (local.equals("전체 지역") || local.equals("전체")) {
-                                    filteredVeganRestaurant.add(veganRestaurantLists.get(i));
+                                    filteredRestaurant.add(restaurants.get(i));
                                 } else {
-                                    if (veganRestaurantLists.get(i).getLocation().contains(local)) {
-                                        filteredVeganRestaurant.add(veganRestaurantLists.get(i));
+                                    if (restaurants.get(i).getLocation().contains(local)) {
+                                        filteredRestaurant.add(restaurants.get(i));
                                     }
                                 }
                             }
                         }
 
-                        VeganRestaurantAdapter veganRestaurantAdapter = new VeganRestaurantAdapter(MainActivity.this, filteredVeganRestaurant);
+                        VeganRestaurantAdapter restaurantAdapter = new VeganRestaurantAdapter(MainActivity.this, filteredRestaurant);
                         veganRestaurantList.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false));
-                        veganRestaurantList.setAdapter(veganRestaurantAdapter);
+                        veganRestaurantList.setAdapter(restaurantAdapter);
 
-                        veganRestaurantAdapter.setOnItemClickListener(new VeganRestaurantAdapter.OnItemClickListener() {
+                        restaurantAdapter.setOnItemClickListener(new VeganRestaurantAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(View v, int i) {
                                 Bundle bundle = new Bundle();
-                                bundle.putString("name", filteredVeganRestaurant.get(i).getName());
-                                bundle.putString("id", filteredVeganRestaurant.get(i).getId());
-                                bundle.putString("location", filteredVeganRestaurant.get(i).getLocation());
-                                bundle.putString("x", filteredVeganRestaurant.get(i).getMapX());
-                                bundle.putString("y", filteredVeganRestaurant.get(i).getMapY());
-                                bundle.putString("number", filteredVeganRestaurant.get(i).getNumber());
-                                bundle.putString("menu", filteredVeganRestaurant.get(i).getMenu());
-                                bundle.putString("category", filteredVeganRestaurant.get(i).getCategory());
+                                bundle.putString("name", filteredRestaurant.get(i).getName());
+                                bundle.putString("id", filteredRestaurant.get(i).getId());
+                                bundle.putString("location", filteredRestaurant.get(i).getLocation());
+                                bundle.putString("x", filteredRestaurant.get(i).getMapX());
+                                bundle.putString("y", filteredRestaurant.get(i).getMapY());
+                                bundle.putString("number", filteredRestaurant.get(i).getNumber());
+                                bundle.putString("menu", filteredRestaurant.get(i).getMenu());
+                                bundle.putString("category", filteredRestaurant.get(i).getCategory());
 
                                 RestaurantFragment restaurantFragment = new RestaurantFragment();
                                 restaurantFragment.setArguments(bundle);
@@ -240,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }).start();
-        
+
         current.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -351,20 +376,20 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.profile:
                     Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
 
                     return true;
                 case R.id.bookmark:
                     Intent intent1 = new Intent(getApplicationContext(), BookmarkActivity.class);
-                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent1);
 
                     return true;
 
                 case R.id.travel:
                     Intent intent2 = new Intent(getApplicationContext(), TravelActivity.class);
-                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent2);
 
 
@@ -376,7 +401,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public ArrayList<Plogging> getXmlBikeData(){
+    public ArrayList<Plogging> getXmlBikeData() {
         ArrayList<Plogging> bikes = new ArrayList<Plogging>();
         String key = getString(R.string.portal_key);
         String address = "http://api.visitkorea.or.kr/openapi/service/rest/Durunubi/courseList";
@@ -396,29 +421,29 @@ public class MainActivity extends AppCompatActivity {
                 + "&crsKorNm=" + crsKorNm
                 + "&brdDiv=" + brdDiv;
 
-        try{
-            URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
-            InputStream is= url.openStream(); //url위치로 입력스트림 연결
+        try {
+            URL url = new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+            InputStream is = url.openStream(); //url위치로 입력스트림 연결
 
-            XmlPullParserFactory factory= XmlPullParserFactory.newInstance(); //xml파싱을 위한
-            XmlPullParser xpp= factory.newPullParser();
-            xpp.setInput( new InputStreamReader(is, "UTF-8") ); //inputstream 으로부터 xml 입력받기
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance(); //xml파싱을 위한
+            XmlPullParser xpp = factory.newPullParser();
+            xpp.setInput(new InputStreamReader(is, "UTF-8")); //inputstream 으로부터 xml 입력받기
 
             String tag;
 
             xpp.next();
             Plogging plogging = null;
 
-            int eventType= xpp.getEventType();
-            while( eventType != XmlPullParser.END_DOCUMENT ){
-                switch( eventType ){
+            int eventType = xpp.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                switch (eventType) {
                     case XmlPullParser.START_DOCUMENT:
                         break;
 
                     case XmlPullParser.START_TAG:
-                        tag= xpp.getName();//테그 이름 얻어오기
+                        tag = xpp.getName();//테그 이름 얻어오기
 
-                        if(tag.equals("item")) {
+                        if (tag.equals("item")) {
                             plogging = new Plogging(
                                     "",
                                     "",
@@ -432,35 +457,25 @@ public class MainActivity extends AppCompatActivity {
                                     "",
                                     ""
                             );
-                        }
-                        else if(tag.equals("crsContents")){
+                        } else if (tag.equals("crsContents")) {
                             plogging.setCrsContents(xpp.nextText());
-                        }
-                        else if(tag.equals("crsDstnc")){
+                        } else if (tag.equals("crsDstnc")) {
                             plogging.setCrsDstnc(xpp.nextText());
-                        }
-                        else if(tag.equals("crsKorNm")){
+                        } else if (tag.equals("crsKorNm")) {
                             plogging.setCrsKorNm(xpp.nextText());
-                        }
-                        else if(tag.equals("crsLevel")){
+                        } else if (tag.equals("crsLevel")) {
                             plogging.setCrsLevel(xpp.nextText());
-                        }
-                        else if(tag.equals("crsSummary")){
+                        } else if (tag.equals("crsSummary")) {
                             plogging.setCrsSummary(xpp.nextText());
-                        }
-                        else if(tag.equals("crsTotlRqrmHour")){
+                        } else if (tag.equals("crsTotlRqrmHour")) {
                             plogging.setCrsTotlRqrmHour(xpp.nextText());
-                        }
-                        else if(tag.equals("crsTourInfo")){
+                        } else if (tag.equals("crsTourInfo")) {
                             plogging.setCrsTourInfo(xpp.nextText());
-                        }
-                        else if(tag.equals("sigun")){
+                        } else if (tag.equals("sigun")) {
                             plogging.setSigun(xpp.nextText());
-                        }
-                        else if(tag.equals("travelerinfo")){
+                        } else if (tag.equals("travelerinfo")) {
                             plogging.setTravelerinfo(xpp.nextText());
-                        }
-                        else if(tag.equals("brdDiv")){
+                        } else if (tag.equals("brdDiv")) {
                             plogging.setBrdDiv(xpp.nextText());
                         }
                         break;
@@ -469,24 +484,24 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case XmlPullParser.END_TAG:
-                        tag= xpp.getName();
+                        tag = xpp.getName();
 
-                        if(tag.equals("item")) {
+                        if (tag.equals("item")) {
                             bikes.add(plogging);
                         }
                         break;
 
                 }
-                eventType= xpp.next();
+                eventType = xpp.next();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return bikes;
     }
 
-    public ArrayList<Festival> getXmlEventData(){
+    public ArrayList<Festival> getXmlEventData() {
         ArrayList<Festival> eventLists = new ArrayList<Festival>();
         String key = getString(R.string.portal_key);
         String address = "https://api.visitkorea.or.kr/openapi/service/rest/KorService/";
@@ -515,13 +530,13 @@ public class MainActivity extends AppCompatActivity {
                 + "&areaCode=" + areaCode
                 + "&eventStartDate=" + startDate;
 
-        try{
-            URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
-            InputStream is= url.openStream(); //url위치로 입력스트림 연결
+        try {
+            URL url = new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+            InputStream is = url.openStream(); //url위치로 입력스트림 연결
 
-            XmlPullParserFactory factory= XmlPullParserFactory.newInstance();//xml파싱을 위한
-            XmlPullParser xpp= factory.newPullParser();
-            xpp.setInput( new InputStreamReader(is, "UTF-8") ); //inputstream 으로부터 xml 입력받기
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();//xml파싱을 위한
+            XmlPullParser xpp = factory.newPullParser();
+            xpp.setInput(new InputStreamReader(is, "UTF-8")); //inputstream 으로부터 xml 입력받기
 
             String tag;
             Integer count = 0;
@@ -529,16 +544,16 @@ public class MainActivity extends AppCompatActivity {
             xpp.next();
             Festival festival = null;
 
-            int eventType= xpp.getEventType();
-            while( eventType != XmlPullParser.END_DOCUMENT ){
-                switch( eventType ){
+            int eventType = xpp.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                switch (eventType) {
                     case XmlPullParser.START_DOCUMENT:
                         break;
 
                     case XmlPullParser.START_TAG:
-                        tag= xpp.getName();//테그 이름 얻어오기
+                        tag = xpp.getName();//테그 이름 얻어오기
 
-                        if(tag.equals("item")) {
+                        if (tag.equals("item")) {
                             festival = new Festival(
                                     "",
                                     "",
@@ -550,32 +565,23 @@ public class MainActivity extends AppCompatActivity {
                                     "",
                                     ""
                             );
-                        }
-                        else if(tag.equals("contentid")){
+                        } else if (tag.equals("contentid")) {
                             festival.setId(xpp.nextText());
-                        }
-                        else if(tag.equals("title")){
+                        } else if (tag.equals("title")) {
                             festival.setTitle(xpp.nextText());
-                        }
-                        else if(tag.equals("addr1")){
+                        } else if (tag.equals("addr1")) {
                             festival.setAddr1(xpp.nextText());
-                        }
-                        else if(tag.equals("mapx")){
+                        } else if (tag.equals("mapx")) {
                             festival.setMapX(xpp.nextText());
-                        }
-                        else if(tag.equals("mapy")){
+                        } else if (tag.equals("mapy")) {
                             festival.setMapY(xpp.nextText());
-                        }
-                        else if(tag.equals("firstimage")){
+                        } else if (tag.equals("firstimage")) {
                             festival.setFirstImage(xpp.nextText());
-                        }
-                        else if(tag.equals("eventenddate")){
+                        } else if (tag.equals("eventenddate")) {
                             festival.setEndDate(xpp.nextText());
-                        }
-                        else if(tag.equals("eventstartdate")){
+                        } else if (tag.equals("eventstartdate")) {
                             festival.setStartDate(xpp.nextText());
-                        }
-                        else if(tag.equals("tel")){
+                        } else if (tag.equals("tel")) {
                             festival.setTel(xpp.nextText());
                         }
                         break;
@@ -584,37 +590,37 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case XmlPullParser.END_TAG:
-                        tag= xpp.getName();
+                        tag = xpp.getName();
 
-                        if(tag.equals("item")) {
+                        if (tag.equals("item")) {
                             eventLists.add(festival);
                         }
                         break;
 
                 }
-                eventType= xpp.next();
+                eventType = xpp.next();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return eventLists;
     }
 
-    public ArrayList<VeganRestaurant> getXmlVeganRestaurantData(){
-        ArrayList<VeganRestaurant> veganRestaurants = new ArrayList<VeganRestaurant>();
+    public ArrayList<Restaurant> getRestaurantData(){
+        ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
         String key= getString(R.string.vegan_key);
         String address = "http://openapi.seoul.go.kr:8088/";
         String listType = "CrtfcUpsoInfo";
         String startIndex = "860";
-        String endIndex = "1060";
+        String endIndex = "1859";
 
 
         String queryUrl = address + key
                 + "/xml/" + listType
                 + "/" + startIndex
                 + "/" + endIndex + "/";
-        //Log.d("테스트", queryUrl);
+//        Log.d("테스트", queryUrl);
 
         try{
             URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
@@ -627,7 +633,7 @@ public class MainActivity extends AppCompatActivity {
             String tag;
 
             xpp.next();
-            VeganRestaurant veganRestaurant = null;
+            Restaurant restaurant = null;
             int eventType= xpp.getEventType();
             while( eventType != XmlPullParser.END_DOCUMENT ){
                 switch( eventType ){
@@ -637,34 +643,34 @@ public class MainActivity extends AppCompatActivity {
                     case XmlPullParser.START_TAG:
                         tag= xpp.getName();//테그 이름 얻어오기
                         if(tag.equals("row")){
-                            veganRestaurant = new VeganRestaurant("","","","","","","","","");
+                            restaurant = new Restaurant("","","","","","","","","");
                         }
                         else if(tag.equals("CRTFC_UPSO_MGT_SNO")){
-                            veganRestaurant.setId(xpp.nextText());
+                            restaurant.setId(xpp.nextText());
                         }
                         else if(tag.equals("UPSO_NM")){
-                            veganRestaurant.setName(xpp.nextText());
+                            restaurant.setName(xpp.nextText());
                         }
                         else if(tag.equals("RDN_CODE_NM")){
-                            veganRestaurant.setLocation(xpp.nextText());
+                            restaurant.setLocation(xpp.nextText());
                         }
                         else if(tag.equals("BIZCND_CODE_NM")){
-                            veganRestaurant.setCategory(xpp.nextText());
+                            restaurant.setCategory(xpp.nextText());
                         }
                         else if(tag.equals("CRTFC_GBN")){
-                            veganRestaurant.setAuthType(xpp.nextText());
+                            restaurant.setAuthType(xpp.nextText());
                         }
                         else if(tag.equals("Y_DNTS")){
-                            veganRestaurant.setMapY(xpp.nextText());
+                            restaurant.setMapY(xpp.nextText());
                         }
                         else if(tag.equals("X_CNTS")){
-                            veganRestaurant.setMapX(xpp.nextText());
+                            restaurant.setMapX(xpp.nextText());
                         }
                         else if(tag.equals("FOOD_MENU")){
-                            veganRestaurant.setMenu(xpp.nextText());
+                            restaurant.setMenu(xpp.nextText());
                         }
                         else if(tag.equals("TEL_NO")){
-                            veganRestaurant.setNumber(xpp.nextText());
+                            restaurant.setNumber(xpp.nextText());
                         }
 
 
@@ -677,8 +683,8 @@ public class MainActivity extends AppCompatActivity {
                         tag= xpp.getName(); //테그 이름 얻어오기
 
                         if(tag.equals("row")) {
-                            veganRestaurants.add(veganRestaurant);
-                            //Log.d("테스트",veganRestaurant.getName());
+                            restaurants.add(restaurant);
+//                            Log.d("테스트",restaurant.getName());
                         };// 첫번째 검색결과종료..줄바꿈
                         break;
                 }
@@ -690,8 +696,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        return veganRestaurants;
+        return restaurants;
     }
-    
-    
 }

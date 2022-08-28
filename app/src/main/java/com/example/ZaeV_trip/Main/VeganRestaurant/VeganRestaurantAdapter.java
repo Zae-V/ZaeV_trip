@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.model.Restaurant;
 import com.example.ZaeV_trip.model.VeganRestaurant;
 
 import java.util.ArrayList;
@@ -17,18 +18,16 @@ import java.util.ArrayList;
 public class VeganRestaurantAdapter extends RecyclerView.Adapter<VeganRestaurantAdapter.ViewHolder> {
     Context context;
     LayoutInflater inflater;
-    ArrayList<VeganRestaurant> veganRestaurants;
-    ArrayList<VeganRestaurant> filtered;
+    ArrayList<Restaurant> restaurants;
 
     public VeganRestaurantAdapter() {
 
     }
 
 
-    public VeganRestaurantAdapter(Context context, ArrayList<VeganRestaurant> veganRestaurants) {
+    public VeganRestaurantAdapter(Context context, ArrayList<Restaurant> restaurants) {
         this.context = context;
-        this.veganRestaurants = new ArrayList<>(veganRestaurants);
-        this.filtered = veganRestaurants;
+        this.restaurants = new ArrayList<>(restaurants);
     }
 
     @NonNull
@@ -45,11 +44,11 @@ public class VeganRestaurantAdapter extends RecyclerView.Adapter<VeganRestaurant
 
     @Override
     public void onBindViewHolder(@NonNull VeganRestaurantAdapter.ViewHolder holder, int position) {
-        holder.nameview.setText(veganRestaurants.get(position).getName());
+        holder.nameview.setText(restaurants.get(position).getName());
 
-        holder.locview.setText(veganRestaurants.get(position).getLocation());
+        holder.locview.setText(restaurants.get(position).getLocation());
 
-        String menu = veganRestaurants.get(position).getMenu();
+        String menu = restaurants.get(position).getMenu();
         String[] strArr = menu.split(", ");
         String mainMenu = strArr[0];
         String[] strArr2 = mainMenu.split("\\(");
@@ -58,7 +57,7 @@ public class VeganRestaurantAdapter extends RecyclerView.Adapter<VeganRestaurant
 
     @Override
     public int getItemCount() {
-        return veganRestaurants.size();
+        return restaurants.size();
     }
 
 

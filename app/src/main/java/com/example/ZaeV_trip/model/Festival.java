@@ -1,8 +1,11 @@
 package com.example.ZaeV_trip.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
-public class Festival implements Serializable {
+public class Festival implements Parcelable, Serializable {
     private String addr1;
     private String firstImage;
     private String mapX;
@@ -12,6 +15,30 @@ public class Festival implements Serializable {
     private String endDate;
     private String id;
     private String tel;
+
+    protected Festival(Parcel in) {
+        addr1 = in.readString();
+        firstImage = in.readString();
+        mapX = in.readString();
+        mapY = in.readString();
+        title = in.readString();
+        startDate = in.readString();
+        endDate = in.readString();
+        id = in.readString();
+        tel = in.readString();
+    }
+
+    public static final Creator<Festival> CREATOR = new Creator<Festival>() {
+        @Override
+        public Festival createFromParcel(Parcel in) {
+            return new Festival(in);
+        }
+
+        @Override
+        public Festival[] newArray(int size) {
+            return new Festival[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -92,4 +119,22 @@ public class Festival implements Serializable {
     public String getTel() { return tel; }
 
     public void setTel(String tel) { this.tel = tel; }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(addr1);
+        parcel.writeString(firstImage);
+        parcel.writeString(mapX);
+        parcel.writeString(mapY);
+        parcel.writeString(title);
+        parcel.writeString(startDate);
+        parcel.writeString(endDate);
+        parcel.writeString(id);
+        parcel.writeString(tel);
+    }
 }
