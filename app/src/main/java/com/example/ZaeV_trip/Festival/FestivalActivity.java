@@ -66,11 +66,9 @@ public class FestivalActivity extends AppCompatActivity {
 
                         for(int i = 0; i< festivals.size(); i++) {
                             if(local.equals("전체 지역") || local.equals("전체")){
-//                                adapter.addItem(festivals.get(i));
                                 filteredFestival.add(festivals.get(i));
                             }else{
                                 if(festivals.get(i).getAddr1().split(" ").length > 1 && festivals.get(i).getAddr1().split(" ")[1].equals(local)){
-//                                    adapter.addItem(festivals.get(i));
                                     filteredFestival.add(festivals.get(i));
                                 }
                             }
@@ -99,14 +97,6 @@ public class FestivalActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(View view, int i) {
                                 Bundle bundle = new Bundle();
-//                                bundle.putString("name", festivals.get(i).getTitle());
-//                                bundle.putString("location", festivals.get(i).getAddr1());
-//                                bundle.putString("startDate", festivals.get(i).getStartDate());
-//                                bundle.putString("endDate",festivals.get(i).getEndDate());
-//                                bundle.putString("img",festivals.get(i).getFirstImage());
-//                                bundle.putString("x", festivals.get(i).getMapX());
-//                                bundle.putString("y",festivals.get(i).getMapY());
-
                                 bundle.putSerializable("festival", (Serializable) filteredFestival.get(i));
 
                                 FestivalFragment festivalFragment = new FestivalFragment();

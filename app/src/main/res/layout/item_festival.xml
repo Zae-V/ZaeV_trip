@@ -8,47 +8,44 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="15dp"
+        app:cardBackgroundColor="#FFFFFF"
         app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:measureWithLargestChild="true"
             android:orientation="horizontal">
+
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/list_image"
                     android:layout_width="108dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="80dp"
                     android:padding="0dp"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/default_bird_img" />
 
                 <ImageView
-                    android:id="@+id/bookmarkBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
+                    android:id="@+id/bookmarkBtn"
+                    android:src="@drawable/star_selector"
                     android:layout_marginTop="5dp"
-                    android:src="@drawable/star_selector" />
+                    android:layout_marginLeft="3dp"
+                    />
 
             </RelativeLayout>
-
             <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                android:stretchColumns="1">
+                android:stretchColumns="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
                 <TableRow>
 
@@ -58,15 +55,13 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
+                        android:textColor="@color/text_solid_black"
+                        android:textStyle="bold"
+                        android:text="제비식당"
+                        android:textSize="15dp"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:paddingRight="12dp"
-                        android:text="제비식당"
-                        android:textColor="@color/text_solid_black"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-
-
+                        android:paddingRight="12dp"/>
 
                 </TableRow>
 
@@ -75,17 +70,16 @@
 
                     <TextView
                         android:id="@+id/list_location"
+                        android:textColor="@color/text_solid_black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
+                        android:text="서울시 강서구 개화동"
+                        android:textSize="10dp"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:paddingRight="12dp"
-                        android:text="서울시 강서구 개화동"
-                        android:textColor="@color/text_solid_black"
-                        android:textSize="10dp" />
-
+                        android:paddingRight="12dp"/>
 
                 </TableRow>
 
@@ -93,21 +87,25 @@
 
                     <TextView
                         android:id="@+id/list_date"
+                        android:textColor="@color/text_solid_black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
+                        android:text="베이커리"
+                        android:textSize="10dp"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:paddingRight="12dp"
-                        android:text="베이커리"
-                        android:textColor="#72000000"
-                        android:textSize="10dp" />
+                        android:paddingRight="12dp"/>
 
                 </TableRow>
+
             </TableLayout>
+
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
+
 
 
 </FrameLayout>
