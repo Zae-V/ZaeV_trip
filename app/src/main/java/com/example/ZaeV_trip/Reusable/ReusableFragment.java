@@ -63,10 +63,33 @@ public class ReusableFragment extends Fragment {
         String x = getArguments().getString("x");
         String y = getArguments().getString("y");
         String reason = getArguments().getString("reason");
+        String reasonList = reason;
+        StringBuilder reasons = new StringBuilder();
+        String r;
+        boolean finish = false;
+
+        int i = 0;
+        int idx = 0;
+        while(finish == false) {
+            if(reasonList.contains("/")) {
+                idx = reasonList.indexOf("/");
+                r = "- " + reasonList.substring(i, idx) + System.getProperty("line.separator");
+                reasons.append(r);
+                Log.d("테스트", String.valueOf(reasons));
+                reasonList = reasonList.substring(idx + 2);
+            }
+            else{
+                r = "- " + reasonList;
+                reasons.append(r);
+                Log.d("테스트", String.valueOf(reasons));
+                finish = true;
+            }
+        }
+
 
         titleTextView.setText(name);
         locationTextView.setText(location);
-        reasonTextView.setText(reason);
+        reasonTextView.setText(reasons);
 
         MapView mapView = new MapView(getActivity());
 
@@ -113,7 +136,6 @@ public class ReusableFragment extends Fragment {
                     // 선택 동작
                     writeBookmark(name, location, x, y, reason);
                 }
-
             }
         });
 
