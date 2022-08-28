@@ -60,6 +60,7 @@ public class SearchFragment extends Fragment {
                 searchViewModel.setVisitedCities(CityName.get(i));
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.putExtra("current", CityName.get(i));
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
 //                navView.setVisibility(View.VISIBLE);
 
@@ -82,6 +83,7 @@ public class SearchFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.putExtra("current", Visited.get(i));
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
