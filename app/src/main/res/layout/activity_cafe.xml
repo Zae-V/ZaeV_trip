@@ -72,7 +72,7 @@
         app:layout_constraintTop_toBottomOf="@+id/topCafeLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:paddingBottom="50dp"
+        android:paddingBottom="60dp"
         android:paddingHorizontal="10dp"
         />
 

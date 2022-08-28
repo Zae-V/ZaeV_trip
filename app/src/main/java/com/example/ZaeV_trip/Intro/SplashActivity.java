@@ -62,14 +62,18 @@ public class SplashActivity extends AppCompatActivity {
             }
         }).start();
 
-        new Thread(new Runnable() {
+        Thread restaurantThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 restaurants = getRestaurantData();
                 bundle.putParcelableArrayList("restaurant", (ArrayList<? extends Parcelable>) restaurants);
                 Log.d("테스트", String.valueOf(restaurants.size()));
             }
-        }).start();
+        });
+
+        restaurantThread.start();
+        restaurantThread.isAlive();
+
 
         new Thread(new Runnable() {
             @Override
@@ -80,12 +84,41 @@ public class SplashActivity extends AppCompatActivity {
             }
         }).start();
 
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (MySharedPreferences.getUserEmail(SplashActivity.this).length() != 0) {
+//
+//                    try {
+//                        restaurantThread.join();
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    Toast.makeText(getApplicationContext(), "자동 로그인 되었습니다.", Toast.LENGTH_SHORT).show();
+//
+//                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+//                    intent.putExtras(bundle);
+//                    intent.putExtra("req", "splashData");
+//                    startActivity(intent);
+//                } else {
+//                    Intent intent = new Intent(SplashActivity.this, IntroActivity.class);
+//                    startActivity(intent);
+//                }
+//            }
+//        }).start();
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (MySharedPreferences.getUserEmail(SplashActivity.this).length() != 0) {
-                    Toast.makeText(getApplicationContext(), "자동 로그인 되었습니다.", Toast.LENGTH_SHORT).show();
+                    try {
+                        restaurantThread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+//                    Toast.makeText(getApplicationContext(), "자동 로그인 되었습니다.", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     intent.putExtras(bundle);
