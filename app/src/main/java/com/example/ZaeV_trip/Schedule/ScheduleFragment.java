@@ -64,9 +64,9 @@ public class ScheduleFragment extends Fragment {
         bookmarkRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         //ItemTouchHelper 생성
-        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(listAdapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(bookmarkRecyclerView);
+//        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(listAdapter);
+//        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+//        touchHelper.attachToRecyclerView(bookmarkRecyclerView);
 
         //Bundle
         Bundle bundle = getArguments();

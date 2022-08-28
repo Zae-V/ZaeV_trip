@@ -24,8 +24,7 @@ import com.example.ZaeV_trip.util.ItemTouchHelperListener;
 
 import java.util.ArrayList;
 
-public class BookmarkListAdapter extends RecyclerView.Adapter<BookmarkListAdapter.ItemViewHolder>
-        implements ItemTouchHelperListener{
+public class BookmarkListAdapter extends RecyclerView.Adapter<BookmarkListAdapter.ItemViewHolder>{
 
     ArrayList<BookmarkItem> items = new ArrayList<>();
     ArrayList<RestaurantCategoryItem> restaurantsList = new ArrayList<>();
@@ -68,26 +67,26 @@ public class BookmarkListAdapter extends RecyclerView.Adapter<BookmarkListAdapte
         items.add(bookmarkItem);
     }
 
-
-    @Override
-    public boolean onItemMove(int from_position, int to_position) {
-        //이동할 객체 저장
-        BookmarkItem bookmarkItem = items.get(from_position);
-        //이동할 객체 삭제
-        items.remove(from_position);
-        //이동하고 싶은 position에 추가
-        items.add(to_position, bookmarkItem);
-
-        //Adapter에 데이터 이동알림
-        notifyItemMoved(from_position,to_position);
-        return true;
-    }
-
-    @Override
-    public void onItemSwipe(int position) {
-        items.remove(position);
-        notifyItemRemoved(position);
-    }
+//
+//    @Override
+//    public boolean onItemMove(int from_position, int to_position) {
+//        //이동할 객체 저장
+//        BookmarkItem bookmarkItem = items.get(from_position);
+//        //이동할 객체 삭제
+//        items.remove(from_position);
+//        //이동하고 싶은 position에 추가
+//        items.add(to_position, bookmarkItem);
+//
+//        //Adapter에 데이터 이동알림
+//        notifyItemMoved(from_position,to_position);
+//        return true;
+//    }
+//
+//    @Override
+//    public void onItemSwipe(int position) {
+//        items.remove(position);
+//        notifyItemRemoved(position);
+//    }
 
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
