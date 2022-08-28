@@ -66,21 +66,27 @@ public class ProfileActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.profile:
                     return true;
-
                 case R.id.bookmark:
-                    startActivity(new Intent(getApplicationContext(), BookmarkActivity.class));
-                    overridePendingTransition(0, 0);
+                    Intent intent = new Intent(getApplicationContext(), BookmarkActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    ProfileActivity.this.finish();
                     return true;
 
                 case R.id.travel:
-                    startActivity(new Intent(getApplicationContext(), TravelActivity.class));
-                    overridePendingTransition(0, 0);
+                    Intent intent1 = new Intent(getApplicationContext(), TravelActivity.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent1);
+                    ProfileActivity.this.finish();
+
                     return true;
 
                 case R.id.home:
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    overridePendingTransition(0, 0);
-                    return true;
+                    Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent2);
+                    ProfileActivity.this.finish();
+
             }
             return false;
         });

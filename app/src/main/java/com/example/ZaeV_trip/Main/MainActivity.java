@@ -350,18 +350,23 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.profile:
-                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                    overridePendingTransition(0, 0);
+                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+
                     return true;
                 case R.id.bookmark:
-                    startActivity(new Intent(getApplicationContext(), BookmarkActivity.class));
-                    overridePendingTransition(0, 0);
+                    Intent intent1 = new Intent(getApplicationContext(), BookmarkActivity.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent1);
+
                     return true;
 
                 case R.id.travel:
-                    startActivity(new Intent(getApplicationContext(), TravelActivity.class));
-                    overridePendingTransition(0, 0);
-                    return true;
+                    Intent intent2 = new Intent(getApplicationContext(), TravelActivity.class);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent2);
+
 
                 case R.id.home:
                     return true;
