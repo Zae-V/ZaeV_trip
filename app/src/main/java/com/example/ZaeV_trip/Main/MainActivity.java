@@ -67,11 +67,20 @@ public class MainActivity extends AppCompatActivity {
 
     MyService myService;
 
+    public BottomNavigationView bottomNavigationView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Initialize And Assign Variable
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        //Set Home Selected
+        bottomNavigationView.setSelectedItemId(R.id.home);
 
         current = findViewById(R.id.currentPosition);
         bikeList = (RecyclerView) findViewById(R.id.bike_course_list);
@@ -147,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
                                 fragmentTransaction.replace(R.id.main_container, ploggingFragment);
                                 fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commit();
+                                bottomNavigationView.setVisibility(View.GONE);
+
 
                             }
                         });
@@ -205,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
                                 fragmentTransaction.replace(R.id.main_container, festivalFragment);
                                 fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commit();
+                                bottomNavigationView.setVisibility(View.GONE);
 
                             }
                         });
@@ -267,9 +279,10 @@ public class MainActivity extends AppCompatActivity {
 
                                 FragmentManager fragmentManager = getSupportFragmentManager();
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                fragmentTransaction.replace(R.id.main_container, restaurantFragment);
+                                fragmentTransaction.add(R.id.main_container, restaurantFragment);
                                 fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commit();
+                                bottomNavigationView.setVisibility(View.GONE);
 
                             }
                         });
@@ -377,11 +390,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //Initialize And Assign Variable
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        //Set Home Selected
-        bottomNavigationView.setSelectedItemId(R.id.home);
 
 
         //Perform ItemSelectedListener
@@ -713,6 +722,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         View view = findViewById(R.id.main_container);
         stopService(view);
+        Log.d("액티비티","onDestroy");
 
     }
 
@@ -722,4 +732,36 @@ public class MainActivity extends AppCompatActivity {
             stopService(intent);
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("액티비티","onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("액티비티","onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("액티비티","onPause");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("액티비티","onRestart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("액티비티","onStop");
+    }
+
+
 }

@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Festival;
 import com.example.ZaeV_trip.model.FestivalDetail;
@@ -360,5 +361,12 @@ public class FestivalFragment extends Fragment {
         }
 
         return festivalDetail2;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
     }
 }

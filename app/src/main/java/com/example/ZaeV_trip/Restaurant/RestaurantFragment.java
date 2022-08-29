@@ -16,7 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.Schedule.TravelActivity;
 import com.example.ZaeV_trip.model.Restaurant;
 import com.example.ZaeV_trip.util.AddrSearchRepository;
 import com.example.ZaeV_trip.util.Location;
@@ -24,6 +26,7 @@ import com.example.ZaeV_trip.util.ScrollWebView;
 import com.example.ZaeV_trip.util.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -65,6 +68,7 @@ public class RestaurantFragment extends Fragment {
 
     ImageView bookmarkBtn;
 
+    BottomNavigationView bottomNavigationView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -253,5 +257,12 @@ public class RestaurantFragment extends Fragment {
     }
     private void deleteBookmark(String id){
         mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(id).delete();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
     }
 }
