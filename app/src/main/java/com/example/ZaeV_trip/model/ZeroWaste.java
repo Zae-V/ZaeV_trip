@@ -104,5 +104,19 @@ public class ZeroWaste implements Serializable {
         this.themeSubID = themeSubID;
         this.image = image;
         this.keyword = keyword;
-        }
+    }
+
+    //For RecyclerView
+    public ZeroWaste(String contentID, String themeSubID) {
+        this.contentID = contentID;
+        this.themeSubID = themeSubID;
+    }
+
+
+    public ZeroWaste(String name, String Addr1, String contentID, String themeSubID) {
+        this.name = name;
+        this.Addr1 = Addr1;
+        this.contentID = contentID;
+        this.themeSubID = themeSubID;
+    }
 }
