@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -77,6 +79,12 @@ public class MainActivity extends AppCompatActivity {
         veganRestaurantList = (RecyclerView) findViewById(R.id.veganRestaurant_list);
 
         local = "전체";
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        float dpWidth = outMetrics.widthPixels;
+
         if (Objects.equals(getIntent().getStringExtra("req"), "search")) {
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
@@ -129,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onItemClick(View v, int i) {
                                 Bundle bundle = new Bundle();
                                 bundle.putSerializable("plogging", (Serializable) filteredBike.get(i));
+                                bundle.putFloat("width", dpWidth);
 
                                 PloggingFragment ploggingFragment = new PloggingFragment();
                                 ploggingFragment.setArguments(bundle);
@@ -186,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
 //                                bundle.putString("x", filteredEvent.get(i).getMapX());
 //                                bundle.putString("y",filteredEvent.get(i).getMapY());
                                 bundle.putSerializable("festival", (Serializable) filteredEvent.get(i));
+                                bundle.putFloat("width", dpWidth);
 
                                 FestivalFragment festivalFragment = new FestivalFragment();
                                 festivalFragment.setArguments(bundle);
@@ -250,6 +260,7 @@ public class MainActivity extends AppCompatActivity {
                                 bundle.putString("number", filteredRestaurant.get(i).getNumber());
                                 bundle.putString("menu", filteredRestaurant.get(i).getMenu());
                                 bundle.putString("category", filteredRestaurant.get(i).getCategory());
+                                bundle.putFloat("width", dpWidth);
 
                                 RestaurantFragment restaurantFragment = new RestaurantFragment();
                                 restaurantFragment.setArguments(bundle);
