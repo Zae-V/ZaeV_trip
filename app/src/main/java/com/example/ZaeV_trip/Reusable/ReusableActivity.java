@@ -1,5 +1,6 @@
 package com.example.ZaeV_trip.Reusable;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -13,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ZaeV_trip.ProgressDialog;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Restaurant.RestaurantAdapter;
 import com.example.ZaeV_trip.Restaurant.RestaurantFragment;
@@ -38,6 +40,7 @@ public class ReusableActivity extends AppCompatActivity {
     String local;
     SearchView searchView;
     RecyclerView list;
+    ProgressDialog customProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,10 @@ public class ReusableActivity extends AppCompatActivity {
         list = (RecyclerView) findViewById(R.id.reusableList);
         searchView = findViewById(R.id.reusableSearchBar);
         Bundle extras = getIntent().getExtras();
+
+        customProgressDialog = new ProgressDialog(this);
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        customProgressDialog.show();
 
         Display display = getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics ();
@@ -67,6 +74,7 @@ public class ReusableActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         ArrayList<Reusable> filteredReusable = new ArrayList<Reusable>();
+                        customProgressDialog.dismiss();
 
                         for(int i = 0; i< reusables.size(); i++) {
                             if (local.equals("전체 지역") || local.equals("전체")) {

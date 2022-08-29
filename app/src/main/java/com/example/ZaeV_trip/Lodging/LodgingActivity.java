@@ -1,5 +1,6 @@
 package com.example.ZaeV_trip.Lodging;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ZaeV_trip.Festival.FestivalFragment;
+import com.example.ZaeV_trip.ProgressDialog;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Restaurant.RestaurantActivity;
 import com.example.ZaeV_trip.Restaurant.RestaurantAdapter;
@@ -41,6 +43,8 @@ public class LodgingActivity extends AppCompatActivity {
     SearchView searchView;
     RecyclerView list;
 
+    ProgressDialog customProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,9 +60,14 @@ public class LodgingActivity extends AppCompatActivity {
 
         float dpWidth = outMetrics.widthPixels;
 
+        customProgressDialog = new ProgressDialog(this);
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
         if(extras!=null){
             local = extras.getString("local");
         }
+
+        customProgressDialog.show();
 
         new Thread(new Runnable() {
             @Override
@@ -69,6 +78,7 @@ public class LodgingActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         ArrayList<Lodging> filteredLodging = new ArrayList<Lodging>();
+                        customProgressDialog.dismiss();
 
                         for(int i = 0; i< lodgings.size(); i++) {
                             if (local.equals("전체 지역") || local.equals("전체")) {
