@@ -107,7 +107,6 @@ public class ZeroWasteActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                finish();
             }
         }, 3000);
 
