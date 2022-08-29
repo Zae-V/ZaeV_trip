@@ -53,36 +53,41 @@ public class SplashActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
 
-        new Thread(new Runnable() {
+        Thread eventThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 eventLists = getXmlEventData();
                 bundle.putParcelableArrayList("festival", (ArrayList<? extends Parcelable>) eventLists);
-                Log.d("테스트", String.valueOf(eventLists.size()));
+                Log.d("테스트1", String.valueOf(eventLists.size()));
             }
-        }).start();
+        });
+
+        eventThread.start();
+        eventThread.isAlive();
 
         Thread restaurantThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 restaurants = getRestaurantData();
                 bundle.putParcelableArrayList("restaurant", (ArrayList<? extends Parcelable>) restaurants);
-                Log.d("테스트", String.valueOf(restaurants.size()));
+                Log.d("테스트2", String.valueOf(restaurants.size()));
             }
         });
 
         restaurantThread.start();
         restaurantThread.isAlive();
 
-
-        new Thread(new Runnable() {
+        Thread bikeThread =  new Thread(new Runnable() {
             @Override
             public void run() {
                 bikes = getXmlBikeData();
                 bundle.putParcelableArrayList("bike", (ArrayList<? extends Parcelable>) bikes);
-                Log.d("테스트", String.valueOf(bikes.size()));
+                Log.d("테스트3", String.valueOf(bikes.size()));
             }
-        }).start();
+        });
+
+        bikeThread.start();
+        bikeThread.isAlive();
 
 //        new Thread(new Runnable() {
 //            @Override
@@ -114,6 +119,8 @@ public class SplashActivity extends AppCompatActivity {
                 if (MySharedPreferences.getUserEmail(SplashActivity.this).length() != 0) {
                     try {
                         restaurantThread.join();
+                        bikeThread.join();
+                        eventThread.join();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -140,7 +147,7 @@ public class SplashActivity extends AppCompatActivity {
         String address = "https://api.visitkorea.or.kr/openapi/service/rest/KorService/";
         String listType = "searchFestival";
         String pageNo = "1";
-        String numOfRows = "1000";
+        String numOfRows = "100";
         String mobileApp = "ZaeVTour";
         String mobileOS = "AND";
         String arrange = "A"; // (A=제목순, B=조회순, C=수정일순, D=생성일순) , 대표이미지가 반드시 있는 정렬 (O=제목순, P=조회순, Q=수정일순, R=생성일순)
