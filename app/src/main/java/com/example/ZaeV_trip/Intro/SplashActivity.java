@@ -53,6 +53,18 @@ public class SplashActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
 
+        Thread bikeThread =  new Thread(new Runnable() {
+            @Override
+            public void run() {
+                bikes = getXmlBikeData();
+                bundle.putParcelableArrayList("bike", (ArrayList<? extends Parcelable>) bikes);
+                Log.d("테스트3", String.valueOf(bikes.size()));
+            }
+        });
+
+//        bikeThread.start();
+//        bikeThread.isAlive();
+
         Thread eventThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -62,8 +74,8 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
-        eventThread.start();
-        eventThread.isAlive();
+//        eventThread.start();
+//        eventThread.isAlive();
 
         Thread restaurantThread = new Thread(new Runnable() {
             @Override
@@ -74,20 +86,10 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
-        restaurantThread.start();
-        restaurantThread.isAlive();
+//        restaurantThread.start();
+//        restaurantThread.isAlive();
 
-        Thread bikeThread =  new Thread(new Runnable() {
-            @Override
-            public void run() {
-                bikes = getXmlBikeData();
-                bundle.putParcelableArrayList("bike", (ArrayList<? extends Parcelable>) bikes);
-                Log.d("테스트3", String.valueOf(bikes.size()));
-            }
-        });
 
-        bikeThread.start();
-        bikeThread.isAlive();
 
 //        new Thread(new Runnable() {
 //            @Override
@@ -118,8 +120,15 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 if (MySharedPreferences.getUserEmail(SplashActivity.this).length() != 0) {
                     try {
-                        restaurantThread.join();
+                        bikeThread.start();
+//                        bikeThread.isAlive();
+                        restaurantThread.start();
+//                        restaurantThread.isAlive();
+                        eventThread.start();
+//                        eventThread.isAlive();
+
                         bikeThread.join();
+                        restaurantThread.join();
                         eventThread.join();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
