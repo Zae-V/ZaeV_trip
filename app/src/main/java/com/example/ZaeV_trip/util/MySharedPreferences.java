@@ -8,15 +8,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.ZaeV_trip.model.Users;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MySharedPreferences {
     private static final String TAG = "MySharedPreferences";
@@ -34,6 +28,7 @@ public class MySharedPreferences {
         editor.putString("userEmail", user.userEmail);
         editor.putString("userProfileImage", user.profileImage);
         editor.putString("signType", user.signType);
+        editor.putString("status", user.status);
 
         editor.commit();
 
@@ -83,6 +78,10 @@ public class MySharedPreferences {
 
     public static String getUserSignType(Context ctx) {
         return get_shared_preferences(ctx).getString("signType", "");
+    }
+
+    public static String getUserStatus(Context ctx) {
+        return get_shared_preferences(ctx).getString("status", "");
     }
 
 }

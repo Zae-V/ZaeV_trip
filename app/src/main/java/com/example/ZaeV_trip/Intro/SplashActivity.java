@@ -94,7 +94,7 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (MySharedPreferences.getUserEmail(SplashActivity.this).length() != 0) {
+                if (MySharedPreferences.getUserStatus(SplashActivity.this).equals("success")) {
                     try {
                         bikeThread.start();
 //                        bikeThread.isAlive();

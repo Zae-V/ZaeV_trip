@@ -69,7 +69,7 @@ public class SignUtil {
                                 Boolean notification = false;
                                 String signType = "kakao";
 
-                                Users newUser = new Users(userName, userEmail, currentPosition, profileImage, notification, signType);
+                                Users newUser = new Users(userName, userEmail, currentPosition, profileImage, notification, signType, "attempt");
 
                                 // 이메일 중복 체크
                                 mFirestore.collection("User").document(userEmail)
@@ -125,9 +125,11 @@ public class SignUtil {
                     Log.d(TAG, "로그인 성공");
 
                     if (type == 1) {
+                        user.setStatus("success");
                         MySharedPreferences.saveUserInfo(ctx, user);
                         Intent intent = new Intent(ctx, MainActivity.class);
                         ctx.startActivity(intent);
+                        ((Activity) ctx).finish();
                     } else if (type == 2) {
                         ((WithdrawalActivity)WithdrawalActivity.ctx).setWithdrawal(2);
                     } else {
@@ -259,11 +261,12 @@ public class SignUtil {
                                                     String userName = (String) userInfo.get("userName");
                                                     String signType = "email";
 
-                                                    Users user = new Users(userName, email, currentPosition, profileImage, false, signType);
+                                                    Users user = new Users(userName, email, currentPosition, profileImage, false, signType, "success");
                                                     MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), user);
 
                                                     Intent intent = new Intent(ctx, MainActivity.class);
                                                     ctx.startActivity(intent);
+                                                    ((Activity) ctx).finish();
                                                 } else if (type == 2) {
                                                     ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(1);
                                                     ((WithdrawalActivity)WithdrawalActivity.ctx).setVisibility(2);
@@ -334,13 +337,14 @@ public class SignUtil {
                         });
 
                         String signType = "email";
-                        Users userInfo = new Users(username, email, currentPosition, profileImage,false, signType);
+                        Users userInfo = new Users(username, email, currentPosition, profileImage,false, signType, "default");
 
                         mFirestore.collection("User").document(userInfo.userEmail).set(userInfo);
                         MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), userInfo);
 
                         Intent intent = new Intent(ctx, SignActivity.class);
                         ctx.startActivity(intent);
+                        ((Activity) ctx).finish();
                     } else {
                         if(password.length()<6){
                             SignUpFragment.msg.setText("비밀번호는 6자리 이상으로 설정하십시오.");

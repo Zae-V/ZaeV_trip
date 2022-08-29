@@ -91,6 +91,7 @@ public class IntroActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SignUtil.kakaoSign(IntroActivity.this, 1);
+                IntroActivity.this.finish();
             }
         });
 
@@ -99,6 +100,7 @@ public class IntroActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(IntroActivity.this, SignActivity.class);
                 startActivity(intent);
+                IntroActivity.this.finish();
             }
         });
     }

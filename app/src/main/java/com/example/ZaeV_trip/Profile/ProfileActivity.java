@@ -142,6 +142,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SignUtil.signOut(ProfileActivity.this);
+                ProfileActivity.this.finish();
             }
         });
         dialog.setNegativeButton("아니오",null);
