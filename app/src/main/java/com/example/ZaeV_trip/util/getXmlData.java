@@ -983,6 +983,10 @@ public class getXmlData {
                     zeroWaste.setContentID(temp.getString("COT_CONTS_ID"));
                     zeroWaste.setThemeSubID(temp.getString("COT_THEME_SUB_ID"));
                     zeroWaste.setAddr1(temp.getString("COT_ADDR_FULL_NEW"));
+                    zeroWaste.setMapX(temp.getString("COT_COORD_X"));
+                    zeroWaste.setMapY(temp.getString("COT_COORD_Y"));
+                    zeroWaste.setImage(temp.getString("COT_IMG_MAIN_URL"));
+                    zeroWaste.setTelephone(temp.getString("COT_TEL_NO"));
 
                 }
 
