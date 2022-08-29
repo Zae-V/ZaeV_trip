@@ -106,6 +106,33 @@ public class FestivalActivity extends AppCompatActivity {
                                 return false;
                             }
                         });
+                        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                            @Override
+                            public boolean onClose() {
+                                adapter.getFilter().filter(null);
+                                return false;
+                            }
+                        });
+
+                        // 서치아이콘이 아닌 서치바 클릭시 검색 가능하게 하기
+                        searchView.setOnClickListener(new View.OnClickListener(){
+                            @Override
+                            public void onClick(View v){
+                                searchView.setIconified(false);
+                            }
+                        });
+
+                        View closeButton = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
+                        closeButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //handle click
+                                searchView.setQuery("", false);
+                                adapter.getFilter().filter("");
+
+                            }
+                        });
+
 
                         adapter.setOnItemClickListener(new FestivalAdapter.OnItemClickListener() {
 

@@ -103,6 +103,7 @@ public class RestaurantActivity extends AppCompatActivity {
                         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
                             @Override
                             public boolean onClose() {
+
                                 adapter.getFilter().filter("");
                                 return true;
                             }
@@ -114,6 +115,17 @@ public class RestaurantActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v){
                                 searchView.setIconified(false);
+                            }
+                        });
+
+                        View closeButton = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
+                        closeButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //handle click
+                                searchView.setQuery("", false);
+                                adapter.getFilter().filter("");
+
                             }
                         });
 
@@ -130,7 +142,6 @@ public class RestaurantActivity extends AppCompatActivity {
                                 bundle.putString("menu", filteredRestaurant.get(i).getMenu());
                                 bundle.putString("category", filteredRestaurant.get(i).getCategory());
                                 bundle.putFloat("width", dpWidth);
-
 
                                 RestaurantFragment restaurantFragment = new RestaurantFragment();
                                 restaurantFragment.setArguments(bundle);
