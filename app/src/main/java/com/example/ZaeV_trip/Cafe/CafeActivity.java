@@ -7,12 +7,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
 import android.widget.Filter;
 
+import com.example.ZaeV_trip.ProgressDialog;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Cafe;
 import com.example.ZaeV_trip.util.getXmlData;
@@ -31,6 +33,7 @@ public class CafeActivity extends AppCompatActivity {
     SearchView searchView;
 
     String local;
+    ProgressDialog customProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,10 @@ public class CafeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cafe);
         cafeList = (RecyclerView) findViewById(R.id.cafeList);
         searchView = findViewById(R.id.searchBar);
+
+        customProgressDialog = new ProgressDialog(this);
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        customProgressDialog.show();
 
         Display display = getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics ();
@@ -61,6 +68,7 @@ public class CafeActivity extends AppCompatActivity {
                     public void run() {
 //                        CafeAdapter cafeAdapter = new CafeAdapter(CafeActivity.this);
                         ArrayList<Cafe> filterdList = new ArrayList<Cafe>();
+                        customProgressDialog.dismiss();
 
                         for(int i = 0; i< cafes.size();i++){
                             if(cafes.get(i).getCategory() != null && (cafes.get(i).getCategory().equals("카페") || cafes.get(i).getCategory().equals("베이커리") || cafes.get(i).getCategory().equals("까페"))){

@@ -1,5 +1,6 @@
 package com.example.ZaeV_trip.TouristSpot;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ZaeV_trip.Festival.FestivalFragment;
+import com.example.ZaeV_trip.ProgressDialog;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Restaurant.RestaurantActivity;
 import com.example.ZaeV_trip.Restaurant.RestaurantAdapter;
@@ -39,6 +41,8 @@ public class TouristSpotActivity extends AppCompatActivity {
     SearchView searchView;
     RecyclerView list;
 
+    ProgressDialog customProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +51,11 @@ public class TouristSpotActivity extends AppCompatActivity {
         list = (RecyclerView) findViewById(R.id.touristSpotList);
         searchView = findViewById(R.id.touristSpotSearchBar);
         Bundle extras = getIntent().getExtras();
+
+        //로딩창 객체 생성
+        customProgressDialog = new ProgressDialog(this);
+        //로딩창을 투명하게
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         Display display = getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics ();
@@ -58,6 +67,8 @@ public class TouristSpotActivity extends AppCompatActivity {
             local = extras.getString("local");
         }
 
+        customProgressDialog.show();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -66,6 +77,7 @@ public class TouristSpotActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        customProgressDialog.dismiss();
                         ArrayList<TouristSpot> filteredTouristSpot = new ArrayList<TouristSpot>();
 
                         for(int i = 0; i< touristSpots.size(); i++) {

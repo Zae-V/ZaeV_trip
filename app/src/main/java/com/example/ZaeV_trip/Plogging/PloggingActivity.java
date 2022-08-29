@@ -1,5 +1,6 @@
 package com.example.ZaeV_trip.Plogging;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.ZaeV_trip.ProgressDialog;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
 import com.example.ZaeV_trip.TouristSpot.TouristSpotAdapter;
@@ -39,6 +41,7 @@ public class PloggingActivity extends AppCompatActivity {
     String local;
     SearchView searchView;
     RecyclerView list;
+    ProgressDialog customProgressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +51,10 @@ public class PloggingActivity extends AppCompatActivity {
         list = (RecyclerView) findViewById(R.id.ploggingList);
         searchView = findViewById(R.id.ploggingSearchBar);
         Bundle extras = getIntent().getExtras();
+
+        customProgressDialog = new ProgressDialog(this);
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        customProgressDialog.show();
 
         Display display = getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics ();
@@ -69,6 +76,8 @@ public class PloggingActivity extends AppCompatActivity {
 
                     @Override
                     public void run() {
+                        customProgressDialog.dismiss();
+
                         for(int i = 0; i< ploggings.size(); i++) {
                             if (local.equals("전체 지역") || local.equals("전체")) {
                                 filteredPlogging.add(ploggings.get(i));
