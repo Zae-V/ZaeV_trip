@@ -842,4 +842,262 @@ public class getXmlData {
         return zeroWastes;
     }
 
+    public static ArrayList<ZeroWaste> getZeroWasteListAll(Context cnt){
+        ArrayList<ZeroWaste> zeroWastes = new ArrayList<ZeroWaste>();
+        String BaseURL = "https://map.seoul.go.kr/smgis/apps/theme.do";
+        String cmd = "getContentsListAll";
+        String key = cnt.getString(R.string.zerowaste_key);
+        String theme_id = "11103395";
+
+        String result = ""; //파싱한 데이터를 저장할 변수
+
+        String queryUrl = BaseURL + "?"
+                + "cmd=" + cmd
+                + "&key=" + key
+                + "&theme_id=" + theme_id;
+
+        try {
+            URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+            Log.d("테스트Url", queryUrl);
+
+
+            InputStream is = url.openStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader reader = new BufferedReader(isr);
+
+            StringBuffer buffer = new StringBuffer();
+            String line = reader.readLine();
+
+            while (line != null) {
+                buffer.append(line + "\n");
+                line = reader.readLine();
+            }
+
+            String jsonData = buffer.toString();
+
+            // jsonData를 먼저 JSONObject 형태로 바꾼다.
+            JSONObject obj = new JSONObject(jsonData);
+
+            // obj의 "head"의 JSONObject를 추출
+            JSONObject head = (JSONObject)obj.get("head");
+
+            // obj의 "body"의 JSONObject를 추출
+            JSONArray body = (JSONArray)obj.get("body");
+
+            try {
+                // body의 length만큼 for문 반복
+                for (int i = 0; i < body.length(); i++) {
+                    // body를 각 JSONObject 형태로 객체를 생성한다.
+                    JSONObject temp = body.getJSONObject(i);
+
+                    ZeroWaste zeroWaste = new ZeroWaste(
+                            "",
+                            "");
+
+                    // zeroWaste의 json 값들을 넣는다.
+                    zeroWaste.setContentID(temp.getString("COT_CONTS_ID"));
+                    zeroWaste.setThemeSubID(temp.getString("COT_THEME_SUB_ID"));
+
+                    zeroWastes.add(zeroWaste);
+
+                }
+                // adapter에 적용
+                //zeroWastes.add(zeroWaste);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return zeroWastes;
+    }
+
+    //For RecyclerView
+
+    public static ArrayList<ZeroWaste> getZeroWasteMainDetail(Context cnt,String content_id){
+        ArrayList<ZeroWaste> zeroWastes = new ArrayList<ZeroWaste>();
+        String BaseURL = "https://map.seoul.go.kr/smgis/apps/poi.do";
+        String cmd = "getNewContentsDetail";
+        String key = cnt.getString(R.string.zerowaste_key);
+        String theme_id = "11103395";        //여러 테마는 콤마로 구분; 11103395 : [착한소비] 제로웨이스트상점
+        //String subcate_id = "";               //1 : 카페, 2 : 식당, 3 : 리필샵, 4 : 친환경생필품점, 5 : 기타
+
+        String result = ""; //파싱한 데이터를 저장할 변수
+
+        String queryUrl = BaseURL + "?"
+                + "cmd=" + cmd
+                + "&key=" + key
+                + "&theme_id=" + theme_id
+                + "&conts_id=" + content_id;
+
+        try {
+            URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+            Log.d("테스트Url", queryUrl);
+
+
+            InputStream is = url.openStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader reader = new BufferedReader(isr);
+
+            StringBuffer buffer = new StringBuffer();
+            String line = reader.readLine();
+
+            while (line != null) {
+                buffer.append(line + "\n");
+                line = reader.readLine();
+            }
+
+            String jsonData = buffer.toString();
+
+            // jsonData를 먼저 JSONObject 형태로 바꾼다.
+            JSONObject obj = new JSONObject(jsonData);
+
+            // obj의 "head"의 JSONObject를 추출
+            JSONObject head = (JSONObject)obj.get("head");
+
+            // obj의 "body"의 JSONObject를 추출
+            JSONArray body = (JSONArray)obj.get("body");
+
+            try {
+                // body의 length만큼 for문 반복
+                for (int i = 0; i < body.length(); i++) {
+                    // body를 각 JSONObject 형태로 객체를 생성한다.
+                    JSONObject temp = body.getJSONObject(i);
+
+                    ZeroWaste zeroWaste = new ZeroWaste(
+                            "",
+                            "",
+                            "",
+                            "");
+
+                    // zeroWaste의 json 값들을 넣는다
+                    zeroWaste.setName(temp.getString("COT_CONTS_NAME"));
+                    zeroWaste.setContentID(temp.getString("COT_CONTS_ID"));
+                    zeroWaste.setThemeSubID(temp.getString("COT_THEME_SUB_ID"));
+                    zeroWaste.setAddr1(temp.getString("COT_ADDR_FULL_NEW"));
+
+                    zeroWastes.add(zeroWaste);
+
+                }
+                // adapter에 적용
+                //zeroWastes.add(zeroWaste);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return zeroWastes;
+    }
+
+    //For Fragment
+    public static ArrayList<ZeroWaste> getZeroWasteDetail(Context cnt,String content_id){
+        ArrayList<ZeroWaste> zeroWastes = new ArrayList<ZeroWaste>();
+        String BaseURL = "https://map.seoul.go.kr/smgis/apps/poi.do";
+        String cmd = "getNewContentsDetail";
+        String key = cnt.getString(R.string.zerowaste_key);
+        String theme_id = "11103395";        //여러 테마는 콤마로 구분; 11103395 : [착한소비] 제로웨이스트상점
+        //String subcate_id = "";               //1 : 카페, 2 : 식당, 3 : 리필샵, 4 : 친환경생필품점, 5 : 기타
+
+        String result = ""; //파싱한 데이터를 저장할 변수
+
+        String queryUrl = BaseURL + "?"
+                + "cmd=" + cmd
+                + "&key=" + key
+                + "&theme_id=" + theme_id
+                + "&conts_id=" + content_id;
+
+        try {
+            URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+            Log.d("테스트Url", queryUrl);
+
+
+            InputStream is = url.openStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader reader = new BufferedReader(isr);
+
+            StringBuffer buffer = new StringBuffer();
+            String line = reader.readLine();
+
+            while (line != null) {
+                buffer.append(line + "\n");
+                line = reader.readLine();
+            }
+
+            String jsonData = buffer.toString();
+
+            // jsonData를 먼저 JSONObject 형태로 바꾼다.
+            JSONObject obj = new JSONObject(jsonData);
+
+            // obj의 "head"의 JSONObject를 추출
+            JSONObject head = (JSONObject)obj.get("head");
+
+            // obj의 "body"의 JSONObject를 추출
+            JSONArray body = (JSONArray)obj.get("body");
+
+            try {
+                // body의 length만큼 for문 반복
+                for (int i = 0; i < body.length(); i++) {
+                    // body를 각 JSONObject 형태로 객체를 생성한다.
+                    JSONObject temp = body.getJSONObject(i);
+
+                    ZeroWaste zeroWaste = new ZeroWaste(
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "");
+
+                    // zeroWaste의 json 값들을 넣는다.
+                    Log.d("테스트API",temp.getString("COT_IMG_MAIN_URL"));
+                    zeroWaste.setMapX(temp.getString("COT_COORD_X"));
+                    zeroWaste.setMapY(temp.getString("COT_COORD_Y"));
+                    zeroWaste.setName(temp.getString("COT_CONTS_NAME"));
+                    zeroWaste.setTelephone(temp.getString("COT_TEL_NO"));
+                    zeroWaste.setContentID(temp.getString("COT_CONTS_ID"));
+                    zeroWaste.setThemeSubID(temp.getString("COT_THEME_SUB_ID"));
+                    zeroWaste.setImage("https://map.seoul.go.kr" + temp.getString("COT_IMG_MAIN_URL"));
+                    zeroWaste.setAddr1(temp.getString("COT_ADDR_FULL_NEW"));
+                    zeroWaste.setAddr2(temp.getString("COT_ADDR_FULL_OLD"));
+                    zeroWaste.setKeyword(temp.getString("COT_KW"));
+
+                    zeroWastes.add(zeroWaste);
+
+                }
+                // adapter에 적용
+                //zeroWastes.add(zeroWaste);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return zeroWastes;
+    }
 }

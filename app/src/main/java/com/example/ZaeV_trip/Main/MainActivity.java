@@ -21,12 +21,12 @@ import com.example.ZaeV_trip.Lodging.LodgingActivity;
 import com.example.ZaeV_trip.Main.Bike.BikeAdapter;
 import com.example.ZaeV_trip.Main.EventList.EventAdapter;
 import com.example.ZaeV_trip.Main.VeganRestaurant.VeganRestaurantAdapter;
+import com.example.ZaeV_trip.util.MyService;
 import com.example.ZaeV_trip.Plogging.PloggingActivity;
 import com.example.ZaeV_trip.Plogging.PloggingFragment;
 import com.example.ZaeV_trip.Profile.ProfileActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Restaurant.RestaurantActivity;
-import com.example.ZaeV_trip.Restaurant.RestaurantAdapter;
 import com.example.ZaeV_trip.Restaurant.RestaurantFragment;
 import com.example.ZaeV_trip.Reusable.ReusableActivity;
 import com.example.ZaeV_trip.Schedule.TravelActivity;
@@ -36,7 +36,6 @@ import com.example.ZaeV_trip.ZeroWaste.ZeroWasteActivity;
 import com.example.ZaeV_trip.model.Festival;
 import com.example.ZaeV_trip.model.Plogging;
 import com.example.ZaeV_trip.model.Restaurant;
-import com.example.ZaeV_trip.model.VeganRestaurant;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -63,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView bikeList;
     RecyclerView eventList;
     RecyclerView veganRestaurantList;
+
+    MyService myService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if(!Objects.equals(getIntent().getStringExtra("req"), "splashData")){
+                if (!Objects.equals(getIntent().getStringExtra("req"), "splashData")) {
                     bikes = getXmlBikeData();
                 }
 
@@ -149,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                if(!Objects.equals(getIntent().getStringExtra("req"), "splashData")){
+                if (!Objects.equals(getIntent().getStringExtra("req"), "splashData")) {
                     eventLists = getXmlEventData();
                 }
 
@@ -205,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if(!Objects.equals(getIntent().getStringExtra("req"), "splashData")){
+                if (!Objects.equals(getIntent().getStringExtra("req"), "splashData")) {
                     restaurants = getRestaurantData();
                 }
 
@@ -378,12 +380,15 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
+                    MainActivity.this.finish();
+
 
                     return true;
                 case R.id.bookmark:
                     Intent intent1 = new Intent(getApplicationContext(), BookmarkActivity.class);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent1);
+                    MainActivity.this.finish();
 
                     return true;
 
@@ -391,6 +396,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent2 = new Intent(getApplicationContext(), TravelActivity.class);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent2);
+                    MainActivity.this.finish();
 
 
                 case R.id.home:
@@ -607,9 +613,9 @@ public class MainActivity extends AppCompatActivity {
         return eventLists;
     }
 
-    public ArrayList<Restaurant> getRestaurantData(){
+    public ArrayList<Restaurant> getRestaurantData() {
         ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
-        String key= getString(R.string.vegan_key);
+        String key = getString(R.string.vegan_key);
         String address = "http://openapi.seoul.go.kr:8088/";
         String listType = "CrtfcUpsoInfo";
         String startIndex = "860";
@@ -622,54 +628,45 @@ public class MainActivity extends AppCompatActivity {
                 + "/" + endIndex + "/";
 //        Log.d("테스트", queryUrl);
 
-        try{
-            URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
-            InputStream is= url.openStream(); //url위치로 입력스트림 연결
+        try {
+            URL url = new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+            InputStream is = url.openStream(); //url위치로 입력스트림 연결
 
-            XmlPullParserFactory factory= XmlPullParserFactory.newInstance();//xml파싱을 위한
-            XmlPullParser xpp= factory.newPullParser();
-            xpp.setInput( new InputStreamReader(is, "UTF-8") ); //inputstream 으로부터 xml 입력받기
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();//xml파싱을 위한
+            XmlPullParser xpp = factory.newPullParser();
+            xpp.setInput(new InputStreamReader(is, "UTF-8")); //inputstream 으로부터 xml 입력받기
 
             String tag;
 
             xpp.next();
             Restaurant restaurant = null;
-            int eventType= xpp.getEventType();
-            while( eventType != XmlPullParser.END_DOCUMENT ){
-                switch( eventType ){
+            int eventType = xpp.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                switch (eventType) {
                     case XmlPullParser.START_DOCUMENT:
                         break;
 
                     case XmlPullParser.START_TAG:
-                        tag= xpp.getName();//테그 이름 얻어오기
-                        if(tag.equals("row")){
-                            restaurant = new Restaurant("","","","","","","","","");
-                        }
-                        else if(tag.equals("CRTFC_UPSO_MGT_SNO")){
+                        tag = xpp.getName();//테그 이름 얻어오기
+                        if (tag.equals("row")) {
+                            restaurant = new Restaurant("", "", "", "", "", "", "", "", "");
+                        } else if (tag.equals("CRTFC_UPSO_MGT_SNO")) {
                             restaurant.setId(xpp.nextText());
-                        }
-                        else if(tag.equals("UPSO_NM")){
+                        } else if (tag.equals("UPSO_NM")) {
                             restaurant.setName(xpp.nextText());
-                        }
-                        else if(tag.equals("RDN_CODE_NM")){
+                        } else if (tag.equals("RDN_CODE_NM")) {
                             restaurant.setLocation(xpp.nextText());
-                        }
-                        else if(tag.equals("BIZCND_CODE_NM")){
+                        } else if (tag.equals("BIZCND_CODE_NM")) {
                             restaurant.setCategory(xpp.nextText());
-                        }
-                        else if(tag.equals("CRTFC_GBN")){
+                        } else if (tag.equals("CRTFC_GBN")) {
                             restaurant.setAuthType(xpp.nextText());
-                        }
-                        else if(tag.equals("Y_DNTS")){
+                        } else if (tag.equals("Y_DNTS")) {
                             restaurant.setMapY(xpp.nextText());
-                        }
-                        else if(tag.equals("X_CNTS")){
+                        } else if (tag.equals("X_CNTS")) {
                             restaurant.setMapX(xpp.nextText());
-                        }
-                        else if(tag.equals("FOOD_MENU")){
+                        } else if (tag.equals("FOOD_MENU")) {
                             restaurant.setMenu(xpp.nextText());
-                        }
-                        else if(tag.equals("TEL_NO")){
+                        } else if (tag.equals("TEL_NO")) {
                             restaurant.setNumber(xpp.nextText());
                         }
 
@@ -680,22 +677,38 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case XmlPullParser.END_TAG:
-                        tag= xpp.getName(); //테그 이름 얻어오기
+                        tag = xpp.getName(); //테그 이름 얻어오기
 
-                        if(tag.equals("row")) {
+                        if (tag.equals("row")) {
                             restaurants.add(restaurant);
 //                            Log.d("테스트",restaurant.getName());
-                        };// 첫번째 검색결과종료..줄바꿈
+                        }
+                        ;// 첫번째 검색결과종료..줄바꿈
                         break;
                 }
 
-                eventType= xpp.next();
+                eventType = xpp.next();
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return restaurants;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        View view = findViewById(R.id.main_container);
+        stopService(view);
+
+    }
+
+    public void stopService(View view) {// 서비스 중지 버튼
+        if (myService != null) {
+            Intent intent = new Intent(this, MyService.class);
+            stopService(intent);
+        }
     }
 }

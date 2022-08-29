@@ -1,6 +1,5 @@
 package com.example.ZaeV_trip.Intro;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,18 +7,12 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.ZaeV_trip.Main.Bike.BikeAdapter;
 import com.example.ZaeV_trip.Main.MainActivity;
-import com.example.ZaeV_trip.Plogging.PloggingFragment;
+import com.example.ZaeV_trip.util.MyService;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Festival;
 import com.example.ZaeV_trip.model.Plogging;
@@ -31,7 +24,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -43,39 +35,21 @@ public class SplashActivity extends AppCompatActivity {
     ArrayList<Restaurant> restaurants = new ArrayList<>();
     ArrayList<Plogging> bikes = new ArrayList<>();
 
+    MyService myService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        View view = findViewById(R.id.container_splash);
+
+        startService(view);
+
 
         ImageView gif_image = (ImageView) findViewById(R.id.gif_image);
         Glide.with(this).load(R.raw.animation_bird).into(gif_image);
 
         Bundle bundle = new Bundle();
-
-        Thread eventThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                eventLists = getXmlEventData();
-                bundle.putParcelableArrayList("festival", (ArrayList<? extends Parcelable>) eventLists);
-                Log.d("테스트1", String.valueOf(eventLists.size()));
-            }
-        });
-
-        eventThread.start();
-        eventThread.isAlive();
-
-        Thread restaurantThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                restaurants = getRestaurantData();
-                bundle.putParcelableArrayList("restaurant", (ArrayList<? extends Parcelable>) restaurants);
-                Log.d("테스트2", String.valueOf(restaurants.size()));
-            }
-        });
-
-        restaurantThread.start();
-        restaurantThread.isAlive();
 
         Thread bikeThread =  new Thread(new Runnable() {
             @Override
@@ -86,31 +60,35 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
-        bikeThread.start();
-        bikeThread.isAlive();
+//        bikeThread.start();
+//        bikeThread.isAlive();
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (MySharedPreferences.getUserEmail(SplashActivity.this).length() != 0) {
-//
-//                    try {
-//                        restaurantThread.join();
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                    Toast.makeText(getApplicationContext(), "자동 로그인 되었습니다.", Toast.LENGTH_SHORT).show();
-//
-//                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-//                    intent.putExtras(bundle);
-//                    intent.putExtra("req", "splashData");
-//                    startActivity(intent);
-//                } else {
-//                    Intent intent = new Intent(SplashActivity.this, IntroActivity.class);
-//                    startActivity(intent);
-//                }
-//            }
-//        }).start();
+        Thread eventThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                eventLists = getXmlEventData();
+                bundle.putParcelableArrayList("festival", (ArrayList<? extends Parcelable>) eventLists);
+                Log.d("테스트1", String.valueOf(eventLists.size()));
+            }
+        });
+
+//        eventThread.start();
+//        eventThread.isAlive();
+
+        Thread restaurantThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                restaurants = getRestaurantData();
+                bundle.putParcelableArrayList("restaurant", (ArrayList<? extends Parcelable>) restaurants);
+                Log.d("테스트2", String.valueOf(restaurants.size()));
+            }
+        });
+
+//        restaurantThread.start();
+//        restaurantThread.isAlive();
+
+
+
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -118,8 +96,15 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 if (MySharedPreferences.getUserEmail(SplashActivity.this).length() != 0) {
                     try {
-                        restaurantThread.join();
+                        bikeThread.start();
+//                        bikeThread.isAlive();
+                        restaurantThread.start();
+//                        restaurantThread.isAlive();
+                        eventThread.start();
+//                        eventThread.isAlive();
+
                         bikeThread.join();
+                        restaurantThread.join();
                         eventThread.join();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -140,6 +125,12 @@ public class SplashActivity extends AppCompatActivity {
         }, 3000);
 
     }
+    public void startService(View view) {   // 서비스 실행 버튼
+        if(myService==null){
+            Intent intent = new Intent(this, MyService.class);
+            startService(intent);
+        }
+    }// startService()..
 
     public ArrayList<Festival> getXmlEventData(){
         ArrayList<Festival> eventLists = new ArrayList<Festival>();

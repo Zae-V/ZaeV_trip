@@ -185,6 +185,15 @@ public class TravelActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        TravelActivity.this.finish();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         bottomNavigationView.setVisibility(View.VISIBLE);

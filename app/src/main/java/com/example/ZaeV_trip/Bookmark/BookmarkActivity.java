@@ -41,6 +41,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.apache.log4j.chainsaw.Main;
+
 import java.util.ArrayList;
 
 public class BookmarkActivity extends AppCompatActivity {
@@ -74,6 +76,15 @@ public class BookmarkActivity extends AppCompatActivity {
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     ConcatAdapter mConcatAdapter = new ConcatAdapter();
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        BookmarkActivity.this.finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
