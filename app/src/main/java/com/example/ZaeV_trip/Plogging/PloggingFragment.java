@@ -1,12 +1,16 @@
 package com.example.ZaeV_trip.Plogging;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Plogging;
+import com.example.ZaeV_trip.util.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,6 +50,8 @@ public class PloggingFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_plogging, container, false);
 
+        float width = getArguments().getFloat("width");
+        Log.d("DeviceDP","dpWidth : "+width);
         Plogging plogging = (Plogging) getArguments().getSerializable("plogging");
 
         TextView plogging_name = v.findViewById(R.id.plogging_name);
@@ -60,6 +68,8 @@ public class PloggingFragment extends Fragment {
         TextView plogging_gpx = v.findViewById(R.id.plogging_gpx);
         TextView plogging_gpx_txt = v.findViewById(R.id.plogging_gpx_txt);
         ImageView bookmarkBtn = (ImageView) v.findViewById(R.id.bookmarkBtn);
+
+        plogging_name.setMaxWidth((int) width - Util.ConvertDPtoPX(getActivity().getApplicationContext(), 100));
 
         String crsKorNm = plogging.getCrsKorNm();
         String crsLevel = plogging.getCrsLevel();
@@ -208,4 +218,5 @@ public class PloggingFragment extends Fragment {
     private void deleteBookmark(String crsKorNm){
         mDatabase.collection("BookmarkItem").document(userId).collection("plogging").document(crsKorNm).delete();
     }
+
 }

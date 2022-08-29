@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.widget.Filter;
 
@@ -38,6 +40,11 @@ public class CafeActivity extends AppCompatActivity {
         cafeList = (RecyclerView) findViewById(R.id.cafeList);
         searchView = findViewById(R.id.searchBar);
 
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        float dpWidth = outMetrics.widthPixels;
 
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
@@ -110,6 +117,7 @@ public class CafeActivity extends AppCompatActivity {
                                 bundle.putString("y",filterdList.get(i).getMapY());
                                 bundle.putString("number",filterdList.get(i).getNumber());
                                 bundle.putString("menu",filterdList.get(i).getMenu());
+                                bundle.putFloat("width", dpWidth);
 
                                 CafeFragment cafeFragment = new CafeFragment();
                                 cafeFragment.setArguments(bundle);

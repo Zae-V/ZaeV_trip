@@ -17,6 +17,7 @@ import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Lodging;
 import com.example.ZaeV_trip.model.LodgingDetail;
 import com.example.ZaeV_trip.model.Lodging;
+import com.example.ZaeV_trip.util.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -75,6 +76,7 @@ public class LodgingFragment extends Fragment {
         String detail_location = lodging.getAddr1();
         String location = lodging.getAddr2();
         String telephone = lodging.getTel();
+        float width = getArguments().getFloat("width");
         
         bookmarkBtn = (ImageView) v.findViewById(R.id.restaurantBookmarkBtn);
         titleTextView = v.findViewById(R.id.detail_txt);
@@ -88,7 +90,9 @@ public class LodgingFragment extends Fragment {
         content_img = v.findViewById(R.id.content_img);
         content_img2 = v.findViewById(R.id.content_img2);
 
+        titleTextView.setMaxWidth((int) width - Util.ConvertDPtoPX(getActivity().getApplicationContext(), 100));
         titleTextView.setText(name);
+
 
         if (!location.equals("")) {
             locationTextView.setText(location);

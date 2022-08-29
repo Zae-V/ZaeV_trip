@@ -17,6 +17,7 @@ import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.util.AddrSearchRepository;
 import com.example.ZaeV_trip.util.Location;
 import com.example.ZaeV_trip.util.ScrollWebView;
+import com.example.ZaeV_trip.util.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,6 +67,7 @@ public class ReusableFragment extends Fragment {
         String reasonList = reason;
         StringBuilder reasons = new StringBuilder();
         String r;
+        float width = getArguments().getFloat("width");
         boolean finish = false;
 
         int i = 0;
@@ -87,6 +89,7 @@ public class ReusableFragment extends Fragment {
         }
 
 
+        titleTextView.setMaxWidth((int) width - Util.ConvertDPtoPX(getActivity().getApplicationContext(), 100));
         titleTextView.setText(name);
         locationTextView.setText(location);
         reasonTextView.setText(reasons);

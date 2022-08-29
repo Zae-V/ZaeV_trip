@@ -1,6 +1,9 @@
 package com.example.ZaeV_trip.Plogging;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -45,6 +48,12 @@ public class PloggingActivity extends AppCompatActivity {
         list = (RecyclerView) findViewById(R.id.ploggingList);
         searchView = findViewById(R.id.ploggingSearchBar);
         Bundle extras = getIntent().getExtras();
+
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        float dpWidth = outMetrics.widthPixels;
 
         if(extras!=null){
             local = extras.getString("local");
@@ -91,6 +100,7 @@ public class PloggingActivity extends AppCompatActivity {
                                 public void onItemClick(View v, int i) {
                                     Bundle bundle = new Bundle();
                                     bundle.putSerializable("plogging", (Serializable) filteredPlogging.get(i));
+                                    bundle.putFloat("width", dpWidth);
 
                                     PloggingFragment ploggingFragment = new PloggingFragment();
                                     ploggingFragment.setArguments(bundle);

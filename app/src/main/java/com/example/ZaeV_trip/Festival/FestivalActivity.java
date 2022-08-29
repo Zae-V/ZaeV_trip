@@ -1,7 +1,9 @@
 package com.example.ZaeV_trip.Festival;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -42,8 +44,14 @@ public class FestivalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         Bundle extras = getIntent().getExtras();
+
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        float dpWidth = outMetrics.widthPixels;
+
         if(extras != null){
             local = extras.getString("local");
         }
@@ -98,6 +106,7 @@ public class FestivalActivity extends AppCompatActivity {
                             public void onItemClick(View view, int i) {
                                 Bundle bundle = new Bundle();
                                 bundle.putSerializable("festival", (Serializable) filteredFestival.get(i));
+                                bundle.putFloat("width", dpWidth);
 
                                 FestivalFragment festivalFragment = new FestivalFragment();
                                 festivalFragment.setArguments(bundle);

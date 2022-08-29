@@ -23,6 +23,7 @@ import com.example.ZaeV_trip.model.Cafe;
 import com.example.ZaeV_trip.util.AddrSearchRepository;
 import com.example.ZaeV_trip.util.Location;
 import com.example.ZaeV_trip.util.ScrollWebView;
+import com.example.ZaeV_trip.util.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -118,11 +119,14 @@ public class CafeFragment extends Fragment {
         String y = getArguments().getString("y");
         String number = getArguments().getString("number");
         String menu = getArguments().getString("menu");
+        float width = getArguments().getFloat("width");
 
         titleTextView.setText(name);
         telTextView.setText(number);
         detailLocationTextView.setText(location);
         foodInfoTextView.setText(category);
+
+        titleTextView.setMaxWidth((int) width - Util.ConvertDPtoPX(getActivity().getApplicationContext(), 100));
 
         MapView mapView = new MapView(getActivity());
 

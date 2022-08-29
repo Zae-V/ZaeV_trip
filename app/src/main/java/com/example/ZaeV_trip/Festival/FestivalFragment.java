@@ -22,6 +22,7 @@ import com.example.ZaeV_trip.model.TouristSpot;
 import com.example.ZaeV_trip.model.TouristSpotDetail;
 import com.example.ZaeV_trip.model.TouristSpotDetail2;
 import com.example.ZaeV_trip.util.CharacterWrapTextView;
+import com.example.ZaeV_trip.util.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -71,6 +72,7 @@ public class FestivalFragment extends Fragment {
         String img = festival.getFirstImage();
         String tel = festival.getTel();
         String contentID = festival.getId();
+        float width = getArguments().getFloat("width");
 
         TextView festival_detail_txt = v.findViewById(R.id.festival_detail_txt);
         TextView festival_location = v.findViewById(R.id.festival_location);
@@ -82,6 +84,8 @@ public class FestivalFragment extends Fragment {
         ImageView content_img = v.findViewById(R.id.content_img);
         CharacterWrapTextView overview = v.findViewById(R.id.overview);
         ImageView bookmarkBtn = (ImageView) v.findViewById(R.id.bookmarkBtn);
+
+        festival_detail_txt.setMaxWidth((int) width - Util.ConvertDPtoPX(getActivity().getApplicationContext(), 100));
 
         festival_detail_txt.setText(name);
         festival_location.setText(location);

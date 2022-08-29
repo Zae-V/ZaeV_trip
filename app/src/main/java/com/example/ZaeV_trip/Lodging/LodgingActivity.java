@@ -1,7 +1,9 @@
 package com.example.ZaeV_trip.Lodging;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -48,6 +50,12 @@ public class LodgingActivity extends AppCompatActivity {
         searchView = findViewById(R.id.lodgingSearchBar);
         Bundle extras = getIntent().getExtras();
 
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        float dpWidth = outMetrics.widthPixels;
+
         if(extras!=null){
             local = extras.getString("local");
         }
@@ -92,14 +100,8 @@ public class LodgingActivity extends AppCompatActivity {
                                 @Override
                                 public void onItemClick(View v, int i) {
                                     Bundle bundle = new Bundle();
-//                                    bundle.putString("name", filteredLodging.get(i).getTitle());
-//                                    bundle.putString("contentID", filteredLodging.get(i).getContentID());
-//                                    bundle.putString("location", filteredLodging.get(i).getAddr1());
-//                                    bundle.putString("x", filteredLodging.get(i).getMapX());
-//                                    bundle.putString("y", filteredLodging.get(i).getMapY());
-//                                    bundle.putString("firstImg", filteredLodging.get(i).getFirstImage());
-
                                     bundle.putSerializable("lodging", (Serializable) filteredLodging.get(i));
+                                    bundle.putFloat("width", dpWidth);
                                     
                                     LodgingFragment lodgingFragment = new LodgingFragment();
                                     lodgingFragment.setArguments(bundle);

@@ -1,6 +1,8 @@
 package com.example.ZaeV_trip.Restaurant;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 
 import androidx.appcompat.widget.SearchView;
@@ -37,6 +39,12 @@ public class RestaurantActivity extends AppCompatActivity {
         list = (RecyclerView) findViewById(R.id.restaurantList);
         searchView = findViewById(R.id.restaurantSearchBar);
         Bundle extras = getIntent().getExtras();
+
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        float dpWidth = outMetrics.widthPixels;
 
         if (extras != null) {
             local = extras.getString("local");
@@ -113,6 +121,7 @@ public class RestaurantActivity extends AppCompatActivity {
                                 bundle.putString("number", filteredRestaurant.get(i).getNumber());
                                 bundle.putString("menu", filteredRestaurant.get(i).getMenu());
                                 bundle.putString("category", filteredRestaurant.get(i).getCategory());
+                                bundle.putFloat("width", dpWidth);
 
 
                                 RestaurantFragment restaurantFragment = new RestaurantFragment();

@@ -1,7 +1,9 @@
 package com.example.ZaeV_trip.TouristSpot;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -45,6 +47,12 @@ public class TouristSpotActivity extends AppCompatActivity {
         list = (RecyclerView) findViewById(R.id.touristSpotList);
         searchView = findViewById(R.id.touristSpotSearchBar);
         Bundle extras = getIntent().getExtras();
+
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        float dpWidth = outMetrics.widthPixels;
 
         if(extras!=null){
             local = extras.getString("local");
@@ -91,6 +99,7 @@ public class TouristSpotActivity extends AppCompatActivity {
                                 public void onItemClick(View v, int i) {
                                     Bundle bundle = new Bundle();
                                     bundle.putSerializable("touristSpot", (Serializable) filteredTouristSpot.get(i));
+                                    bundle.putFloat("width", dpWidth);
 
                                     TouristSpotFragment touristSpotFragment = new TouristSpotFragment();
                                     touristSpotFragment.setArguments(bundle);

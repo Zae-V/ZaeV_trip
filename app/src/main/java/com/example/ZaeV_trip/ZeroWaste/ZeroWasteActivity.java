@@ -2,7 +2,9 @@ package com.example.ZaeV_trip.ZeroWaste;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -46,6 +48,12 @@ public class ZeroWasteActivity extends AppCompatActivity {
         list = (RecyclerView) findViewById(R.id.zeroWasteList);
         searchView = findViewById(R.id.zeroWasteSearchBar);
         Bundle extras = getIntent().getExtras();
+
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        float dpWidth = outMetrics.widthPixels;
 
         if(extras!=null){
             local = extras.getString("local");
@@ -93,14 +101,8 @@ public class ZeroWasteActivity extends AppCompatActivity {
                                 @Override
                                 public void onItemClick(View v, int i) {
                                     Bundle bundle = new Bundle();
-//                                    bundle.putString("name", filteredZeroWaste.get(i).getTitle());
-//                                    bundle.putString("contentID", filteredZeroWaste.get(i).getContentID());
-//                                    bundle.putString("location", filteredZeroWaste.get(i).getAddr1());
-//                                    bundle.putString("x", filteredZeroWaste.get(i).getMapX());
-//                                    bundle.putString("y", filteredZeroWaste.get(i).getMapY());
-//                                    bundle.putString("firstImg", filteredZeroWaste.get(i).getFirstImage());
-
                                     bundle.putSerializable("zeroWaste", (Serializable) filteredZeroWaste.get(i));
+                                    bundle.putFloat("width", dpWidth);
 
                                     ZeroWasteFragment zeroWasteFragment = new ZeroWasteFragment();
                                     zeroWasteFragment.setArguments(bundle);

@@ -1,7 +1,9 @@
 package com.example.ZaeV_trip.Reusable;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +47,12 @@ public class ReusableActivity extends AppCompatActivity {
         list = (RecyclerView) findViewById(R.id.reusableList);
         searchView = findViewById(R.id.reusableSearchBar);
         Bundle extras = getIntent().getExtras();
+
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        float dpWidth = outMetrics.widthPixels;
 
         if(extras!=null){
             local = extras.getString("local");
@@ -93,6 +101,7 @@ public class ReusableActivity extends AppCompatActivity {
                                     bundle.putString("x", filteredReusable.get(i).getMapX());
                                     bundle.putString("y", filteredReusable.get(i).getMapY());
                                     bundle.putString("reason",filteredReusable.get(i).getReason());
+                                    bundle.putFloat("width", dpWidth);
 
                                     ReusableFragment reusableFragment = new ReusableFragment();
                                     reusableFragment.setArguments(bundle);
