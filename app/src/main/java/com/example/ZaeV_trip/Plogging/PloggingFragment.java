@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Plogging;
 import com.example.ZaeV_trip.util.Util;
@@ -217,6 +218,13 @@ public class PloggingFragment extends Fragment {
 
     private void deleteBookmark(String crsKorNm){
         mDatabase.collection("BookmarkItem").document(userId).collection("plogging").document(crsKorNm).delete();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
 }
