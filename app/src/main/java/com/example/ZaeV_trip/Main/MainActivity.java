@@ -378,12 +378,15 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
+                    MainActivity.this.finish();
+
 
                     return true;
                 case R.id.bookmark:
                     Intent intent1 = new Intent(getApplicationContext(), BookmarkActivity.class);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent1);
+                    MainActivity.this.finish();
 
                     return true;
 
@@ -391,6 +394,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent2 = new Intent(getApplicationContext(), TravelActivity.class);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent2);
+                    MainActivity.this.finish();
 
 
                 case R.id.home:
