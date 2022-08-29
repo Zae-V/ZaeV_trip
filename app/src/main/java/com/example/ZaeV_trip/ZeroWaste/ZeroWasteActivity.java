@@ -77,72 +77,7 @@ public class ZeroWasteActivity extends AppCompatActivity {
         contentsListAllThread.start();
         contentsListAllThread.isAlive();
 
-        Thread ContentsMainDetailThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
 
-                Log.d("테스트Thread"," hello");
-
-                for(int k = 0; k < zeroWastes1.size(); k++) {
-                    Log.d("테스트Thread"," hello2");
-                    zeroWastes2 = getXmlData.getZeroWasteMainDetail(ZeroWasteActivity.this, String.valueOf(filteredZeroWasteContentsListALL.get(k).getContentID()));
-
-                    if (local.equals("전체 지역") || local.equals("전체")) {
-                        filteredZeroWasteMainDetail.add(zeroWastes2.get(k));
-                    }
-                    else {
-                        if (zeroWastes2.get(k).getAddr1().contains(local)) {
-                            filteredZeroWasteMainDetail.add(zeroWastes2.get(k));
-                        }
-
-
-                    ZeroWasteAdapter adapter = new ZeroWasteAdapter(ZeroWasteActivity.this, filteredZeroWasteMainDetail);
-                    list.setLayoutManager(new LinearLayoutManager(ZeroWasteActivity.this, RecyclerView.VERTICAL, false));
-                    list.setAdapter(adapter);
-
-                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                        @Override
-                        public boolean onQueryTextSubmit(String s) {
-                            adapter.getFilter().filter(s);
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onQueryTextChange(String s) {
-                            return false;
-                        }
-                    });
-
-                    adapter.setOnItemClickListener(new ZeroWasteAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(View v, int i) {
-                            Bundle bundle = new Bundle();
-
-                            bundle.putSerializable("zeroWaste", (Serializable) filteredZeroWasteMainDetail.get(i));
-
-                            ZeroWasteFragment zeroWasteFragment = new ZeroWasteFragment();
-                            zeroWasteFragment.setArguments(bundle);
-
-                            FragmentManager fragmentManager = getSupportFragmentManager();
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.container_zero_waste, zeroWasteFragment);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
-
-                        }
-                    });
-
-
-                }
-
-            }
-            }
-        });
-
-        ContentsMainDetailThread.start();
-        ContentsMainDetailThread.isAlive();
-
-        ;
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -150,14 +85,71 @@ public class ZeroWasteActivity extends AppCompatActivity {
                 try {
 
                     contentsListAllThread.join();
-                    ContentsMainDetailThread.join();
+                    Thread contentsListDetailThread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int k = 0; k < zeroWastes1.size(); k++) {
+                                ZeroWaste item = getXmlData.getZeroWasteMainDetail(ZeroWasteActivity.this, String.valueOf(filteredZeroWasteContentsListALL.get(k).getContentID()));
+                                filteredZeroWasteMainDetail.add(item);
+
+                            }
+                        }
+                    });
+
+                    contentsListDetailThread.start();
+                    contentsListDetailThread.join();
+
+                    Log.e("array", String.valueOf(filteredZeroWasteMainDetail));
+
+                    DrawInAdapter(filteredZeroWasteMainDetail);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
                 finish();
             }
         }, 3000);
 
+
+
+
+    }
+    public void DrawInAdapter(ArrayList<ZeroWaste> items){
+        ZeroWasteAdapter adapter = new ZeroWasteAdapter(ZeroWasteActivity.this, filteredZeroWasteMainDetail);
+        list.setLayoutManager(new LinearLayoutManager(ZeroWasteActivity.this, RecyclerView.VERTICAL, false));
+        list.setAdapter(adapter);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                adapter.getFilter().filter(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
+        adapter.setOnItemClickListener(new ZeroWasteAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int i) {
+                Bundle bundle = new Bundle();
+
+                bundle.putSerializable("zeroWaste", (Serializable) filteredZeroWasteMainDetail.get(i));
+
+                ZeroWasteFragment zeroWasteFragment = new ZeroWasteFragment();
+                zeroWasteFragment.setArguments(bundle);
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_zero_waste, zeroWasteFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+            }
+        });
     }
 }

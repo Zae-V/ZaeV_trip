@@ -921,8 +921,14 @@ public class getXmlData {
 
     //For RecyclerView
 
-    public static ArrayList<ZeroWaste> getZeroWasteMainDetail(Context cnt,String content_id){
+    public static ZeroWaste getZeroWasteMainDetail(Context cnt,String content_id){
         ArrayList<ZeroWaste> zeroWastes = new ArrayList<ZeroWaste>();
+
+        ZeroWaste zeroWaste = new ZeroWaste(
+                "",
+                "",
+                "",
+                "");
         String BaseURL = "https://map.seoul.go.kr/smgis/apps/poi.do";
         String cmd = "getNewContentsDetail";
         String key = cnt.getString(R.string.zerowaste_key);
@@ -971,11 +977,6 @@ public class getXmlData {
                     // body를 각 JSONObject 형태로 객체를 생성한다.
                     JSONObject temp = body.getJSONObject(i);
 
-                    ZeroWaste zeroWaste = new ZeroWaste(
-                            "",
-                            "",
-                            "",
-                            "");
 
                     // zeroWaste의 json 값들을 넣는다
                     zeroWaste.setName(temp.getString("COT_CONTS_NAME"));
@@ -983,11 +984,7 @@ public class getXmlData {
                     zeroWaste.setThemeSubID(temp.getString("COT_THEME_SUB_ID"));
                     zeroWaste.setAddr1(temp.getString("COT_ADDR_FULL_NEW"));
 
-                    zeroWastes.add(zeroWaste);
-
                 }
-                // adapter에 적용
-                //zeroWastes.add(zeroWaste);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -1001,7 +998,7 @@ public class getXmlData {
             e.printStackTrace();
         }
 
-        return zeroWastes;
+        return zeroWaste;
     }
 
     //For Fragment

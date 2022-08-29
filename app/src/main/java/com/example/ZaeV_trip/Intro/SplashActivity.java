@@ -89,28 +89,6 @@ public class SplashActivity extends AppCompatActivity {
         bikeThread.start();
         bikeThread.isAlive();
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (MySharedPreferences.getUserEmail(SplashActivity.this).length() != 0) {
-//
-//                    try {
-//                        restaurantThread.join();
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                    Toast.makeText(getApplicationContext(), "자동 로그인 되었습니다.", Toast.LENGTH_SHORT).show();
-//
-//                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-//                    intent.putExtras(bundle);
-//                    intent.putExtra("req", "splashData");
-//                    startActivity(intent);
-//                } else {
-//                    Intent intent = new Intent(SplashActivity.this, IntroActivity.class);
-//                    startActivity(intent);
-//                }
-//            }
-//        }).start();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
