@@ -2,6 +2,7 @@ package com.example.ZaeV_trip.ZeroWaste;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ZaeV_trip.Intro.IntroActivity;
 import com.example.ZaeV_trip.Intro.SplashActivity;
 import com.example.ZaeV_trip.Main.MainActivity;
+import com.example.ZaeV_trip.ProgressDialog;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.ZeroWaste;
 import com.example.ZaeV_trip.util.MySharedPreferences;
@@ -50,6 +52,8 @@ public class ZeroWasteActivity extends AppCompatActivity {
     SearchView searchView;
     RecyclerView list;
 
+    ProgressDialog customProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,13 +81,15 @@ public class ZeroWasteActivity extends AppCompatActivity {
         contentsListAllThread.start();
         contentsListAllThread.isAlive();
 
+        customProgressDialog = new ProgressDialog(this);
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        customProgressDialog.show();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 try {
-
                     contentsListAllThread.join();
                     Thread contentsListDetailThread = new Thread(new Runnable() {
                         @Override
@@ -118,6 +124,8 @@ public class ZeroWasteActivity extends AppCompatActivity {
         ZeroWasteAdapter adapter = new ZeroWasteAdapter(ZeroWasteActivity.this, items);
         list.setLayoutManager(new LinearLayoutManager(ZeroWasteActivity.this, RecyclerView.VERTICAL, false));
         list.setAdapter(adapter);
+
+        customProgressDialog.dismiss();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
