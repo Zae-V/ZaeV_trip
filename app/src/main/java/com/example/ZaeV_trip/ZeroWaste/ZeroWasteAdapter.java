@@ -63,7 +63,7 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
 
         String imageUrl = filtered.get(position).getImage();
         Glide.with(holder.itemView.getContext())
-                .load(imageUrl)
+                .load("https://map.seoul.go.kr" + imageUrl)
                 .placeholder(R.drawable.default_bird_img)
                 .error(R.drawable.default_bird_img)
                 .fallback(R.drawable.default_bird_img)

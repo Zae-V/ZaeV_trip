@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -123,7 +124,7 @@ public class CafeFragment extends Fragment {
 
         titleTextView.setText(name);
         telTextView.setText(number);
-        detailLocationTextView.setText(location);
+        detailLocationTextView.setText(Html.fromHtml("<b>상세 주소: </b>" + location));
         foodInfoTextView.setText(category);
 
         titleTextView.setMaxWidth((int) width - Util.ConvertDPtoPX(getActivity().getApplicationContext(), 100));

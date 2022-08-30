@@ -99,7 +99,7 @@ public class TouristSpotFragment extends Fragment {
         }
 
         if (!detail_location.equals("")) {
-            detailLocationTextView.setText(detail_location);
+            detailLocationTextView.setText(Html.fromHtml("<b>상세 주소: </b>"+detail_location));
         } else {
             setVisibility(3);
         }
@@ -136,8 +136,8 @@ public class TouristSpotFragment extends Fragment {
                             setVisibility(5);
                         }
 
-                        if (!touristSpotDetail.getOverview().equals("")) {
-                            homepageTextView.setText(Html.fromHtml(touristSpotDetail.getHomepage()));
+                        if (!touristSpotDetail.getHomepage().equals("")) {
+                            homepageTextView.setText(Html.fromHtml("<b>홈페이지: </b>" + touristSpotDetail.getHomepage()));
                         } else {
                             setVisibility(6);
                         }
@@ -171,7 +171,7 @@ public class TouristSpotFragment extends Fragment {
                         }
 
                         if (!touristSpotDetail2.getRestdate().equals("")) {
-                            restDateTextView.setText("쉬는날: "+ touristSpotDetail2.getRestdate());
+                            restDateTextView.setText(Html.fromHtml("<b>쉬는날: </b>"+ touristSpotDetail2.getRestdate()));
                         } else {
                             setVisibility(4);
                         }

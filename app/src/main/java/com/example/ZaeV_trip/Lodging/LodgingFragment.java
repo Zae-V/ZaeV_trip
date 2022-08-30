@@ -100,14 +100,14 @@ public class LodgingFragment extends Fragment {
             setVisibility(1);
         }
 
-        if (!location.equals("")) {
+        if (!telephone.equals("")) {
             telTextView.setText(telephone);
         } else {
             setVisibility(2);
         }
 
         if (!detail_location.equals("")) {
-            detailLocationTextView.setText(detail_location);
+            detailLocationTextView.setText(Html.fromHtml("<b>상세 주소: </b>" + detail_location));
         } else {
             setVisibility(3);
         }
@@ -143,8 +143,8 @@ public class LodgingFragment extends Fragment {
                             setVisibility(5);
                         }
 
-                        if (!lodgingDetail.getOverview().equals("")) {
-                            homepageTextView.setText(Html.fromHtml(lodgingDetail.getHomepage()));
+                        if (!lodgingDetail.getHomepage().equals("")) {
+                            homepageTextView.setText(Html.fromHtml("<b>홈페이지: </b>" +lodgingDetail.getHomepage()));
                         } else {
                             setVisibility(6);
                         }

@@ -6,7 +6,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -52,6 +54,7 @@ public class ZeroWasteActivity extends AppCompatActivity {
     SearchView searchView;
     RecyclerView list;
 
+    float dpWidth;
     ProgressDialog customProgressDialog;
 
     @Override
@@ -62,6 +65,12 @@ public class ZeroWasteActivity extends AppCompatActivity {
         list = (RecyclerView) findViewById(R.id.zeroWasteList);
         searchView = findViewById(R.id.zeroWasteSearchBar);
         Bundle extras = getIntent().getExtras();
+
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        dpWidth = outMetrics.widthPixels;
 
         if(extras!=null){
             local = extras.getString("local");
@@ -173,6 +182,7 @@ public class ZeroWasteActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
 
                 bundle.putSerializable("zeroWaste", (Serializable) filteredZeroWasteMainDetail.get(i));
+                bundle.putFloat("width", dpWidth);
 
                 ZeroWasteFragment zeroWasteFragment = new ZeroWasteFragment();
                 zeroWasteFragment.setArguments(bundle);

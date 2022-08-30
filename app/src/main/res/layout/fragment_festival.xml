@@ -186,7 +186,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:textColor="@color/text_solid_black"
-                android:fontFamily="@font/notosans_regular"
                 android:textSize="15dp"
                 />
 

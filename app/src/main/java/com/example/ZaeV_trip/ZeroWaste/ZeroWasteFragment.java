@@ -40,8 +40,10 @@ public class ZeroWasteFragment extends Fragment {
     TextView restDateTextView;
     TextView overviewTextView;
     TextView homepageTextView;
+    TextView activityTextView;
+    TextView menuTextView;
+    TextView timeTextView;
     ImageView content_img;
-
     ImageView bookmarkBtn;
 
     @Override
@@ -65,38 +67,83 @@ public class ZeroWasteFragment extends Fragment {
         String location = "";
         String telephone = zeroWaste.getTelephone();
         String image = zeroWaste.getImage();
+        String time = zeroWaste.getTime();
+        String homepage = zeroWaste.getHomepage();
+        String activity = zeroWaste.getActivity();
+        String menu = zeroWaste.getMenu();
+
+        Log.d("ZeroWasteDBTEST", name);
+        Log.d("ZeroWasteDBTEST", id);
+        Log.d("ZeroWasteDBTEST", x);
+        Log.d("ZeroWasteDBTEST", y);
+        Log.d("ZeroWasteDBTEST", detail_location);
+        Log.d("ZeroWasteDBTEST", telephone);
+        Log.d("ZeroWasteDBTEST", "나 이미지다" + image);
+        Log.d("ZeroWasteDBTEST", time);
+
         float width = getArguments().getFloat("width");
 
         bookmarkBtn = (ImageView) v.findViewById(R.id.zeroWasteBookmarkBtn);
         titleTextView = v.findViewById(R.id.detail_txt);
-        locationTextView = v.findViewById(R.id.location);
         telTextView = v.findViewById(R.id.tel);
+        activityTextView = v.findViewById(R.id.activity);
+        menuTextView = v.findViewById(R.id.menu);
 
         detailLocationTextView = v.findViewById(R.id.detail_location);
         restDateTextView = v.findViewById(R.id.restDate);
         overviewTextView = v.findViewById(R.id.overview);
         homepageTextView = v.findViewById(R.id.homepage);
+        timeTextView = v.findViewById(R.id.time);
         content_img = v.findViewById(R.id.content_img);
 
         titleTextView.setMaxWidth((int) width - Util.ConvertDPtoPX(getActivity().getApplicationContext(), 100));
         titleTextView.setText(name);
 
-        if (!location.equals("")) {
-            locationTextView.setText(location);
-        } else {
-            setVisibility(1);
-        }
-
-        if (!location.equals("")) {
+        if (!telephone.equals("")) {
             telTextView.setText(telephone);
         } else {
-            setVisibility(2);
+            telTextView.setVisibility(View.GONE);
         }
 
         if (!detail_location.equals("")) {
-            detailLocationTextView.setText(detail_location);
+            detailLocationTextView.setText(Html.fromHtml("<b>상세 장소: </b>" + detail_location));
         } else {
-            setVisibility(3);
+            detailLocationTextView.setVisibility(View.GONE);
+        }
+
+        if (!time.equals("")) {
+            timeTextView.setText(Html.fromHtml("<b>운영 시간: </b>" + time));
+        } else {
+            timeTextView.setVisibility(View.GONE);
+        }
+
+        if (!homepage.equals("")) {
+            homepageTextView.setText(Html.fromHtml("<b>홈페이지: </b>" + homepage));
+        } else {
+            homepageTextView.setVisibility(View.GONE);
+        }
+
+        if (!menu.equals("")) {
+            menuTextView.setText(Html.fromHtml("<b>취급 품목(메뉴): </b>" + menu));
+        } else {
+            menuTextView.setVisibility(View.GONE);
+        }
+
+        if (!activity.equals("")) {
+            activityTextView.setText(Html.fromHtml("<b>제로웨이스트 활동내용: </b>" + activity));
+        } else {
+            activityTextView.setVisibility(View.GONE);
+        }
+
+        if (!image.equals("")) {
+            Glide.with(v)
+                    .load("https://map.seoul.go.kr" + image)
+                    .placeholder(R.drawable.default_profile_image)
+                    .error(R.drawable.default_profile_image)
+                    .fallback(R.drawable.default_profile_image)
+                    .into(content_img);
+        } else {
+            content_img.setVisibility(View.GONE);
         }
 
         MapView mapView = new MapView(getActivity());
@@ -115,41 +162,6 @@ public class ZeroWasteFragment extends Fragment {
 
         ViewGroup mapViewContainer = (ViewGroup) v.findViewById(R.id.mapView);
         mapViewContainer.addView(mapView);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-//                        if (!zeroWasteDetail.getOverview().equals("")) {
-//                            overviewTextView.setText(Html.fromHtml(zeroWasteDetail.getOverview()));
-//                        } else {
-//                            setVisibility(5);
-//                        }
-//
-//                        if (!zeroWasteDetail.getOverview().equals("")) {
-//                            homepageTextView.setText(Html.fromHtml(zeroWasteDetail.getHomepage()));
-//                        } else {
-//                            setVisibility(6);
-//                        }
-
-                        if (!image.equals("")) {
-                            Glide.with(v)
-                                    .load(image)
-                                    .placeholder(R.drawable.default_profile_image)
-                                    .error(R.drawable.default_profile_image)
-                                    .fallback(R.drawable.default_profile_image)
-                                    .into(content_img);
-                        } else {
-                            setVisibility(7);
-                        }
-
-                    }
-                });
-            }
-        }).start();
 
         mDatabase.collection("BookmarkItem").document(userId).collection("zeroWaste").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -202,33 +214,5 @@ public class ZeroWasteFragment extends Fragment {
     
     private void deleteBookmark(String id){
         mDatabase.collection("BookmarkItem").document(userId).collection("zeroWaste").document(id).delete();
-    }
-    
-    public void setVisibility(Integer idx) {
-        switch (idx) {
-            case 1:
-                locationTextView.setVisibility(View.GONE);
-                break;
-            case 2:
-                telTextView.setVisibility(View.GONE);
-                break;
-            case 3:
-                detailLocationTextView.setVisibility(View.GONE);
-                break;
-            case 4:
-                restDateTextView.setVisibility(View.GONE);
-                break;
-            case 5:
-                overviewTextView.setVisibility(View.GONE);
-                break;
-            case 6:
-                homepageTextView.setVisibility(View.GONE);
-                break;
-            case 7:
-                content_img.setVisibility(View.GONE);
-                break;
-            default:
-                Log.d("WithdrawalActivity", "default");
-        }
     }
 }

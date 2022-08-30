@@ -111,24 +111,13 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
-                android:id="@+id/restDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/text_solid_black"
-                android:textSize="15dp"
-                app:layout_constraintTop_toBottomOf="@id/detail_location"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <TextView
                 android:id="@+id/homepage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/text_solid_black"
                 android:textSize="15dp"
-                app:layout_constraintTop_toBottomOf="@id/restDate"
+                app:layout_constraintTop_toBottomOf="@id/detail_location"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -171,7 +160,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:textColor="@color/text_solid_black"
-                android:fontFamily="@font/notosans_regular"
                 android:textSize="15dp"/>
 
 
