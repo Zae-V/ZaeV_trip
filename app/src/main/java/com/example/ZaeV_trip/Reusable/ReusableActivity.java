@@ -6,6 +6,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -41,6 +43,8 @@ public class ReusableActivity extends AppCompatActivity {
     SearchView searchView;
     RecyclerView list;
     ProgressDialog customProgressDialog;
+    public static TextView notDataText;
+    public static ImageView notDataImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,8 @@ public class ReusableActivity extends AppCompatActivity {
 
         list = (RecyclerView) findViewById(R.id.reusableList);
         searchView = findViewById(R.id.reusableSearchBar);
+        notDataText = findViewById(R.id.notDataText);
+        notDataImage = findViewById(R.id.notDataImage);
         Bundle extras = getIntent().getExtras();
 
         customProgressDialog = new ProgressDialog(this);
@@ -88,6 +94,13 @@ public class ReusableActivity extends AppCompatActivity {
                             ReusableAdapter adapter = new ReusableAdapter(ReusableActivity.this, filteredReusable);
                             list.setLayoutManager(new LinearLayoutManager(ReusableActivity.this, RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
+
+                            if(adapter.getItemCount() == 0){
+                                notDataImage.setVisibility(View.VISIBLE);
+                                notDataText.setVisibility(View.VISIBLE);
+                                Log.d("어댑터 테스트", String.valueOf(adapter.getItemCount()));
+                            }
+
                             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                 @Override
                                 public boolean onQueryTextSubmit(String s) {
@@ -123,6 +136,8 @@ public class ReusableActivity extends AppCompatActivity {
                                     //handle click
                                     searchView.setQuery("", false);
                                     adapter.getFilter().filter("");
+                                    notDataImage.setVisibility(View.GONE);
+                                    notDataText.setVisibility(View.GONE);
 
                                 }
                             });

@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.Cafe.CafeAdapter;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
@@ -135,6 +136,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             filtered.clear();
             filtered.addAll((ArrayList<Restaurant>) filterResults.values);
+
+            if(filtered.size() ==0) {
+                RestaurantActivity.notDataImage.setVisibility(View.VISIBLE);
+                RestaurantActivity.notDataText.setVisibility(View.VISIBLE);
+            }
+            Log.d("어댑터 테스트 필터", String.valueOf(filtered.size()));
+
             notifyDataSetChanged();
         }
     }

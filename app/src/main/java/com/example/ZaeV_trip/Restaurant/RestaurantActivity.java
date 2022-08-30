@@ -3,8 +3,11 @@ package com.example.ZaeV_trip.Restaurant;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.SearchView;
 
@@ -33,6 +36,8 @@ public class RestaurantActivity extends AppCompatActivity {
     SearchView searchView;
     RecyclerView list;
     ProgressDialog customProgressDialog;
+    public static TextView notDataText;
+    public static ImageView notDataImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,8 @@ public class RestaurantActivity extends AppCompatActivity {
 
         list = (RecyclerView) findViewById(R.id.restaurantList);
         searchView = findViewById(R.id.restaurantSearchBar);
+        notDataText = findViewById(R.id.notDataText);
+        notDataImage = findViewById(R.id.notDataImage);
         Bundle extras = getIntent().getExtras();
 
         customProgressDialog = new ProgressDialog(this);
@@ -88,6 +95,12 @@ public class RestaurantActivity extends AppCompatActivity {
                         RestaurantAdapter adapter = new RestaurantAdapter(RestaurantActivity.this, filteredRestaurant);
                         list.setLayoutManager(new LinearLayoutManager(RestaurantActivity.this, RecyclerView.VERTICAL, false));
                         list.setAdapter(adapter);
+
+                        if(adapter.getItemCount() == 0){
+                            notDataImage.setVisibility(View.VISIBLE);
+                            notDataText.setVisibility(View.VISIBLE);
+                            Log.d("어댑터 테스트", String.valueOf(adapter.getItemCount()));
+                        }
                         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                             @Override
                             public boolean onQueryTextSubmit(String s) {
@@ -125,6 +138,8 @@ public class RestaurantActivity extends AppCompatActivity {
                                 //handle click
                                 searchView.setQuery("", false);
                                 adapter.getFilter().filter("");
+                                notDataImage.setVisibility(View.GONE);
+                                notDataText.setVisibility(View.GONE);
 
                             }
                         });

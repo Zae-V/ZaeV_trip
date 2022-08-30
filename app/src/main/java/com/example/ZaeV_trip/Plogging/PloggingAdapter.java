@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Plogging;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -157,6 +158,12 @@ public class PloggingAdapter extends RecyclerView.Adapter<PloggingAdapter.ViewHo
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             filtered.clear();
             filtered.addAll((ArrayList<Plogging>) filterResults.values);
+
+            if(filtered.size() == 0) {
+                PloggingActivity.notDataImage.setVisibility(View.VISIBLE);
+                PloggingActivity.notDataText.setVisibility(View.VISIBLE);
+            }
+            Log.d("어댑터 테스트 필터", String.valueOf(filtered.size()));
             notifyDataSetChanged();
         }
     }

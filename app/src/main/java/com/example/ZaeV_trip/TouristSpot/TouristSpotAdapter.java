@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.Restaurant.RestaurantAdapter;
 import com.example.ZaeV_trip.model.Restaurant;
@@ -132,6 +133,12 @@ public class TouristSpotAdapter extends RecyclerView.Adapter<TouristSpotAdapter.
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             filtered.clear();
             filtered.addAll((ArrayList<TouristSpot>) filterResults.values);
+
+            if(filtered.size() == 0) {
+                TouristSpotActivity.notDataImage.setVisibility(View.VISIBLE);
+                TouristSpotActivity.notDataText.setVisibility(View.VISIBLE);
+            }
+            Log.d("어댑터 테스트 필터", String.valueOf(filtered.size()));
             notifyDataSetChanged();
         }
     }

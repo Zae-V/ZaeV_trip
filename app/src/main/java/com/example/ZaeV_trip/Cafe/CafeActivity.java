@@ -37,8 +37,8 @@ public class CafeActivity extends AppCompatActivity {
 
     String local;
     ProgressDialog customProgressDialog;
-    TextView notDataText;
-    ImageView notDataImage;
+    public static TextView notDataText;
+    public static ImageView notDataImage;
     CafeAdapter cafeAdapter;
 
     @Override
@@ -111,13 +111,11 @@ public class CafeActivity extends AppCompatActivity {
                             @Override
                             public boolean onQueryTextSubmit(String query) {
                                 cafeAdapter.getFilter().filter(query);
+
+                                cafeAdapter.notifyDataSetChanged();
                                 Log.d("어댑터 테스트", String.valueOf(cafeAdapter.getItemCount()));
-                                if(cafeAdapter.getItemCount() == 0){
-                                    notDataImage.setVisibility(View.VISIBLE);
-                                    notDataText.setVisibility(View.VISIBLE);
-                                    Log.d("어댑터 테스트", String.valueOf(cafeAdapter.getItemCount()));
-                                }
                                 return false;
+
                             }
 
                             @Override
@@ -150,6 +148,8 @@ public class CafeActivity extends AppCompatActivity {
                                 //handle click
                                 searchView.setQuery("", false);
                                 cafeAdapter.getFilter().filter("");
+                                notDataImage.setVisibility(View.GONE);
+                                notDataText.setVisibility(View.GONE);
 
                             }
                         });

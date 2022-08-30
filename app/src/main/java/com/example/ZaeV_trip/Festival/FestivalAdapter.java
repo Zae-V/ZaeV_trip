@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.Cafe.CafeAdapter;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.TouristSpot.TouristSpotActivity;
@@ -133,7 +134,15 @@ public class FestivalAdapter extends RecyclerView.Adapter<FestivalAdapter.ViewHo
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             filtered.clear();
             filtered.addAll((ArrayList<Festival>) filterResults.values);
+
+            if(filtered.size() == 0) {
+                FestivalActivity.notDataImage.setVisibility(View.VISIBLE);
+                FestivalActivity.notDataText.setVisibility(View.VISIBLE);
+            }
+            Log.d("어댑터 테스트 필터", String.valueOf(filtered.size()));
+
             notifyDataSetChanged();
+
         }
     }
     public interface OnItemClickListener{

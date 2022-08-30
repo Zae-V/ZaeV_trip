@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Lodging;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -130,6 +131,14 @@ public class LodgingAdapter extends RecyclerView.Adapter<LodgingAdapter.ViewHold
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             filtered.clear();
             filtered.addAll((ArrayList<Lodging>) filterResults.values);
+
+            if(filtered.size() == 0){
+                LodgingActivity.notDataImage.setVisibility(View.VISIBLE);
+                LodgingActivity.notDataText.setVisibility(View.VISIBLE);
+                Log.d("어댑터 테스트 필터", String.valueOf(filtered.size()));
+            }
+
+
             notifyDataSetChanged();
         }
     }

@@ -8,6 +8,8 @@ import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -40,6 +42,8 @@ public class FestivalActivity extends AppCompatActivity {
 
     RecyclerView festivalList;
     SearchView searchView;
+    public static TextView notDataText;
+    public static ImageView notDataImage;
 
     ProgressDialog customProgressDialog;
 
@@ -67,6 +71,8 @@ public class FestivalActivity extends AppCompatActivity {
 
         festivalList = findViewById(R.id.festivalList);
         searchView = findViewById(R.id.searchBar);
+        notDataText = findViewById(R.id.notDataText);
+        notDataImage = findViewById(R.id.notDataImage);
 
         new Thread(new Runnable() {
             @Override
@@ -91,6 +97,12 @@ public class FestivalActivity extends AppCompatActivity {
                         FestivalAdapter adapter = new FestivalAdapter(FestivalActivity.this, filteredFestival);
                         festivalList.setLayoutManager(new LinearLayoutManager(FestivalActivity.this, RecyclerView.VERTICAL, false));
                         festivalList.setAdapter(adapter);
+
+                        if(adapter.getItemCount() == 0){
+                            notDataImage.setVisibility(View.VISIBLE);
+                            notDataText.setVisibility(View.VISIBLE);
+                            Log.d("어댑터 테스트", String.valueOf(adapter.getItemCount()));
+                        }
 
                         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                             @Override
@@ -129,6 +141,8 @@ public class FestivalActivity extends AppCompatActivity {
                                 //handle click
                                 searchView.setQuery("", false);
                                 adapter.getFilter().filter("");
+                                notDataImage.setVisibility(View.GONE);
+                                notDataText.setVisibility(View.GONE);
 
                             }
                         });

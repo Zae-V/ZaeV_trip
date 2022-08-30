@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Cafe;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -132,6 +133,12 @@ public class CafeAdapter extends RecyclerView.Adapter<CafeAdapter.ViewHolder> im
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             filtered.clear();
             filtered.addAll((ArrayList<Cafe>) filterResults.values);
+
+            if(filtered.size() == 0) {
+                CafeActivity.notDataImage.setVisibility(View.VISIBLE);
+                CafeActivity.notDataText.setVisibility(View.VISIBLE);
+            }
+            Log.d("어댑터 테스트 필터", String.valueOf(filtered.size()));
             notifyDataSetChanged();
         }
     }

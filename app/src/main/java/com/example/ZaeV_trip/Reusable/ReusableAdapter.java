@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.Restaurant;
 import com.example.ZaeV_trip.model.Reusable;
@@ -130,6 +131,13 @@ public class ReusableAdapter extends RecyclerView.Adapter<ReusableAdapter.ViewHo
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             filtered.clear();
             filtered.addAll((ArrayList<Reusable>) filterResults.values);
+
+            if(filtered.size() == 0) {
+                ReusableActivity.notDataImage.setVisibility(View.VISIBLE);
+                ReusableActivity.notDataText.setVisibility(View.VISIBLE);
+
+            }
+            Log.d("어댑터 테스트 필터", String.valueOf(filtered.size()));
             notifyDataSetChanged();
         }
     }
