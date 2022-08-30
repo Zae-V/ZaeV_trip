@@ -104,17 +104,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="7dp"
         android:fontFamily="@font/nanumsquare"
         android:gravity="center_horizontal|top"
         android:text="in Seoul"
-        android:textColor="#781F1F1F"
+        android:textColor="#2e2e2e"
         android:textSize="16dp"
         android:translationY="-1.23dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintVertical_weight="1"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="42dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:fontFamily="@font/nanumsquare"
+        android:gravity="center_horizontal|top"
+        android:text="개인정보처리방침"
+        android:textColor="#781F1F1F"
+        android:textSize="11dp"
+        android:translationY="-1.23dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_weight="1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
