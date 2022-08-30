@@ -921,13 +921,21 @@ public class getXmlData {
     //For RecyclerView
 
     public static ZeroWaste getZeroWasteMainDetail(Context cnt,String content_id){
-        ArrayList<ZeroWaste> zeroWastes = new ArrayList<ZeroWaste>();
 
         ZeroWaste zeroWaste = new ZeroWaste(
                 "",
                 "",
                 "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
                 "");
+
         String BaseURL = "https://map.seoul.go.kr/smgis/apps/poi.do";
         String cmd = "getNewContentsDetail";
         String key = cnt.getString(R.string.zerowaste_key);
@@ -991,6 +999,7 @@ public class getXmlData {
                     zeroWaste.setHomepage(temp.getString("COT_VALUE_05"));
                     zeroWaste.setActivity(temp.getString("COT_VALUE_02"));
                     zeroWaste.setMenu(temp.getString("COT_VALUE_04"));
+
                 }
 
             } catch (JSONException e) {

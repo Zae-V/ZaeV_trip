@@ -29,7 +29,6 @@ import java.util.ArrayList;
 public class ZeroWasteActivity extends AppCompatActivity {
 
     ArrayList<ZeroWaste> zeroWastes1 = new ArrayList<ZeroWaste>();
-    ArrayList<ZeroWaste> zeroWastes2 = new ArrayList<ZeroWaste>();
 
     ArrayList<ZeroWaste> filteredZeroWasteContentsListALL = new ArrayList<ZeroWaste>();
     ArrayList<ZeroWaste> filteredZeroWasteMainDetail = new ArrayList<ZeroWaste>();

@@ -34,7 +34,7 @@ public class ZeroWasteFragment extends Fragment {
     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     TextView titleTextView;
-    TextView locationTextView;
+    TextView categoryTextView;
     TextView telTextView;
     TextView detailLocationTextView;
     TextView restDateTextView;
@@ -64,7 +64,7 @@ public class ZeroWasteFragment extends Fragment {
         String x = zeroWaste.getMapX();
         String y = zeroWaste.getMapY();
         String detail_location = zeroWaste.getAddr1();
-        String location = "";
+        String category = zeroWaste.getThemeSubID();
         String telephone = zeroWaste.getTelephone();
         String image = zeroWaste.getImage();
         String time = zeroWaste.getTime();
@@ -85,6 +85,7 @@ public class ZeroWasteFragment extends Fragment {
 
         bookmarkBtn = (ImageView) v.findViewById(R.id.zeroWasteBookmarkBtn);
         titleTextView = v.findViewById(R.id.detail_txt);
+        categoryTextView = v.findViewById(R.id.category);
         telTextView = v.findViewById(R.id.tel);
         activityTextView = v.findViewById(R.id.activity);
         menuTextView = v.findViewById(R.id.menu);
@@ -98,6 +99,31 @@ public class ZeroWasteFragment extends Fragment {
 
         titleTextView.setMaxWidth((int) width - Util.ConvertDPtoPX(getActivity().getApplicationContext(), 100));
         titleTextView.setText(name);
+
+        if (!category.equals("")) {
+            switch (category) {
+                case "1":
+                    categoryTextView.setText("카페");
+                    break;
+                case "2":
+                    categoryTextView.setText("식당");
+                    break;
+                case "3":
+                    categoryTextView.setText("리필샵");
+                    break;
+                case "4":
+                    categoryTextView.setText("친환경생필품점");
+                    break;
+                case "5":
+                    categoryTextView.setText("기타");
+                    break;
+                default:
+                    categoryTextView.setText("");
+                    break;
+            }
+        } else {
+            categoryTextView.setVisibility(View.GONE);
+        }
 
         if (!telephone.equals("")) {
             telTextView.setText(telephone);
@@ -190,7 +216,7 @@ public class ZeroWasteFragment extends Fragment {
                 }
                 else if(bookmarkBtn.isActivated()){
                     // 선택 동작
-                    writeBookmark(name, location, x, y, id, telephone);
+                    writeBookmark(name, detail_location, x, y, id, telephone);
                 }
 
             }
@@ -199,11 +225,11 @@ public class ZeroWasteFragment extends Fragment {
         return v;
     }
 
-    private void writeBookmark(String name, String location, String x, String y, String id, String number){
+    private void writeBookmark(String name, String detail_location, String x, String y, String id, String number){
         Map<String, Object> info = new HashMap<>();
         info.put("name", name);
-        info.put("type", "식당");
-        info.put("address", location);
+        info.put("type", "제로웨이스트");
+        info.put("address", detail_location);
         info.put("position_x", x);
         info.put("position_y", y);
         info.put("serialNumber", id);
