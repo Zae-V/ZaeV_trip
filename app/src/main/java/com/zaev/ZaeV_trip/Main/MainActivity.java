@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                                 Bundle bundle = new Bundle();
                                 bundle.putSerializable("plogging", (Serializable) filteredBike.get(i));
                                 bundle.putFloat("width", dpWidth);
+                                bundle.putString("mainData", "true");
 
                                 PloggingFragment ploggingFragment = new PloggingFragment();
                                 ploggingFragment.setArguments(bundle);
@@ -207,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
 //                                bundle.putString("y",filteredEvent.get(i).getMapY());
                                 bundle.putSerializable("festival", (Serializable) filteredEvent.get(i));
                                 bundle.putFloat("width", dpWidth);
+                                bundle.putString("mainData", "true");
 
                                 FestivalFragment festivalFragment = new FestivalFragment();
                                 festivalFragment.setArguments(bundle);
@@ -273,6 +275,7 @@ public class MainActivity extends AppCompatActivity {
                                 bundle.putString("menu", filteredRestaurant.get(i).getMenu());
                                 bundle.putString("category", filteredRestaurant.get(i).getCategory());
                                 bundle.putFloat("width", dpWidth);
+                                bundle.putString("mainData", "true");
 
                                 RestaurantFragment restaurantFragment = new RestaurantFragment();
                                 restaurantFragment.setArguments(bundle);

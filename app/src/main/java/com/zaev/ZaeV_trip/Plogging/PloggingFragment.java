@@ -32,6 +32,7 @@ import java.util.Map;
 public class PloggingFragment extends Fragment {
     FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    boolean isMainData = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,10 @@ public class PloggingFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_plogging, container, false);
 
         float width = getArguments().getFloat("width");
+        if(getArguments().getString("mainData") == "true"){
+            isMainData = true;
+        }
+
         Log.d("DeviceDP","dpWidth : "+width);
         Plogging plogging = (Plogging) getArguments().getSerializable("plogging");
 
@@ -216,8 +221,10 @@ public class PloggingFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        MainActivity mainActivity = (MainActivity) getActivity();
-        mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        if(isMainData == true) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        }
     }
 
 }

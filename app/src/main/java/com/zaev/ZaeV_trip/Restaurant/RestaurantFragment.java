@@ -61,6 +61,8 @@ public class RestaurantFragment extends Fragment {
 
     ImageView bookmarkBtn;
 
+    boolean isMainData = false;
+
     BottomNavigationView bottomNavigationView;
 
     @Override
@@ -73,6 +75,10 @@ public class RestaurantFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_restaurant, container, false);
+
+        if(getArguments().getString("mainData") == "true"){
+            isMainData = true;
+        }
 
         titleTextView = v.findViewById(R.id.detail_txt);
         telTextView = v.findViewById(R.id.tel);
@@ -255,7 +261,9 @@ public class RestaurantFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        MainActivity mainActivity = (MainActivity) getActivity();
-        mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        if (isMainData == true) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        }
     }
 }
