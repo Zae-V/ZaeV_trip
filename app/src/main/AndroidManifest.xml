@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.ZaeV_trip">
+    package="com.zaev.ZaeV_trip">
 
     <!-- 인터넷 사용 권한 설정 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:name=".util.GlobalApplication"
+        android:name="com.zaev.ZaeV_trip.util.GlobalApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -24,16 +24,16 @@
         tools:targetApi="31"
         android:screenOrientation="portrait">
         <service
-            android:name=".util.MyService"
+            android:name="com.zaev.ZaeV_trip.util.MyService"
             android:enabled="true"
             android:exported="true"></service>
 
         <activity
-            android:name=".Error.ErrorActivity"
+            android:name="com.zaev.ZaeV_trip.Error.ErrorActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Intro.SplashActivity"
+            android:name="com.zaev.ZaeV_trip.Intro.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -59,19 +59,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Bookmark.BookmarkActivity"
+            android:name="com.zaev.ZaeV_trip.Bookmark.BookmarkActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Schedule.TravelActivity"
+            android:name="com.zaev.ZaeV_trip.Schedule.TravelActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Search.SearchActivity"
+            android:name="com.zaev.ZaeV_trip.Search.SearchActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Main.MainActivity"
+            android:name="com.zaev.ZaeV_trip.Main.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
 
@@ -80,55 +80,55 @@
             android:value="384534ab54f6c87dab118c43e14471d6" />
 
         <activity
-            android:name=".Intro.IntroActivity"
+            android:name="com.zaev.ZaeV_trip.Intro.IntroActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Sign.SignActivity"
+            android:name="com.zaev.ZaeV_trip.Sign.SignActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Profile.ProfileActivity"
+            android:name="com.zaev.ZaeV_trip.Profile.ProfileActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Profile.ModifyActivity"
+            android:name="com.zaev.ZaeV_trip.Profile.ModifyActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Profile.WithdrawalActivity"
+            android:name="com.zaev.ZaeV_trip.Profile.WithdrawalActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Cafe.CafeActivity"
+            android:name="com.zaev.ZaeV_trip.Cafe.CafeActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".TouristSpot.TouristSpotActivity"
+            android:name="com.zaev.ZaeV_trip.TouristSpot.TouristSpotActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Plogging.PloggingActivity"
+            android:name="com.zaev.ZaeV_trip.Plogging.PloggingActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Festival.FestivalActivity"
+            android:name="com.zaev.ZaeV_trip.Festival.FestivalActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Lodging.LodgingActivity"
+            android:name="com.zaev.ZaeV_trip.Lodging.LodgingActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Restaurant.RestaurantActivity"
+            android:name="com.zaev.ZaeV_trip.Restaurant.RestaurantActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Reusable.ReusableActivity"
+            android:name="com.zaev.ZaeV_trip.Reusable.ReusableActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ZeroWaste.ZeroWasteActivity"
+            android:name="com.zaev.ZaeV_trip.ZeroWaste.ZeroWasteActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
     </application>

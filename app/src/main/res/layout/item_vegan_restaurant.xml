@@ -26,7 +26,7 @@
                     android:layout_height="100dp"
                     android:background="@drawable/rounded_gradient_green"/>
 
-                <com.example.ZaeV_trip.util.CharacterWrapTextView
+                <com.zaev.ZaeV_trip.util.CharacterWrapTextView
                     android:id="@+id/restaurantText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

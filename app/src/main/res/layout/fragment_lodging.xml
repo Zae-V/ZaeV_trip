@@ -163,7 +163,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <com.example.ZaeV_trip.util.CharacterWrapTextView
+            <com.zaev.ZaeV_trip.util.CharacterWrapTextView
                 android:id="@+id/overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
