@@ -10,9 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.Filter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.ZaeV_trip.ProgressDialog;
 import com.example.ZaeV_trip.R;
@@ -34,6 +37,9 @@ public class CafeActivity extends AppCompatActivity {
 
     String local;
     ProgressDialog customProgressDialog;
+    TextView notDataText;
+    ImageView notDataImage;
+    CafeAdapter cafeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,8 @@ public class CafeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cafe);
         cafeList = (RecyclerView) findViewById(R.id.cafeList);
         searchView = findViewById(R.id.searchBar);
+        notDataText = findViewById(R.id.notDataText);
+        notDataImage = findViewById(R.id.notDataImage);
 
         customProgressDialog = new ProgressDialog(this);
         customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -84,15 +92,31 @@ public class CafeActivity extends AppCompatActivity {
                             }
                         }
 
-                        CafeAdapter cafeAdapter = new CafeAdapter(CafeActivity.this ,filterdList);
+
+
+
+                        cafeAdapter = new CafeAdapter(CafeActivity.this ,filterdList);
                         cafeList.setLayoutManager(new LinearLayoutManager(CafeActivity.this, RecyclerView.VERTICAL,false));
                         cafeList.setAdapter(cafeAdapter);
+
+
+                        Log.d("어댑터 테스트2", "-");
+                        if(cafeAdapter.getItemCount() == 0){
+                            notDataImage.setVisibility(View.VISIBLE);
+                            notDataText.setVisibility(View.VISIBLE);
+                            Log.d("어댑터 테스트", String.valueOf(cafeAdapter.getItemCount()));
+                        }
 
                         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                             @Override
                             public boolean onQueryTextSubmit(String query) {
                                 cafeAdapter.getFilter().filter(query);
-
+                                Log.d("어댑터 테스트", String.valueOf(cafeAdapter.getItemCount()));
+                                if(cafeAdapter.getItemCount() == 0){
+                                    notDataImage.setVisibility(View.VISIBLE);
+                                    notDataText.setVisibility(View.VISIBLE);
+                                    Log.d("어댑터 테스트", String.valueOf(cafeAdapter.getItemCount()));
+                                }
                                 return false;
                             }
 
