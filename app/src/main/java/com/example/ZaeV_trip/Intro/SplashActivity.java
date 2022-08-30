@@ -1,12 +1,16 @@
 package com.example.ZaeV_trip.Intro;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -43,7 +47,16 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         View view = findViewById(R.id.container_splash);
 
-        startService(view);
+        if(!isNetworkAvailable()){
+            Toast.makeText(this, "네트워크 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+            this.finishAffinity();
+            stopService(view);
+            System.exit(0);
+
+
+        }else{
+            startService(view);
+        }
 
 
         ImageView gif_image = (ImageView) findViewById(R.id.gif_image);
@@ -131,7 +144,18 @@ public class SplashActivity extends AppCompatActivity {
             startService(intent);
         }
     }// startService()..
+    public void stopService(View view) {// 서비스 중지 버튼
+        if (myService != null) {
+            Intent intent = new Intent(this, MyService.class);
+            stopService(intent);
+        }
+    }
+    public Boolean isNetworkAvailable(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
 
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     public ArrayList<Festival> getXmlEventData(){
         ArrayList<Festival> eventLists = new ArrayList<Festival>();
         String key = getString(R.string.portal_key);
