@@ -46,8 +46,6 @@ public class NetworkConnectionCheck  extends ConnectivityManager.NetworkCallback
         super.onAvailable(network);
 
         // 네트워크가 연결되었을 때 할 동작
-
-        Toast.makeText(this.context, "network available", Toast.LENGTH_SHORT).show();
     }
 
     @Override
