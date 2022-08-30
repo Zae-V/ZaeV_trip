@@ -48,7 +48,6 @@ import java.util.ArrayList;
 public class BookmarkActivity extends AppCompatActivity {
 
     RecyclerView bookmarkRecyclerView;
-    SearchView searchView;
 
     // Adapter
     CafeAdapter listAdapter;
@@ -98,8 +97,6 @@ public class BookmarkActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(BookmarkActivity.this);
         bookmarkRecyclerView.setLayoutManager(mLayoutManager);
         bookmarkRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        searchView = findViewById(R.id.searchBar);
 
 
         CollectionReference collection = mDatabase.collection("BookmarkItem").document(uid).collection("cafe");
@@ -295,69 +292,6 @@ public class BookmarkActivity extends AppCompatActivity {
                 }
             }
         });
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                listAdapter.getFilter().filter(query);
-                listAdapter1.getFilter().filter(query);
-                listAdapter2.getFilter().filter(query);
-                listAdapter3.getFilter().filter(query);
-                listAdapter4.getFilter().filter(query);
-                listAdapter5.getFilter().filter(query);
-                listAdapter6.getFilter().filter(query);
-                listAdapter7.getFilter().filter(query);
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-                return false;
-            }
-        });
-
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                listAdapter.getFilter().filter(null);
-                listAdapter1.getFilter().filter(null);
-                listAdapter2.getFilter().filter(null);
-                listAdapter3.getFilter().filter(null);
-                listAdapter4.getFilter().filter(null);
-                listAdapter5.getFilter().filter(null);
-                listAdapter6.getFilter().filter(null);
-                listAdapter7.getFilter().filter(null);
-                return false;
-            }
-        });
-
-        // 서치아이콘이 아닌 서치바 클릭시 검색 가능하게 하기
-        searchView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                searchView.setIconified(false);
-            }
-        });
-
-        View closeButton = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //handle click
-                searchView.setQuery("", false);
-                listAdapter.getFilter().filter("");
-                listAdapter1.getFilter().filter("");
-                listAdapter2.getFilter().filter("");
-                listAdapter3.getFilter().filter("");
-                listAdapter4.getFilter().filter("");
-                listAdapter5.getFilter().filter("");
-                listAdapter6.getFilter().filter("");
-                listAdapter7.getFilter().filter("");
-            }
-        });
-
 
         //Initialize And Assign Variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
