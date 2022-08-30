@@ -30,7 +30,7 @@
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/background_gradient" />
 
-                <com.example.ZaeV_trip.util.CharacterWrapTextView
+                <com.zaev.ZaeV_trip.util.CharacterWrapTextView
                     android:id="@+id/eventName"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"

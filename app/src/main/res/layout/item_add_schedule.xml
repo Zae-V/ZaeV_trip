@@ -33,7 +33,7 @@
                 android:layout_weight="1">
 
                 <TableRow>
-                    <com.example.ZaeV_trip.util.CharacterWrapTextView
+                    <com.zaev.ZaeV_trip.util.CharacterWrapTextView
                         android:id="@+id/list_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
                 </TableRow>
 
                 <TableRow>
-                    <com.example.ZaeV_trip.util.CharacterWrapTextView
+                    <com.zaev.ZaeV_trip.util.CharacterWrapTextView
                         android:id="@+id/list_location"
                         android:textColor="@color/text_solid_black"
                         android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
                 </TableRow>
 
                 <TableRow>
-                    <com.example.ZaeV_trip.util.CharacterWrapTextView
+                    <com.zaev.ZaeV_trip.util.CharacterWrapTextView
                         android:id="@+id/list_hours"
                         android:textColor="@color/text_solid_black"
                         android:layout_width="wrap_content"
