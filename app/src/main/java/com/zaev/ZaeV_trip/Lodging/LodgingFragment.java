@@ -76,7 +76,7 @@ public class LodgingFragment extends Fragment {
         String telephone = lodging.getTel();
         float width = getArguments().getFloat("width");
         
-        bookmarkBtn = (ImageView) v.findViewById(R.id.restaurantBookmarkBtn);
+        bookmarkBtn = (ImageView) v.findViewById(R.id.lodgingBookmarkBtn);
         titleTextView = v.findViewById(R.id.detail_txt);
         locationTextView = v.findViewById(R.id.location);
         telTextView = v.findViewById(R.id.tel);
@@ -174,7 +174,7 @@ public class LodgingFragment extends Fragment {
             }
         }).start();
 
-        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        mDatabase.collection("BookmarkItem").document(userId).collection("lodging").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -220,10 +220,10 @@ public class LodgingFragment extends Fragment {
         info.put("serialNumber", id);
         info.put("tel", number);
 
-        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(id).set(info);
+        mDatabase.collection("BookmarkItem").document(userId).collection("lodging").document(id).set(info);
     }
     private void deleteBookmark(String id){
-        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(id).delete();
+        mDatabase.collection("BookmarkItem").document(userId).collection("lodging").document(id).delete();
     }
 
     public LodgingDetail getXmlData(String contentId){

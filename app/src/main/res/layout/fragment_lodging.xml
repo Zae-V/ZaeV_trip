@@ -42,7 +42,7 @@
                     android:text="숙소"/>
 
                 <ImageView
-                    android:id="@+id/restaurantBookmarkBtn"
+                    android:id="@+id/lodgingBookmarkBtn"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:paddingLeft="10dp"
