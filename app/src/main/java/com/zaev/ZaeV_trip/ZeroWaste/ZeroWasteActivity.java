@@ -3,7 +3,10 @@ package com.zaev.ZaeV_trip.ZeroWaste;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,8 +18,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.zaev.ZaeV_trip.ProgressDialog;
 import com.zaev.ZaeV_trip.R;
+import com.zaev.ZaeV_trip.ProgressDialog;
 import com.zaev.ZaeV_trip.model.ZeroWaste;
 import com.zaev.ZaeV_trip.util.getXmlData;
 
@@ -26,7 +29,6 @@ import java.util.ArrayList;
 public class ZeroWasteActivity extends AppCompatActivity {
 
     ArrayList<ZeroWaste> zeroWastes1 = new ArrayList<ZeroWaste>();
-    ArrayList<ZeroWaste> zeroWastes2 = new ArrayList<ZeroWaste>();
 
     ArrayList<ZeroWaste> filteredZeroWasteContentsListALL = new ArrayList<ZeroWaste>();
     ArrayList<ZeroWaste> filteredZeroWasteMainDetail = new ArrayList<ZeroWaste>();
@@ -37,6 +39,7 @@ public class ZeroWasteActivity extends AppCompatActivity {
     public static TextView notDataText;
     public static ImageView notDataImage;
 
+    float dpWidth;
     ProgressDialog customProgressDialog;
 
     @Override
@@ -49,6 +52,12 @@ public class ZeroWasteActivity extends AppCompatActivity {
         notDataText = findViewById(R.id.notDataText);
         notDataImage = findViewById(R.id.notDataImage);
         Bundle extras = getIntent().getExtras();
+
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        dpWidth = outMetrics.widthPixels;
 
         if(extras!=null){
             local = extras.getString("local");
@@ -169,6 +178,7 @@ public class ZeroWasteActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
 
                 bundle.putSerializable("zeroWaste", (Serializable) filteredZeroWasteMainDetail.get(i));
+                bundle.putFloat("width", dpWidth);
 
                 ZeroWasteFragment zeroWasteFragment = new ZeroWasteFragment();
                 zeroWasteFragment.setArguments(bundle);

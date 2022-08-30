@@ -1,6 +1,7 @@
 package com.zaev.ZaeV_trip.Restaurant;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -125,7 +126,7 @@ public class RestaurantFragment extends Fragment {
         titleTextView.setMaxWidth((int) width - Util.ConvertDPtoPX(getActivity().getApplicationContext(), 100));
         titleTextView.setText(name);
         telTextView.setText(number);
-        detailLocationTextView.setText(location);
+        detailLocationTextView.setText(Html.fromHtml("<b>상세 주소: </b>" + location));
         foodInfoTextView.setText(category + "음식점");
 
         MapView mapView = new MapView(getActivity());

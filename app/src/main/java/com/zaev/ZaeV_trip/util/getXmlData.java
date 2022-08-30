@@ -921,13 +921,21 @@ public class getXmlData {
     //For RecyclerView
 
     public static ZeroWaste getZeroWasteMainDetail(Context cnt,String content_id){
-        ArrayList<ZeroWaste> zeroWastes = new ArrayList<ZeroWaste>();
 
         ZeroWaste zeroWaste = new ZeroWaste(
                 "",
                 "",
                 "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
                 "");
+
         String BaseURL = "https://map.seoul.go.kr/smgis/apps/poi.do";
         String cmd = "getNewContentsDetail";
         String key = cnt.getString(R.string.zerowaste_key);
@@ -944,6 +952,7 @@ public class getXmlData {
 
         try {
             URL url= new URL(queryUrl);//문자열로 된 요청 url을 URL 객체로 생성.
+//            Log.d("ZeroWasteDBTEST", String.valueOf(url));
             Log.d("테스트Url", queryUrl);
 
 
@@ -986,6 +995,10 @@ public class getXmlData {
                     zeroWaste.setMapY(temp.getString("COT_COORD_Y"));
                     zeroWaste.setImage(temp.getString("COT_IMG_MAIN_URL"));
                     zeroWaste.setTelephone(temp.getString("COT_TEL_NO"));
+                    zeroWaste.setTime(temp.getString("COT_VALUE_03"));
+                    zeroWaste.setHomepage(temp.getString("COT_VALUE_05"));
+                    zeroWaste.setActivity(temp.getString("COT_VALUE_02"));
+                    zeroWaste.setMenu(temp.getString("COT_VALUE_04"));
 
                 }
 
