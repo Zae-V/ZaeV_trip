@@ -188,7 +188,6 @@ public class TravelActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         int count = getSupportFragmentManager().getBackStackEntryCount();
-        Log.e("count", String.valueOf(count));
         if(count == 0){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
