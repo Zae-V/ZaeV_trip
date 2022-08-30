@@ -60,10 +60,11 @@ public class NetworkConnectionCheck  extends ConnectivityManager.NetworkCallback
         super.onLost(network);
 
         // 네트워크 연결이 끊겼을 때 할 동작
-        Toast.makeText(this.context, "network lost", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(context, ErrorActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        context.startActivity(intent);
+        Toast.makeText(this.context, "네트워크 연결을 확인해주세요.",Toast.LENGTH_LONG).show();
+//        Intent intent = new Intent(context, ErrorActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        context.startActivity(intent);
+        System.exit(0);
 
     }
 
