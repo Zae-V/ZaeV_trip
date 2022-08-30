@@ -151,10 +151,18 @@ public class ZeroWaste implements Serializable {
     }
 
 
-    public ZeroWaste(String name, String Addr1, String contentID, String themeSubID) {
+    public ZeroWaste(String name, String Addr1, String contentID, String themeSubID, String mapX, String mapY, String telephone, String image, String time, String homepage, String activity, String menu) {
         this.name = name;
         this.Addr1 = Addr1;
         this.contentID = contentID;
         this.themeSubID = themeSubID;
+        this.mapX = mapX;
+        this.mapY = mapY;
+        this.telephone = telephone;
+        this.image = image;
+        this.time = time;
+        this.homepage = homepage;
+        this.activity = activity;
+        this.menu = menu;
     }
 }
