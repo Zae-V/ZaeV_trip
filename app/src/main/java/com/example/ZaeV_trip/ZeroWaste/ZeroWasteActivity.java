@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -51,6 +53,8 @@ public class ZeroWasteActivity extends AppCompatActivity {
     String local;
     SearchView searchView;
     RecyclerView list;
+    public static TextView notDataText;
+    public static ImageView notDataImage;
 
     ProgressDialog customProgressDialog;
 
@@ -61,6 +65,8 @@ public class ZeroWasteActivity extends AppCompatActivity {
 
         list = (RecyclerView) findViewById(R.id.zeroWasteList);
         searchView = findViewById(R.id.zeroWasteSearchBar);
+        notDataText = findViewById(R.id.notDataText);
+        notDataImage = findViewById(R.id.notDataImage);
         Bundle extras = getIntent().getExtras();
 
         if(extras!=null){
@@ -125,6 +131,12 @@ public class ZeroWasteActivity extends AppCompatActivity {
         list.setLayoutManager(new LinearLayoutManager(ZeroWasteActivity.this, RecyclerView.VERTICAL, false));
         list.setAdapter(adapter);
 
+        if(adapter.getItemCount() == 0){
+            notDataImage.setVisibility(View.VISIBLE);
+            notDataText.setVisibility(View.VISIBLE);
+            Log.d("어댑터 테스트", String.valueOf(adapter.getItemCount()));
+        }
+
         customProgressDialog.dismiss();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -160,8 +172,11 @@ public class ZeroWasteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //handle click
+
                 searchView.setQuery("", false);
                 adapter.getFilter().filter("");
+                notDataImage.setVisibility(View.GONE);
+                notDataText.setVisibility(View.GONE);
 
             }
         });

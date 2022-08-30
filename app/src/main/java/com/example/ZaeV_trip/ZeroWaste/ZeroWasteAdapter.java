@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.ZaeV_trip.Cafe.CafeActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.ZeroWaste;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -133,7 +134,12 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             filtered.clear();
             filtered.addAll((ArrayList<ZeroWaste>) filterResults.values);
+            if(filtered.size() == 0) {
+                ZeroWasteActivity.notDataImage.setVisibility(View.VISIBLE);
+                ZeroWasteActivity.notDataText.setVisibility(View.VISIBLE);
+            }
             notifyDataSetChanged();
+
         }
     }
 
