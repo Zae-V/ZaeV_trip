@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -23,6 +24,9 @@ import com.example.ZaeV_trip.util.SignUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class IntroActivity extends AppCompatActivity {
     private static final String TAG = "IntroActivity";
 
@@ -31,6 +35,7 @@ public class IntroActivity extends AppCompatActivity {
 
     Animation fadeIn;
     TextView introText;
+    TextView privacyText;
     Button kakaoJoinBtn;
     Button joinBtn;
     ImageView introImg;
@@ -45,6 +50,7 @@ public class IntroActivity extends AppCompatActivity {
         Glide.with(this).load(R.raw.animation_bird).into(introImg);
         kakaoJoinBtn = findViewById(R.id.kakaoJoinBtn);
         joinBtn = findViewById(R.id.joinBtn);
+        privacyText = findViewById(R.id.textView3);
 
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
@@ -66,6 +72,21 @@ public class IntroActivity extends AppCompatActivity {
         spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#47FFC5")),
                 loc2, loc2 + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         introText.setText(spannableString);
+        privacyText.setText("앱을 시작할 시 서비스의 이용약관 및 개인정보 처리 방침에 동의하게 됩니다.");
+
+        Linkify.TransformFilter mTransform = new Linkify.TransformFilter() {
+            @Override
+            public String transformUrl(Matcher match, String url) {
+                return "";
+            }
+        };
+
+        Pattern pattern1 = Pattern.compile("이용약관");
+        Pattern pattern2 = Pattern.compile("개인정보 처리 방침");
+
+        Linkify.addLinks(privacyText, pattern1, "https://thoughtful-dedication-7cf.notion.site/117f97229194496da219e17001c4bcba",null,mTransform);
+        Linkify.addLinks(privacyText, pattern2, "https://thoughtful-dedication-7cf.notion.site/9635d2e3a26e466e85b80b31888d85b7",null,mTransform);
+
 
         // fade in 애니메이션 적용
         fadeIn= AnimationUtils.loadAnimation(this,R.anim.fadein);
