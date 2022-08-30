@@ -1,6 +1,7 @@
 package com.example.ZaeV_trip.Schedule;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +16,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ZaeV_trip.R;
+import com.example.ZaeV_trip.ZeroWaste.ZeroWasteActivity;
+import com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter;
+import com.example.ZaeV_trip.ZeroWaste.ZeroWasteFragment;
 import com.example.ZaeV_trip.model.Cafe;
 import com.example.ZaeV_trip.model.Festival;
 import com.example.ZaeV_trip.model.Lodging;
@@ -27,8 +32,10 @@ import com.example.ZaeV_trip.model.Restaurant;
 import com.example.ZaeV_trip.model.Reusable;
 import com.example.ZaeV_trip.model.TouristSpot;
 import com.example.ZaeV_trip.model.ZeroWaste;
+import com.example.ZaeV_trip.model.ZeroWasteDetail;
 import com.example.ZaeV_trip.util.getXmlData;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class AddScheduleFragment extends Fragment {
@@ -38,6 +45,11 @@ public class AddScheduleFragment extends Fragment {
     String local;
     String selectedCategory ;
     Integer day;
+
+    ArrayList<ZeroWaste> zeroWastes = new ArrayList<ZeroWaste>();
+
+    ArrayList<ZeroWaste> filteredZeroWasteContentsListALL = new ArrayList<ZeroWaste>();
+    ArrayList<ZeroWasteDetail> filteredZeroWasteDetail = new ArrayList<ZeroWasteDetail>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -401,35 +413,56 @@ public class AddScheduleFragment extends Fragment {
     }
 
     public void getZeroWasteList(String local){
-        new Thread(new Runnable() {
+        Thread contentsListAllThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                ArrayList<ZeroWaste> zeroWastes = getXmlData.getZeroWasteData(getActivity(),"4");
+                zeroWastes = getXmlData.getZeroWasteListAll(getActivity());
+                for(int i = 0; i< zeroWastes.size(); i++) {
+                    filteredZeroWasteContentsListALL.add(zeroWastes.get(i));
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ArrayList<SelectItem> filteredZeroWaste = new ArrayList<SelectItem>();
+                }
 
-                        for(int i = 0; i< zeroWastes.size(); i++) {
-                            if (local.equals("전체 지역") || local.equals("전체")) {
-                                filteredZeroWaste.add(new SelectItem(null, zeroWastes.get(i).getName(),zeroWastes.get(i).getAddr1(),zeroWastes.get(i).getKeyword()));
-                            }
-                            else {
-                                if (zeroWastes.get(i).getAddr1().contains(local)) {
-                                    filteredZeroWaste.add(new SelectItem(null, zeroWastes.get(i).getName(),zeroWastes.get(i).getAddr1(),zeroWastes.get(i).getKeyword()));
-                                }
-                            }
-                            SelectListAdapter adapter = new SelectListAdapter(getActivity(), filteredZeroWaste,day);
-                            list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-                            list.setAdapter(adapter);
-                         }
-                    }
-                });
             }
-        }).start();
+        });
+
+        contentsListAllThread.start();
+        contentsListAllThread.isAlive();
+
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    contentsListAllThread.join();
+                    Thread contentsListDetailThread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int k = 0; k < zeroWastes.size(); k++) {
+                                ZeroWasteDetail item = getXmlData.getZeroWasteDetail(getActivity(), String.valueOf(filteredZeroWasteContentsListALL.get(k).getContentID()));
+                                filteredZeroWasteDetail.add(item);
+                            }
+                        }
+                    });
+
+                    contentsListDetailThread.start();
+                    contentsListDetailThread.join();
+
+                    DrawInAdapter(filteredZeroWasteDetail);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, 3000);
 
     }
+    public void DrawInAdapter(ArrayList<ZeroWasteDetail> items){
+        ZeroWasteAdapter adapter = new ZeroWasteAdapter(getActivity(), filteredZeroWasteDetail);
+        list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        list.setAdapter(adapter);
+    }
 
-
-}
+    }

@@ -1,14 +1,9 @@
 package com.example.ZaeV_trip.ZeroWaste;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -17,34 +12,20 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ZaeV_trip.Intro.IntroActivity;
-import com.example.ZaeV_trip.Intro.SplashActivity;
-import com.example.ZaeV_trip.Main.MainActivity;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.ZeroWaste;
-import com.example.ZaeV_trip.util.MySharedPreferences;
+import com.example.ZaeV_trip.model.ZeroWasteDetail;
 import com.example.ZaeV_trip.util.getXmlData;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class ZeroWasteActivity extends AppCompatActivity {
 
-    ArrayList<ZeroWaste> zeroWastes1 = new ArrayList<ZeroWaste>();
-    ArrayList<ZeroWaste> zeroWastes2 = new ArrayList<ZeroWaste>();
+    ArrayList<ZeroWaste> zeroWastes = new ArrayList<ZeroWaste>();
 
     ArrayList<ZeroWaste> filteredZeroWasteContentsListALL = new ArrayList<ZeroWaste>();
-    ArrayList<ZeroWaste> filteredZeroWasteMainDetail = new ArrayList<ZeroWaste>();
+    ArrayList<ZeroWasteDetail> filteredZeroWasteDetail = new ArrayList<ZeroWasteDetail>();
 
     String local;
     SearchView searchView;
@@ -66,9 +47,10 @@ public class ZeroWasteActivity extends AppCompatActivity {
         Thread contentsListAllThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                zeroWastes1 = getXmlData.getZeroWasteListAll(ZeroWasteActivity.this);
-                for(int i = 0; i< zeroWastes1.size(); i++) {
-                    filteredZeroWasteContentsListALL.add(zeroWastes1.get(i));
+                zeroWastes = getXmlData.getZeroWasteListAll(ZeroWasteActivity.this);
+                for(int i = 0; i< zeroWastes.size(); i++) {
+                    filteredZeroWasteContentsListALL.add(zeroWastes.get(i));
+
                 }
 
             }
@@ -88,10 +70,13 @@ public class ZeroWasteActivity extends AppCompatActivity {
                     Thread contentsListDetailThread = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            for (int k = 0; k < zeroWastes1.size(); k++) {
-                                ZeroWaste item = getXmlData.getZeroWasteMainDetail(ZeroWasteActivity.this, String.valueOf(filteredZeroWasteContentsListALL.get(k).getContentID()));
-                                filteredZeroWasteMainDetail.add(item);
-
+                            for (int k = 0; k < zeroWastes.size(); k++) {
+                                ZeroWasteDetail item = getXmlData.getZeroWasteDetail(ZeroWasteActivity.this, String.valueOf(filteredZeroWasteContentsListALL.get(k).getContentID()));
+                                filteredZeroWasteDetail.add(item);
+                                Log.d("sentence", String.valueOf(item.getContents_01()));
+                                //Log.d("testImage", String.valueOf(filteredZeroWasteDetail.get(k).getImage()));
+//                                Log.d("testImage", String.valueOf(filteredZeroWasteDetail.get(k).getThemeSubID()));
+//                                Log.d("testImage", String.valueOf(filteredZeroWasteDetail.get(k).getMapX()));
                             }
                         }
                     });
@@ -99,9 +84,7 @@ public class ZeroWasteActivity extends AppCompatActivity {
                     contentsListDetailThread.start();
                     contentsListDetailThread.join();
 
-                    Log.e("array", String.valueOf(filteredZeroWasteMainDetail));
-
-                    DrawInAdapter(filteredZeroWasteMainDetail);
+                    DrawInAdapter(filteredZeroWasteDetail);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -110,12 +93,9 @@ public class ZeroWasteActivity extends AppCompatActivity {
             }
         }, 3000);
 
-
-
-
     }
-    public void DrawInAdapter(ArrayList<ZeroWaste> items){
-        ZeroWasteAdapter adapter = new ZeroWasteAdapter(ZeroWasteActivity.this, filteredZeroWasteMainDetail);
+    public void DrawInAdapter(ArrayList<ZeroWasteDetail> items){
+        ZeroWasteAdapter adapter = new ZeroWasteAdapter(ZeroWasteActivity.this, filteredZeroWasteDetail);
         list.setLayoutManager(new LinearLayoutManager(ZeroWasteActivity.this, RecyclerView.VERTICAL, false));
         list.setAdapter(adapter);
 
@@ -137,7 +117,7 @@ public class ZeroWasteActivity extends AppCompatActivity {
             public void onItemClick(View v, int i) {
                 Bundle bundle = new Bundle();
 
-                bundle.putSerializable("zeroWaste", (Serializable) filteredZeroWasteMainDetail.get(i));
+                bundle.putSerializable("zeroWaste", (Serializable) filteredZeroWasteDetail.get(i));
 
                 ZeroWasteFragment zeroWasteFragment = new ZeroWasteFragment();
                 zeroWasteFragment.setArguments(bundle);

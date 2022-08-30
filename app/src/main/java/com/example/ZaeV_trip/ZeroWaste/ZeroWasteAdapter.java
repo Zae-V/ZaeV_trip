@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.ZeroWaste;
+import com.example.ZaeV_trip.model.ZeroWasteDetail;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,12 +27,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter.ViewHolder> implements Filterable {
-    com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter.ZeroWasteFilter filter = new com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter.ZeroWasteFilter();
+public class ZeroWasteAdapter extends RecyclerView.Adapter<ZeroWasteAdapter.ViewHolder> implements Filterable {
+    ZeroWasteAdapter.ZeroWasteFilter filter = new ZeroWasteAdapter.ZeroWasteFilter();
     Context context;
     LayoutInflater inflater;
-    ArrayList<ZeroWaste> zeroWastes;
-    ArrayList<ZeroWaste> filtered;
+    ArrayList<ZeroWasteDetail> zeroWastes;
+    ArrayList<ZeroWasteDetail> filtered;
     FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -40,7 +41,7 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
     }
 
 
-    public ZeroWasteAdapter(Context context, ArrayList<ZeroWaste> zeroWastes) {
+    public ZeroWasteAdapter(Context context, ArrayList<ZeroWasteDetail> zeroWastes) {
         this.context = context;
         this.zeroWastes = new ArrayList<>(zeroWastes);
         this.filtered = zeroWastes;
@@ -48,22 +49,21 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
 
     @NonNull
     @Override
-    public com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ZeroWasteAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.item_zero_waste, parent, false);
-        com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter.ViewHolder viewHolder = new com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter.ViewHolder(context, view);
+        ZeroWasteAdapter.ViewHolder viewHolder = new ZeroWasteAdapter.ViewHolder(context, view);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ZeroWasteAdapter.ViewHolder holder, int position) {
 
-        String imageUrl = filtered.get(position).getImage();
         Glide.with(holder.itemView.getContext())
-                .load(imageUrl)
+                .load(filtered.get(position).getImage())
                 .placeholder(R.drawable.default_bird_img)
                 .error(R.drawable.default_bird_img)
                 .fallback(R.drawable.default_bird_img)
@@ -71,7 +71,28 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
 
         holder.nameview.setText(filtered.get(position).getName());
         holder.locview.setText(filtered.get(position).getAddr1());
-        holder.keywordview.setText(filtered.get(position).getKeyword());
+
+
+        switch (filtered.get(position).getThemeSubID()) {
+            case "1":
+                holder.catview.setText("카페");
+                break;
+            case "2":
+                holder.catview.setText("식당");
+                break;
+            case "3":
+                holder.catview.setText("리필샵");
+                break;
+            case "4":
+                holder.catview.setText("친환경생필품점");
+                break;
+            case "5":
+                holder.catview.setText("기타");
+                break;
+            default:
+                holder.catview.setText("");
+                break;
+        }
 
         mDatabase.collection("BookmarkItem").document(userId).collection("zeroWaste").document(filtered.get(position).getName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -109,7 +130,7 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             FilterResults results = new FilterResults();
-            ArrayList<ZeroWaste> filteredList = new ArrayList<>();
+            ArrayList<ZeroWasteDetail> filteredList = new ArrayList<>();
 
             if (charSequence == null || charSequence.length() == 0) {
                 filteredList.addAll(zeroWastes);
@@ -132,7 +153,7 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             filtered.clear();
-            filtered.addAll((ArrayList<ZeroWaste>) filterResults.values);
+            filtered.addAll((ArrayList<ZeroWasteDetail>) filterResults.values);
             notifyDataSetChanged();
         }
     }
@@ -141,9 +162,9 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
         void onItemClick(View v, int pos);
     }
 
-    private com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter.OnItemClickListener mListener = null;
+    private ZeroWasteAdapter.OnItemClickListener mListener = null;
 
-    public void setOnItemClickListener(com.example.ZaeV_trip.ZeroWaste.ZeroWasteAdapter.OnItemClickListener listener) {
+    public void setOnItemClickListener(ZeroWasteAdapter.OnItemClickListener listener) {
         this.mListener = listener;
     }
 
@@ -151,7 +172,7 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
 
         public TextView nameview;
         public TextView locview;
-        public TextView keywordview;
+        public TextView catview;
         public ImageView imgView;
         public ImageView bookmarkbtn;
 
@@ -160,7 +181,7 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
 
             nameview = itemView.findViewById(R.id.list_name);
             locview = itemView.findViewById(R.id.list_location);
-            keywordview = itemView.findViewById(R.id.list_category);
+            catview = itemView.findViewById(R.id.list_category);
 
             bookmarkbtn = itemView.findViewById(R.id.bookmarkBtn);
             imgView = itemView.findViewById(R.id.list_image);
@@ -200,15 +221,15 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.example.ZaeV_trip
     private void writeBookmark(int position){
         Map<String, Object> info = new HashMap<>();
         info.put("name", filtered.get(position).getName());
-        info.put("type", "친환경생필품점");
+        info.put("type", "제로웨이스트");
         info.put("address", filtered.get(position).getAddr1());
         info.put("position_x", filtered.get(position).getMapX());
         info.put("position_y", filtered.get(position).getMapY());
-        info.put("keyword", filtered.get(position).getKeyword());
+        info.put("telephone", filtered.get(position).getTelephone());
 
         mDatabase.collection("BookmarkItem").document(userId).collection("zeroWaste").document(filtered.get(position).getName()).set(info);
     }
     private void deleteBookmark(int position){
-        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getName()).delete();
+        mDatabase.collection("BookmarkItem").document(userId).collection("zeroWaste").document(filtered.get(position).getName()).delete();
     }
 }

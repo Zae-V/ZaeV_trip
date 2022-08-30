@@ -69,6 +69,7 @@ public class ZeroWaste implements Serializable {
     public void setContentID(String contentID) {
         this.contentID = contentID;
     }
+
     public String getThemeSubID() {
         return themeSubID;
     }
@@ -85,26 +86,6 @@ public class ZeroWaste implements Serializable {
         this.image = image;
     }
 
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
-
-    public ZeroWaste(String name, String Addr1, String Addr2, String mapX, String mapY, String telephone, String contentID, String themeSubID, String image, String keyword) {
-        this.name = name;
-        this.Addr1 = Addr1;
-        this.Addr2 = Addr2;
-        this.mapX = mapX;
-        this.mapY = mapY;
-        this.telephone = telephone;
-        this.contentID = contentID;
-        this.themeSubID = themeSubID;
-        this.image = image;
-        this.keyword = keyword;
-    }
 
     //For RecyclerView
     public ZeroWaste(String contentID, String themeSubID) {
@@ -113,10 +94,4 @@ public class ZeroWaste implements Serializable {
     }
 
 
-    public ZeroWaste(String name, String Addr1, String contentID, String themeSubID) {
-        this.name = name;
-        this.Addr1 = Addr1;
-        this.contentID = contentID;
-        this.themeSubID = themeSubID;
-    }
 }

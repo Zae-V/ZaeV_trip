@@ -32,6 +32,7 @@ import com.example.ZaeV_trip.model.Restaurant;
 import com.example.ZaeV_trip.model.Reusable;
 import com.example.ZaeV_trip.model.TouristSpot;
 import com.example.ZaeV_trip.model.ZeroWaste;
+import com.example.ZaeV_trip.model.ZeroWasteDetail;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -68,7 +69,7 @@ public class BookmarkActivity extends AppCompatActivity {
     ArrayList<TouristSpot> bookmarkedItems3 = new ArrayList<>();
     ArrayList<Lodging> bookmarkedItems4 = new ArrayList<>();
     ArrayList<Reusable> bookmarkedItems5 = new ArrayList<>();
-    ArrayList<ZeroWaste> bookmarkedItems6 = new ArrayList<>();
+    ArrayList<ZeroWasteDetail> bookmarkedItems6 = new ArrayList<>();
     ArrayList<Plogging> bookmarkedItems7 = new ArrayList<>();
 
 
@@ -256,7 +257,7 @@ public class BookmarkActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     QuerySnapshot query = task.getResult();
                     for(QueryDocumentSnapshot document : query){
-                        ZeroWaste zeroWaste = new ZeroWaste("","","","","","","","","","");
+                        ZeroWasteDetail zeroWaste = new ZeroWasteDetail("","","","","","","","","","","","","","","");
                         zeroWaste.setName(String.valueOf(document.getData().get("name")));
                         zeroWaste.setMapX(String.valueOf(document.getData().get("position_x")));
                         zeroWaste.setMapY(String.valueOf(document.getData().get("position_y")));

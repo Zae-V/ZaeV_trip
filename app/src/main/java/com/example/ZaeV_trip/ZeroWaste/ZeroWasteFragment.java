@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.ZaeV_trip.R;
 import com.example.ZaeV_trip.model.ZeroWaste;
+import com.example.ZaeV_trip.model.ZeroWasteDetail;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -55,7 +56,7 @@ public class ZeroWasteFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_zero_waste, container, false);
 
         //Bundle
-        ZeroWaste zeroWaste = (ZeroWaste) getArguments().getSerializable("zeroWaste");
+        ZeroWasteDetail zeroWaste = (ZeroWasteDetail) getArguments().getSerializable("zeroWaste");
         String name = zeroWaste.getName();
         String id = zeroWaste.getContentID();
         String x = zeroWaste.getMapX();
