@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -114,8 +115,13 @@ public class SignInFragment extends Fragment {
             @Override
             public void onClick(View v){
                 String email = setEmail.getText().toString();
-                SignUtil.findPassword(getActivity(), email);
-                dialog.hide();
+
+                if (email.length() == 0) {
+                    Toast.makeText(getActivity().getApplicationContext(),"이메일을 확인해주세요.",Toast.LENGTH_SHORT).show();
+                } else {
+                    SignUtil.findPassword(getActivity(), email);
+                    dialog.hide();
+                }
             }
         });
 
