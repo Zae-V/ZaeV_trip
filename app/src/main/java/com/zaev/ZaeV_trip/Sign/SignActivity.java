@@ -1,12 +1,16 @@
 package com.zaev.ZaeV_trip.Sign;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.zaev.ZaeV_trip.Intro.IntroActivity;
 import com.zaev.ZaeV_trip.R;
 
 public class SignActivity extends AppCompatActivity {
@@ -26,4 +30,13 @@ public class SignActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_activity_sign, fragment).commit();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+            Intent introIntent = new Intent(this, IntroActivity.class);
+            startActivity(introIntent);
+
+    }
+
 }
