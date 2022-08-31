@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -120,7 +121,7 @@ public class SignInFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(),"이메일을 확인해주세요.",Toast.LENGTH_SHORT).show();
                 } else {
                     SignUtil.findPassword(getActivity(), email);
-                    dialog.hide();
+                    dialog.dismiss();
                 }
             }
         });
@@ -128,7 +129,7 @@ public class SignInFragment extends Fragment {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.hide();
+                dialog.dismiss();
             }
         });
     }
