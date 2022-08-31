@@ -20,33 +20,70 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="25dp"
             android:fontFamily="@font/notosans_bold"
-            android:text="찜목록 💕"
+            android:text="찜 목록 💕"
             android:textColor="@color/text_solid_black"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
+        <ImageView
+            android:id="@+id/notifyImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="250dp"
+            android:src="@drawable/bookmark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#D3D3D3" />
+
+        <TextView
+            android:id="@+id/notifyText1"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:includeFontPadding="false"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/notosans_bold"
+            android:text="텅 빈 [찜 목록💕]을 채워보세요!"
+            android:textColor="@color/text_solid_black"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/notifyImage"/>
+
+        <TextView
+            android:id="@+id/notifyText2"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/notosans_bold"
+            android:text="제비의 여행에서 함께할 장소를 골라보세요."
+            android:textColor="#D3D3D3"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/notifyText1"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/bookmarkRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:clipToPadding="false"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="30dp"
-            app:layout_constraintTop_toBottomOf="@id/bookmarkText"
+            android:clipToPadding="false"
             android:paddingBottom="250dp"
-            />
+            android:scrollbars="vertical"
+            app:layout_constraintTop_toBottomOf="@id/bookmarkText" />
 
-<!--        <View-->
-<!--            android:id="@+id/blankView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="100dp"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/bookmarkRecycler"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
+        <!--        <View-->
+        <!--            android:id="@+id/blankView"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="100dp"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/bookmarkRecycler"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
