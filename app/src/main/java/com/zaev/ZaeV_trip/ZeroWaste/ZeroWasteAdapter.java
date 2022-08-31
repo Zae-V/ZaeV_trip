@@ -231,7 +231,8 @@ public class ZeroWasteAdapter extends RecyclerView.Adapter<com.zaev.ZaeV_trip.Ze
         info.put("address", filtered.get(position).getAddr1());
         info.put("position_x", filtered.get(position).getMapX());
         info.put("position_y", filtered.get(position).getMapY());
-        info.put("keyword", filtered.get(position).getKeyword());
+        info.put("serialNumber", filtered.get(position).getContentID());
+        info.put("keyword", filtered.get(position).getTelephone());
 
         mDatabase.collection("BookmarkItem").document(userId).collection("zeroWaste").document(filtered.get(position).getName()).set(info);
     }
