@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.captaindroid.tvg.Tvg;
+import com.zaev.ZaeV_trip.Intro.IntroActivity;
 import com.zaev.ZaeV_trip.R;
 import com.zaev.ZaeV_trip.util.SignUtil;
 import com.google.firebase.auth.FirebaseAuth;
@@ -80,7 +81,7 @@ public class SignInFragment extends Fragment {
         signUpText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((SignActivity) getActivity()).replaceFragment(SignUpFragment.newInstance()); // 새로 불러올 Fragment의 Instance를 Main으로 전달
+                ((IntroActivity) getActivity()).replaceFragment(SignUpFragment.newInstance()); // 새로 불러올 Fragment의 Instance를 Main으로 전달
             }
         });
 

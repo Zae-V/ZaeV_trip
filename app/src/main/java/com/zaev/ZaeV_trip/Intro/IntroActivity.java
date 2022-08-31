@@ -16,10 +16,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.zaev.ZaeV_trip.Cafe.CafeFragment;
 import com.zaev.ZaeV_trip.R;
 import com.zaev.ZaeV_trip.Sign.SignActivity;
+import com.zaev.ZaeV_trip.Sign.SignInFragment;
 import com.zaev.ZaeV_trip.util.SignUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -112,17 +117,29 @@ public class IntroActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SignUtil.kakaoSign(IntroActivity.this, 1);
-                IntroActivity.this.finish();
             }
         });
 
         joinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(IntroActivity.this, SignActivity.class);
-                startActivity(intent);
-                IntroActivity.this.finish();
+//                Intent intent = new Intent(IntroActivity.this, SignActivity.class);
+//                startActivity(intent);
+                SignInFragment signInFragment = new SignInFragment();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_intro , signInFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
+    }
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container_intro, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/container_sign_up"
-    tools:context=".Sign.SignUpFragment">
+    tools:context=".Sign.SignUpFragment"
+    android:background="@color/white">
 
     <ScrollView
         android:layout_width="match_parent"

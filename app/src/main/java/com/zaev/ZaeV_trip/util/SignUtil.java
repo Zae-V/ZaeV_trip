@@ -258,7 +258,7 @@ public class SignUtil {
                                                     HashMap userInfo = (HashMap) document.getData();
                                                     String userName = (String) userInfo.get("userName");
                                                     String signType = "email";
-
+                                                    
                                                     Users user = new Users(userName, email, currentPosition, profileImage, false, signType, "success");
                                                     MySharedPreferences.saveUserInfo(ctx.getApplicationContext(), user);
 
