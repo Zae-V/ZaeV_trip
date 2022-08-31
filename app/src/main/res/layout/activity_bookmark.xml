@@ -26,23 +26,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchBar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:background="@drawable/profile_rounded_shape"
-            android:elevation="3dp"
-            android:orientation="horizontal"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            app:queryHint="검색어를 입력하세요"
-            app:layout_constraintTop_toBottomOf="@+id/bookmarkText"
-            app:searchIcon="@drawable/ic_search" />
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/bookmarkRecycler"
@@ -53,7 +36,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            app:layout_constraintTop_toBottomOf="@id/searchBar"
+            app:layout_constraintTop_toBottomOf="@id/bookmarkText"
             android:paddingBottom="250dp"
             />
 

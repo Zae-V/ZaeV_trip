@@ -46,6 +46,9 @@ public class FestivalFragment extends Fragment {
     FestivalDetail festivalDetail;
     FestivalDetail2 festivalDetail2;
 
+    boolean isMainData = false;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +62,11 @@ public class FestivalFragment extends Fragment {
 
         //Bundle
         Festival festival = (Festival) getArguments().getSerializable("festival");
+
+        if(getArguments().getString("mainData") == "true"){
+            isMainData = true;
+        }
+
         String name = festival.getTitle();
         String location = festival.getAddr1();
         String startDate = festival.getStartDate();
@@ -361,7 +369,9 @@ public class FestivalFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        MainActivity mainActivity = (MainActivity) getActivity();
-        mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        if (isMainData == true) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        }
     }
 }
