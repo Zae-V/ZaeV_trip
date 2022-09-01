@@ -207,6 +207,6 @@ public class ReusableAdapter extends RecyclerView.Adapter<ReusableAdapter.ViewHo
         mDatabase.collection("BookmarkItem").document(userId).collection("reusable").document(filtered.get(position).getName()).set(info);
     }
     private void deleteBookmark(int position){
-        mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getName()).delete();
+        mDatabase.collection("BookmarkItem").document(userId).collection("reusable").document(filtered.get(position).getName()).delete();
     }
 }
