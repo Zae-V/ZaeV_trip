@@ -439,12 +439,12 @@ public class MainActivity extends AppCompatActivity {
         String mobileApp = "ZaeVTour";
         String mobileOS = "AND";
         String crsKorNm = "%EC%84%9C%EC%9A%B8"; // "서울" 인코딩
-        String brdDiv = "DNBW"; // 걷기/자전거 구분(DNWW : 걷기길, DNBW : 자전거길)
+        String brdDiv = "DNWW"; // 걷기/자전거 구분(DNWW : 걷기길, DNBW : 자전거길)
 
         String queryUrl = address + "?"
                 + "serviceKey=" + key
-                + "&pageNo=" + pageNo
                 + "&numOfRows=" + numOfRows
+                + "&pageNo=" + pageNo
                 + "&MobileOS=" + mobileOS
                 + "&MobileApp=" + mobileApp
                 + "&crsKorNm=" + crsKorNm
