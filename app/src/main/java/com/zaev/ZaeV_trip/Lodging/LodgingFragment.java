@@ -238,7 +238,7 @@ public class LodgingFragment extends Fragment {
 
         String query="%EC%A0%84%EB%A0%A5%EB%A1%9C";
         String key = getString(R.string.portal_key);
-        String address = "https://api.visitkorea.or.kr/openapi/service/rest/KorService/";
+        String address = "http://apis.data.go.kr/B551011/KorService/";
         String listType = "detailCommon";
         String pageNo = "1";
         String numOfRows = "10";

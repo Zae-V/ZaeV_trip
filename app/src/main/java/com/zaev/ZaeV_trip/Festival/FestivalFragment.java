@@ -225,7 +225,7 @@ public class FestivalFragment extends Fragment {
 
         String query="%EC%A0%84%EB%A0%A5%EB%A1%9C";
         String key = getString(R.string.portal_key);
-        String address = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/";
+        String address = "http://apis.data.go.kr/B551011/KorService/";
         String listType = "detailInfo";
         String pageNo = "1";
         String numOfRows = "10";
@@ -298,7 +298,7 @@ public class FestivalFragment extends Fragment {
 
         String query="%EC%A0%84%EB%A0%A5%EB%A1%9C";
         String key = getString(R.string.portal_key);
-        String address = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/";
+        String address = "http://apis.data.go.kr/B551011/KorService/";
         String listType = "detailIntro";
         String pageNo = "1";
         String numOfRows = "10";

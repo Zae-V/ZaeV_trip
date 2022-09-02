@@ -433,7 +433,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<Plogging> getXmlBikeData() {
         ArrayList<Plogging> bikes = new ArrayList<Plogging>();
         String key = getString(R.string.portal_key);
-        String address = "http://api.visitkorea.or.kr/openapi/service/rest/Durunubi/courseList";
+        String address = "http://apis.data.go.kr/B551011/Durunubi/courseList";
         String pageNo = "1";
         String numOfRows = "100";
         String mobileApp = "ZaeVTour";
@@ -533,7 +533,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<Festival> getXmlEventData() {
         ArrayList<Festival> eventLists = new ArrayList<Festival>();
         String key = getString(R.string.portal_key);
-        String address = "https://api.visitkorea.or.kr/openapi/service/rest/KorService/";
+        String address = "http://apis.data.go.kr/B551011/KorService/";
         String listType = "searchFestival";
         String pageNo = "1";
         String numOfRows = "1000";
