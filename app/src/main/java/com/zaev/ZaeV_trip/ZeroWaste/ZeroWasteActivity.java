@@ -92,7 +92,14 @@ public class ZeroWasteActivity extends AppCompatActivity {
                         public void run() {
                             for (int k = 0; k < zeroWastes1.size(); k++) {
                                 ZeroWaste item = getXmlData.getZeroWasteMainDetail(ZeroWasteActivity.this, String.valueOf(filteredZeroWasteContentsListALL.get(k).getContentID()));
-                                filteredZeroWasteMainDetail.add(item);
+                                if(local.equals("전체 지역") || local.equals("전체")) {
+                                    filteredZeroWasteMainDetail.add(item);
+                                }
+                                else{
+                                    if(item.getAddr1().contains(local)){
+                                        filteredZeroWasteMainDetail.add(item);
+                                    }
+                                }
 
                             }
                         }
