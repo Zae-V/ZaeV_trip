@@ -42,6 +42,8 @@ public class ZeroWasteActivity extends AppCompatActivity {
     float dpWidth;
     ProgressDialog customProgressDialog;
 
+    ZeroWasteAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +126,7 @@ public class ZeroWasteActivity extends AppCompatActivity {
 
     }
     public void DrawInAdapter(ArrayList<ZeroWaste> items){
-        ZeroWasteAdapter adapter = new ZeroWasteAdapter(ZeroWasteActivity.this, items);
+        adapter = new ZeroWasteAdapter(ZeroWasteActivity.this, items);
         list.setLayoutManager(new LinearLayoutManager(ZeroWasteActivity.this, RecyclerView.VERTICAL, false));
         list.setAdapter(adapter);
 

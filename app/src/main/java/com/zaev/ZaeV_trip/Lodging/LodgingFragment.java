@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.zaev.ZaeV_trip.Festival.FestivalActivity;
 import com.zaev.ZaeV_trip.R;
 import com.zaev.ZaeV_trip.model.Lodging;
 import com.zaev.ZaeV_trip.model.LodgingDetail;
@@ -354,5 +355,13 @@ public class LodgingFragment extends Fragment {
             default:
                 Log.d("WithdrawalActivity", "default");
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        LodgingActivity lodgingActivity = (LodgingActivity) getActivity();
+        lodgingActivity.adapter.notifyDataSetChanged();
     }
 }

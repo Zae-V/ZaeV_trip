@@ -429,4 +429,11 @@ public class TouristSpotFragment extends Fragment {
                 Log.d("WithdrawalActivity", "default");
         }
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        TouristSpotActivity touristSpotActivity = (TouristSpotActivity) getActivity();
+        touristSpotActivity.adapter.notifyDataSetChanged();
+    }
 }

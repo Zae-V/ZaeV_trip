@@ -34,6 +34,8 @@ public class TouristSpotActivity extends AppCompatActivity {
     public static ImageView notDataImage;
     ProgressDialog customProgressDialog;
 
+    TouristSpotAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +84,7 @@ public class TouristSpotActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                        TouristSpotAdapter adapter = new TouristSpotAdapter(TouristSpotActivity.this, filteredTouristSpot);
+                        adapter = new TouristSpotAdapter(TouristSpotActivity.this, filteredTouristSpot);
                         list.setLayoutManager(new LinearLayoutManager(TouristSpotActivity.this, RecyclerView.VERTICAL, false));
                         list.setAdapter(adapter);
 

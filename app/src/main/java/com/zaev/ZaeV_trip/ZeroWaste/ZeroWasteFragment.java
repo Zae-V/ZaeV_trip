@@ -241,4 +241,11 @@ public class ZeroWasteFragment extends Fragment {
     private void deleteBookmark(String id){
         mDatabase.collection("BookmarkItem").document(userId).collection("zeroWaste").document(id).delete();
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ZeroWasteActivity zeroWasteActivity = (ZeroWasteActivity) getActivity();
+        zeroWasteActivity.adapter.notifyDataSetChanged();
+    }
 }

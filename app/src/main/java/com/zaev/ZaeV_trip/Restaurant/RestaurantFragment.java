@@ -266,5 +266,7 @@ public class RestaurantFragment extends Fragment {
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
         }
+        RestaurantActivity restaurantActivity = (RestaurantActivity) getActivity();
+        restaurantActivity.adapter.notifyDataSetChanged();
     }
 }

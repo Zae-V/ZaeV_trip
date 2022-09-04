@@ -33,6 +33,7 @@ public class LodgingActivity extends AppCompatActivity {
     public static TextView notDataText;
     public static ImageView notDataImage;
     ProgressDialog customProgressDialog;
+    LodgingAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class LodgingActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                        LodgingAdapter adapter = new LodgingAdapter(com.zaev.ZaeV_trip.Lodging.LodgingActivity.this, filteredLodging);
+                        adapter = new LodgingAdapter(com.zaev.ZaeV_trip.Lodging.LodgingActivity.this, filteredLodging);
                         list.setLayoutManager(new LinearLayoutManager(com.zaev.ZaeV_trip.Lodging.LodgingActivity.this, RecyclerView.VERTICAL, false));
                         list.setAdapter(adapter);
 

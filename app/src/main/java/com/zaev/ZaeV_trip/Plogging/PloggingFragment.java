@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.zaev.ZaeV_trip.Lodging.LodgingActivity;
 import com.zaev.ZaeV_trip.Main.MainActivity;
 import com.zaev.ZaeV_trip.R;
 import com.zaev.ZaeV_trip.model.Plogging;
@@ -225,6 +226,10 @@ public class PloggingFragment extends Fragment {
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
         }
+
+
+        PloggingActivity ploggingActivity = (PloggingActivity) getActivity();
+        ploggingActivity.adapter.notifyDataSetChanged();
     }
 
 }

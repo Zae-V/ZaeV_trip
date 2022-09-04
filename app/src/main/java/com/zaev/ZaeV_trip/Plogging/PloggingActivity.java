@@ -35,6 +35,9 @@ public class PloggingActivity extends AppCompatActivity {
     public static TextView notDataText;
     public static ImageView notDataImage;
 
+
+    PloggingAdapter adapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +85,7 @@ public class PloggingActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                        PloggingAdapter adapter = new PloggingAdapter(PloggingActivity.this, filteredPlogging);
+                        adapter = new PloggingAdapter(PloggingActivity.this, filteredPlogging);
                         list.setLayoutManager(new LinearLayoutManager(PloggingActivity.this, RecyclerView.VERTICAL, false));
                         list.setAdapter(adapter);
 

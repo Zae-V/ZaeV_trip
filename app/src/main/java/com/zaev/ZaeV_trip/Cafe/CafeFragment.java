@@ -253,4 +253,13 @@ public class CafeFragment extends Fragment {
     private void deleteBookmark(String id){
         mDatabase.collection("BookmarkItem").document(userId).collection("cafe").document(id).delete();
     }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        CafeActivity cafeActivity = (CafeActivity) getActivity();
+        cafeActivity.cafeAdapter.notifyDataSetChanged();
+    }
+
 }

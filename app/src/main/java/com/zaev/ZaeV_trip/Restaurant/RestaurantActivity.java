@@ -33,6 +33,8 @@ public class RestaurantActivity extends AppCompatActivity {
     public static TextView notDataText;
     public static ImageView notDataImage;
 
+    RestaurantAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +88,7 @@ public class RestaurantActivity extends AppCompatActivity {
                             }
                         }
 
-                        RestaurantAdapter adapter = new RestaurantAdapter(RestaurantActivity.this, filteredRestaurant);
+                        adapter = new RestaurantAdapter(RestaurantActivity.this, filteredRestaurant);
                         list.setLayoutManager(new LinearLayoutManager(RestaurantActivity.this, RecyclerView.VERTICAL, false));
                         list.setAdapter(adapter);
 

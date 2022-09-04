@@ -33,6 +33,7 @@ public class FestivalActivity extends AppCompatActivity {
     SearchView searchView;
     public static TextView notDataText;
     public static ImageView notDataImage;
+    FestivalAdapter adapter;
 
     ProgressDialog customProgressDialog;
 
@@ -83,7 +84,7 @@ public class FestivalActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                        FestivalAdapter adapter = new FestivalAdapter(FestivalActivity.this, filteredFestival);
+                        adapter = new FestivalAdapter(FestivalActivity.this, filteredFestival);
                         festivalList.setLayoutManager(new LinearLayoutManager(FestivalActivity.this, RecyclerView.VERTICAL, false));
                         festivalList.setAdapter(adapter);
 

@@ -32,6 +32,8 @@ public class ReusableActivity extends AppCompatActivity {
     public static TextView notDataText;
     public static ImageView notDataImage;
 
+    ReusableAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +79,7 @@ public class ReusableActivity extends AppCompatActivity {
                                     filteredReusable.add(reusables.get(i));
                                 }
                             }
-                            ReusableAdapter adapter = new ReusableAdapter(ReusableActivity.this, filteredReusable);
+                            adapter = new ReusableAdapter(ReusableActivity.this, filteredReusable);
                             list.setLayoutManager(new LinearLayoutManager(ReusableActivity.this, RecyclerView.VERTICAL, false));
                             list.setAdapter(adapter);
 

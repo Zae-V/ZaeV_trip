@@ -153,5 +153,12 @@ public class ReusableFragment extends Fragment {
     private void deleteBookmark(String name){
         mDatabase.collection("BookmarkItem").document(userId).collection("reusable").document(name).delete();
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ReusableActivity reusableActivity = (ReusableActivity) getActivity();
+        reusableActivity.adapter.notifyDataSetChanged();
+    }
 }
 

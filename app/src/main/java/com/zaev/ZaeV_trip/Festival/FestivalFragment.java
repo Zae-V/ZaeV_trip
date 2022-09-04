@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.zaev.ZaeV_trip.Cafe.CafeActivity;
 import com.zaev.ZaeV_trip.Main.MainActivity;
 import com.zaev.ZaeV_trip.R;
 import com.zaev.ZaeV_trip.model.Festival;
@@ -373,5 +374,8 @@ public class FestivalFragment extends Fragment {
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
         }
+
+            FestivalActivity festivalActivity = (FestivalActivity) getActivity();
+        festivalActivity.adapter.notifyDataSetChanged();
     }
 }
