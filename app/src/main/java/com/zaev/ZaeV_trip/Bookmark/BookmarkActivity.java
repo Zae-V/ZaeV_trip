@@ -12,8 +12,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.widget.SearchView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.zaev.ZaeV_trip.Cafe.CafeAdapter;
 import com.zaev.ZaeV_trip.Festival.FestivalAdapter;
 import com.zaev.ZaeV_trip.Lodging.LodgingAdapter;
@@ -76,12 +83,24 @@ public class BookmarkActivity extends AppCompatActivity {
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     ConcatAdapter mConcatAdapter = new ConcatAdapter();
+    ImageView notifyImg;
+    TextView notifyText1;
+    TextView notifyText2;
+
+    boolean isEmpty = false;
+    boolean isEmpty1 = false;
+    boolean isEmpty2 = false;
+    boolean isEmpty3 = false;
+    boolean isEmpty4 = false;
+    boolean isEmpty5 = false;
+    boolean isEmpty6 = false;
+    boolean isEmpty7 = false;
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         BookmarkActivity.this.finish();
     }
@@ -91,6 +110,11 @@ public class BookmarkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmark);
 
+        // 북마크 없을 때의 view
+        notifyImg = findViewById(R.id.notifyImage);
+        notifyText1 = findViewById(R.id.notifyText1);
+        notifyText2 = findViewById(R.id.notifyText2);
+
         //recyclerview
         bookmarkRecyclerView = (RecyclerView) findViewById(R.id.bookmarkRecycler);
         bookmarkRecyclerView.setHasFixedSize(true);
@@ -99,15 +123,34 @@ public class BookmarkActivity extends AppCompatActivity {
         bookmarkRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
+        String[] docs = {"cafe", "festival", "lodging", "plogging", "restaurant", "reusable", "touristSpot", "zeroWaste"};
+
+        for (String doc : docs) {
+            mDatabase.collection("BookmarkItem").document(uid).collection(doc).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.getResult().size() > 0) {
+                        // 북마크 하나라도 있을 때 없애기
+                        notifyImg.setVisibility(View.GONE);
+                        notifyText1.setVisibility(View.GONE);
+                        notifyText2.setVisibility(View.GONE);
+                    }
+                    else{
+
+                    }
+                }
+            });
+        }
+
         CollectionReference collection = mDatabase.collection("BookmarkItem").document(uid).collection("cafe");
         collection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
 
                     QuerySnapshot query = task.getResult();
-                    for(QueryDocumentSnapshot document : query){
-                        Cafe cafe = new Cafe("","","","","","","","");
+                    for (QueryDocumentSnapshot document : query) {
+                        Cafe cafe = new Cafe("", "", "", "", "", "", "", "");
                         cafe.setId(String.valueOf(document.getData().get("serialNumber")));
                         cafe.setLocation(String.valueOf(document.getData().get("address")));
                         cafe.setCategory(String.valueOf(document.getData().get("type")));
@@ -117,6 +160,7 @@ public class BookmarkActivity extends AppCompatActivity {
                         cafe.setNumber(String.valueOf(document.getData().get("tel")));
                         cafe.setMenu(String.valueOf(document.getData().get("menu")));
                         bookmarkedItems.add(cafe);
+                        isEmpty = true;
                     }
                     Log.e("b", String.valueOf(bookmarkedItems));
                     listAdapter = new CafeAdapter(BookmarkActivity.this, bookmarkedItems);
@@ -130,10 +174,10 @@ public class BookmarkActivity extends AppCompatActivity {
         collection1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     QuerySnapshot query = task.getResult();
-                    for(QueryDocumentSnapshot document : query){
-                        Festival festival = new Festival("","","","","","","","", "");
+                    for (QueryDocumentSnapshot document : query) {
+                        Festival festival = new Festival("", "", "", "", "", "", "", "", "");
                         festival.setId(String.valueOf(document.getData().get("serialNumber")));
                         festival.setAddr1(String.valueOf(document.getData().get("address")));
                         festival.setTitle(String.valueOf(document.getData().get("name")));
@@ -144,6 +188,7 @@ public class BookmarkActivity extends AppCompatActivity {
                         festival.setEndDate(String.valueOf(document.getData().get("end_date")));
                         festival.setTel(String.valueOf(document.getData().get("tel")));
                         bookmarkedItems1.add(festival);
+                        isEmpty1 = true;
                     }
 
                     listAdapter1 = new FestivalAdapter(BookmarkActivity.this, bookmarkedItems1);
@@ -157,17 +202,19 @@ public class BookmarkActivity extends AppCompatActivity {
         collection2.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     QuerySnapshot query = task.getResult();
-                    for(QueryDocumentSnapshot document : query){
-                        Restaurant restaurant = new Restaurant("","","","","","","","","");
+                    for (QueryDocumentSnapshot document : query) {
+                        Restaurant restaurant = new Restaurant("", "", "", "", "", "", "", "", "");
                         restaurant.setId(String.valueOf(document.getData().get("serialNumber")));
                         restaurant.setLocation(String.valueOf(document.getData().get("address")));
                         restaurant.setName(String.valueOf(document.getData().get("name")));
                         restaurant.setMapX(String.valueOf(document.getData().get("position_x")));
                         restaurant.setMapY(String.valueOf(document.getData().get("position_y")));
                         restaurant.setNumber(String.valueOf(document.getData().get("tel")));
+                        restaurant.setCategory(String.valueOf(document.getData().get("category")));
                         bookmarkedItems2.add(restaurant);
+                        isEmpty2 = true;
                     }
 
                     listAdapter2 = new RestaurantAdapter(BookmarkActivity.this, bookmarkedItems2);
@@ -181,10 +228,10 @@ public class BookmarkActivity extends AppCompatActivity {
         collection3.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     QuerySnapshot query = task.getResult();
-                    for(QueryDocumentSnapshot document : query){
-                        TouristSpot touristSpot = new TouristSpot("","","","","","","","");
+                    for (QueryDocumentSnapshot document : query) {
+                        TouristSpot touristSpot = new TouristSpot("", "", "", "", "", "", "", "");
                         touristSpot.setContentID(String.valueOf(document.getData().get("serialNumber")));
                         touristSpot.setAddr1(String.valueOf(document.getData().get("address")));
                         touristSpot.setAddr2(String.valueOf(document.getData().get("address2")));
@@ -193,6 +240,7 @@ public class BookmarkActivity extends AppCompatActivity {
                         touristSpot.setMapX(String.valueOf(document.getData().get("position_x")));
                         touristSpot.setMapY(String.valueOf(document.getData().get("position_y")));
                         bookmarkedItems3.add(touristSpot);
+                        isEmpty3 = true;
                     }
 
                     listAdapter3 = new TouristSpotAdapter(BookmarkActivity.this, bookmarkedItems3);
@@ -206,10 +254,10 @@ public class BookmarkActivity extends AppCompatActivity {
         collection4.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     QuerySnapshot query = task.getResult();
-                    for(QueryDocumentSnapshot document : query){
-                        Lodging lodging = new Lodging("","","","","","","","","");
+                    for (QueryDocumentSnapshot document : query) {
+                        Lodging lodging = new Lodging("", "", "", "", "", "", "", "", "");
                         lodging.setContentID(String.valueOf(document.getData().get("serialNumber")));
                         lodging.setAddr1(String.valueOf(document.getData().get("address")));
                         lodging.setTitle(String.valueOf(document.getData().get("name")));
@@ -217,6 +265,7 @@ public class BookmarkActivity extends AppCompatActivity {
                         lodging.setMapX(String.valueOf(document.getData().get("position_x")));
                         lodging.setMapY(String.valueOf(document.getData().get("position_y")));
                         bookmarkedItems4.add(lodging);
+                        isEmpty4 = true;
                     }
 
                     listAdapter4 = new LodgingAdapter(BookmarkActivity.this, bookmarkedItems4);
@@ -230,16 +279,17 @@ public class BookmarkActivity extends AppCompatActivity {
         collection5.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     QuerySnapshot query = task.getResult();
-                    for(QueryDocumentSnapshot document : query){
-                        Reusable reusable = new Reusable("","","","","");
+                    for (QueryDocumentSnapshot document : query) {
+                        Reusable reusable = new Reusable("", "", "", "", "");
                         reusable.setName(String.valueOf(document.getData().get("name")));
                         reusable.setMapX(String.valueOf(document.getData().get("position_x")));
                         reusable.setMapY(String.valueOf(document.getData().get("position_y")));
                         reusable.setLocation(String.valueOf(document.getData().get("address")));
                         reusable.setReason(String.valueOf(document.getData().get("reason")));
                         bookmarkedItems5.add(reusable);
+                        isEmpty5 = true;
                     }
 
                     listAdapter5 = new ReusableAdapter(BookmarkActivity.this, bookmarkedItems5);
@@ -253,16 +303,17 @@ public class BookmarkActivity extends AppCompatActivity {
         collection6.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     QuerySnapshot query = task.getResult();
-                    for(QueryDocumentSnapshot document : query){
-                        ZeroWaste zeroWaste = new ZeroWaste("","","","","","","","","","","","");
+                    for (QueryDocumentSnapshot document : query) {
+                        ZeroWaste zeroWaste = new ZeroWaste("", "", "", "", "", "", "", "", "", "", "", "");
                         zeroWaste.setName(String.valueOf(document.getData().get("name")));
                         zeroWaste.setMapX(String.valueOf(document.getData().get("position_x")));
                         zeroWaste.setMapY(String.valueOf(document.getData().get("position_y")));
                         zeroWaste.setAddr1(String.valueOf(document.getData().get("address")));
                         zeroWaste.setKeyword(String.valueOf(document.getData().get("keyword")));
                         bookmarkedItems6.add(zeroWaste);
+                        isEmpty6 = true;
                     }
 
                     listAdapter6 = new ZeroWasteAdapter(BookmarkActivity.this, bookmarkedItems6);
@@ -276,14 +327,15 @@ public class BookmarkActivity extends AppCompatActivity {
         collection7.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     QuerySnapshot query = task.getResult();
-                    for(QueryDocumentSnapshot document : query){
+                    for (QueryDocumentSnapshot document : query) {
                         Plogging plogging = new Plogging();
                         plogging.setCrsKorNm(String.valueOf(document.getData().get("name")));
                         plogging.setCrsLevel(String.valueOf(document.getData().get("level")));
                         plogging.setSigun(String.valueOf(document.getData().get("sigun")));
                         bookmarkedItems7.add(plogging);
+                        isEmpty7 = true;
                     }
 
                     listAdapter7 = new PloggingAdapter(BookmarkActivity.this, bookmarkedItems7);
@@ -292,6 +344,26 @@ public class BookmarkActivity extends AppCompatActivity {
                 }
             }
         });
+
+//        if ((isEmpty || isEmpty1 || isEmpty2 || isEmpty3 || isEmpty4 || isEmpty5 || isEmpty6 || isEmpty7)) {
+//            notifyImg.setVisibility(View.VISIBLE);
+//            notifyText1.setVisibility(View.VISIBLE);
+//            notifyText2.setVisibility(View.VISIBLE);
+//        }
+
+//        if (listAdapter.getItemCount() == 0 &&
+//                listAdapter1.getItemCount() == 0 &&
+//                listAdapter2.getItemCount() == 0 &&
+//                listAdapter3.getItemCount() == 0 &&
+//                listAdapter4.getItemCount() == 0 &&
+//                listAdapter5.getItemCount() == 0 &&
+//                listAdapter6.getItemCount() == 0 &&
+//                listAdapter7.getItemCount() == 0) {
+//            Log.d("테스트", "찜목록이 없어요");
+//            notifyImg.setVisibility(View.VISIBLE);
+//            notifyText1.setVisibility(View.VISIBLE);
+//            notifyText2.setVisibility(View.VISIBLE);
+//        }
 
         //Initialize And Assign Variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -305,7 +377,7 @@ public class BookmarkActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.profile:
                     Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                     BookmarkActivity.this.finish();
 
@@ -315,7 +387,7 @@ public class BookmarkActivity extends AppCompatActivity {
 
                 case R.id.travel:
                     Intent intent1 = new Intent(getApplicationContext(), TravelActivity.class);
-                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent1);
                     BookmarkActivity.this.finish();
 
@@ -323,7 +395,7 @@ public class BookmarkActivity extends AppCompatActivity {
 
                 case R.id.home:
                     Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
-                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent2);
                     BookmarkActivity.this.finish();
 
