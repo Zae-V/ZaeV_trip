@@ -198,6 +198,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         info.put("serialNumber", filtered.get(position).getId());
         info.put("tel", filtered.get(position).getNumber());
         info.put("menu", filtered.get(position).getMenu());
+        info.put("category", filtered.get(position).getCategory());
 
         mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(filtered.get(position).getId()).set(info);
     }

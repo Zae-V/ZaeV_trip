@@ -233,7 +233,7 @@ public class RestaurantFragment extends Fragment {
                 }
                 else if(bookmarkBtn.isActivated()){
                     // 선택 동작
-                    writeBookmark(name, location, x, y, id, number, menu);
+                    writeBookmark(name, location, x, y, id, number, menu, category);
                 }
 
             }
@@ -242,7 +242,7 @@ public class RestaurantFragment extends Fragment {
         return v;
     }
 
-    private void writeBookmark(String name, String location, String x, String y, String id, String number, String menu){
+    private void writeBookmark(String name, String location, String x, String y, String id, String number, String menu, String category){
         Map<String, Object> info = new HashMap<>();
         info.put("name", name);
         info.put("type", "식당");
@@ -252,6 +252,7 @@ public class RestaurantFragment extends Fragment {
         info.put("serialNumber", id);
         info.put("tel", number);
         info.put("menu", menu);
+        info.put("category", category);
 
         mDatabase.collection("BookmarkItem").document(userId).collection("restaurant").document(id).set(info);
     }
